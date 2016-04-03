@@ -10,12 +10,23 @@
 		<form>
 			<table>
 				<tr>
-					<td>Name of GC Chair</td>
-					<td><input type = "text" name = "gcChairName" id="gcChairName"></td>
+					<td>GC Members:</td>
 				</tr>
 
-				<tr>
-					<td>GC Members:</td>
+				<tr class="list">
+					<td>GC Chair Name</td>
+					<td>GC Chair Email</td>
+					<td>GC Chair Username</td>
+					<td>GC Chair Password</td>
+					<td></td>
+				</tr>
+
+				<tr class="list">
+					<td><input type = "text" id = "chairName" name = "chairName"></td>
+					<td><input type = "email" id = "chairEmail" name = "chairEmail"></td>
+					<td><input type = "text" id = "chairUsername" name = "chairUsername"></td>
+					<td><input type = "password" id = "chairPassword" name = "chairPassword"></td>
+					<td></td>
 				</tr>
 
 				<tr class="list">

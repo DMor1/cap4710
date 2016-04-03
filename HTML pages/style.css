@@ -65,3 +65,15 @@ textarea
 	padding-top: 20px;
 	padding-left:36%;
 }
+.gctable
+{
+	border:3px solid black;
+}
+.gctable th
+{
+	border:3px solid black;
+}
+.gctable td
+{
+	border:3px solid black;
+}

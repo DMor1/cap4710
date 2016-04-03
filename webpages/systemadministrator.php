@@ -8,11 +8,12 @@
 		<h2>Setup a new nomination session for GTAMS</h2>
 
 		<form>
-			<table>
+			<table id='table'>
+
 				<tr>
 					<td>GC Members:</td>
 				</tr>
-
+				
 				<tr class="list">
 					<td>GC Chair Name</td>
 					<td>GC Chair Email</td>
@@ -38,11 +39,11 @@
 				</tr>
 
 				<tr class="list">
-					<td><input type = "text" id = "GCName1" name = "GCName1"></td>
-					<td><input type = "email" id = "GCEmail1" name = "GCEmail1"></td>
-					<td><input type = "text" id = "GCUserName1" name = "GCUserName1"></td>
-					<td><input type = "password" id = "GCUserPassword1" name = "GCUserPassword1"></td>
-					<td><input type="button" class="buttons" value="Add" /></td>
+					<td><input type = "text" id = "GCName1" name = "GCName1"/></td>
+					<td><input type = "email" id = "GCEmail1" name = "GCEmail1"/></td>
+					<td><input type = "text" id = "GCUserName1" name = "GCUserName1"/></td>
+					<td><input type = "password" id = "GCUserPassword1" name = "GCUserPassword1"/></td>
+					<td><input type="button" class="buttons" value="Add" onclick="addGC()" /></td>
 				</tr>
 
 				<tr><td>&emsp;</td></tr>
@@ -80,6 +81,35 @@
 				</tr>
 			</table>
 
+			<script>
+			
+			var iii=5;
+			var z=1;
+			function addGC(){
+					var table=document.getElementById("table");
+					var row=table.insertRow(iii++);
+					row.className='list';
+					var cell1=row.insertCell(0);
+					var cell2=row.insertCell(1);
+					var cell3=row.insertCell(2);
+					var cell4=row.insertCell(3);
+					var cell5=row.insertCell(4);
+					
+					z++;
+					cell1.innerHTML='<input type="text" id="GCName'+z+'" name="GCName'+z+'" />';
+					cell2.innerHTML='<input type="text" id="GCEmail'+z+'" name="GCEmail'+z+'"/>';
+					cell3.innerHTML='<input type="text" id="GCUserName'+z+'" name="GCUserName'+z+'"/>';
+					cell4.innerHTML='<input type="text" id="GCUserPassword'+z+'" name=""GCUserPassword'+z+'" />';
+					cell5.innerHTML='<input type="button" class="buttons" value="remove" onclick="removeGC(iii)"/>';
+     
+					table.appendChild('row');
+			}
+			
+			function removeGC(iii){
+				document.getElementById('table').deleteRow(--iii);
+				z--;
+			}
+			</script>
 				<!-- Name of GC Chair: 
 				<input type = "text" name = "gcChairName"></br>
 

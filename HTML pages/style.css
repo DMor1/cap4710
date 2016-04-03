@@ -1,0 +1,67 @@
+body
+{
+	font-size:18px;
+}
+html
+{
+	background-color:gray;
+	color: white;
+}
+input
+{
+	border-radius:10px;
+	border:2px solid black;
+	padding:5px;
+	width:250px;
+	outline:none;
+	text-align: center;
+}
+input:focus
+{
+	background-color:#DDDDDD;
+}
+table, td
+{
+	font-size:18px;
+	/*border: 1px solid blue;*/
+}
+table
+{
+	border-collapse: collapse;
+}
+.radios
+{
+	text-align:left;
+	width:15px;
+}
+.buttons
+{
+	width:100px;
+}
+.submitrow
+{
+	text-align: center;
+}
+input.buttons:active
+{
+	background-color: black;
+	color:#DDDDDD;
+}
+.list
+{
+	text-align: center;
+	border:2px solid black;
+}
+textarea
+{
+	border-radius:10px;
+	border:2px solid black;
+	padding:5px;
+	width:400px;
+	outline:none;
+}
+.loginscreen
+{
+	padding-top: 20px;
+	padding-left:36%;
+}

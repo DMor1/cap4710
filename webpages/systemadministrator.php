@@ -1,3 +1,76 @@
+<?php
+include_once("login_check.php"); // this must come first
+include_once("db.php");
+
+//$obj = (object) array('name' => '', 'property' => 'value');
+//echo "$key=$value";
+
+
+debug_print($_POST);
+
+//insert gc user
+if(!empty($_POST))
+{
+
+
+	$sql="INSERT into users (name, email, username, password)
+	VALUES('" . $_POST["chairName"] . "','" .  $_POST["chairEmail"] . "','" . $_POST["chairUsername"] . "','" . $_POST["chairPassword"] . "')";
+	if($conn->query($sql)===TRUE)
+	{
+		$sql="INSERT INTO user_roles (user_id,role_id)
+		VALUES (" . $conn->insert_id . ",2)";
+		if ($conn->query($sql) === TRUE){echo "New record created successfully1<br>";}
+		else {echo "Error: " . $sql . "<br>" . $conn->error;}	
+	}
+	
+	
+	
+	// get the total number of dynamic rows
+	$maxkeyint = 0;
+	foreach($_POST as $key=>$value)
+	{
+	  if(preg_match('/GCName/',$key))
+	  {
+		  max($maxkeyint, filter_var($key, FILTER_SANITIZE_NUMBER_INT));
+	  }
+	}
+
+	// since we know the names of the columns and the max number to iterate just iterate through the users one at a time
+	for($i = 1; $i<=$maxkeyint; $i++)
+	{
+		// insert user $i
+		// insert user_role for user
+		////GCName1=GCEmail1=GCUserName1=GCUserPassword1=
+		$sql="
+			INSERT into users (name, email, username, password)
+			VALUES('" . $_POST["GCName".$i] . "','" .  $_POST["GCEmail".$i] . "','" . $_POST["GCUserName".$i] . "','" . $_POST["GCUserPassword".$i] . "')";
+		if($conn->query($sql)===TRUE)
+		{
+			$sql="INSERT INTO user_roles (user_id,role_id)
+			VALUES (" . $conn->insert_id . ",3)";
+			if ($conn->query($sql) === TRUE){echo "New record created successfully2<br>";}
+			else {echo "Error: " . $sql . "<br>" . $conn->error;}	
+		}
+		
+	}
+	
+	// setup the session
+	$sql="
+		INSERT INTO sessions (start_date, deadline_date, initaition_date, verify_deadline_date);
+		VALUES 
+		(CURDATE(), 
+		STR_TO_DATE('" . $_POST["nomineeResponseDeadline"] . "','%Y-%m-%d'),
+		STR_TO_DATE('" . $_POST["facultyNominationDeadline"] . "','%Y-%m-%d'),
+		STR_TO_DATE('" . $_POST["verificationDeadline"] . "','%Y-%m-%d'))";
+	if ($conn->query($sql) === TRUE){echo "New record created successfully3<br>";}
+	else {echo "Error: " . $sql . "<br>" . $conn->error;}	
+	$conn->close();
+	
+	echo "Thank you for your submission";
+}
+
+		
+?>
 <html>
 	<head>
 		<title>System Administrator UI</title>
@@ -7,7 +80,7 @@
 	<body>
 		<h2>Setup a new nomination session for GTAMS</h2>
 
-		<form>
+		<form method="post" action="<?php echo $_SERVER['PHP_SELF']; ?>">
 			<table id='table'>
 
 				<tr>

@@ -6,7 +6,7 @@ include_once("db.php");
 //echo "$key=$value";
 
 
-debug_print($_POST);
+//debug_print($_POST);
 
 //insert gc user
 if(!empty($_POST))
@@ -14,27 +14,35 @@ if(!empty($_POST))
 
 
 	$sql="INSERT into users (name, email, username, password)
-	VALUES('" . $_POST["chairName"] . "','" .  $_POST["chairEmail"] . "','" . $_POST["chairUsername"] . "','" . $_POST["chairPassword"] . "')";
+	VALUES('" . $_POST["chairName"] . "','" .  $_POST["chairEmail"] . "','" . $_POST["chairUsername"] . "','" . md5($_POST["chairPassword"]) . "')";
 	if($conn->query($sql)===TRUE)
 	{
 		$sql="INSERT INTO user_roles (user_id,role_id)
 		VALUES (" . $conn->insert_id . ",2)";
-		if ($conn->query($sql) === TRUE){echo "New record created successfully1<br>";}
+		if ($conn->query($sql) === TRUE){/*echo "New record created successfully1<br>";*/}
 		else {echo "Error: " . $sql . "<br>" . $conn->error;}	
 	}
 	
 	
 	
 	// get the total number of dynamic rows
-	$maxkeyint = 0;
+	$maxkeyint = intval("0");
 	foreach($_POST as $key=>$value)
 	{
 	  if(preg_match('/GCName/',$key))
 	  {
-		  max($maxkeyint, filter_var($key, FILTER_SANITIZE_NUMBER_INT));
+		  $temp_key = intval(filter_var($key, FILTER_SANITIZE_NUMBER_INT));
+		  //debug_print($temp_key);
+		  //debug_print($maxkeyint);
+		  //max($maxkeyint, $temp_key); // this was for some reason, super buggy
+		  if($temp_key > $maxkeyint)
+		  {
+			  $maxkeyint = $temp_key;
+		  }
 	  }
 	}
-
+	//debug_print($maxkeyint);
+	
 	// since we know the names of the columns and the max number to iterate just iterate through the users one at a time
 	for($i = 1; $i<=$maxkeyint; $i++)
 	{
@@ -43,12 +51,12 @@ if(!empty($_POST))
 		////GCName1=GCEmail1=GCUserName1=GCUserPassword1=
 		$sql="
 			INSERT into users (name, email, username, password)
-			VALUES('" . $_POST["GCName".$i] . "','" .  $_POST["GCEmail".$i] . "','" . $_POST["GCUserName".$i] . "','" . $_POST["GCUserPassword".$i] . "')";
+			VALUES('" . $_POST["GCName".$i] . "','" .  $_POST["GCEmail".$i] . "','" . $_POST["GCUserName".$i] . "','" . md5($_POST["GCUserPassword".$i]) . "')";
 		if($conn->query($sql)===TRUE)
 		{
 			$sql="INSERT INTO user_roles (user_id,role_id)
 			VALUES (" . $conn->insert_id . ",3)";
-			if ($conn->query($sql) === TRUE){echo "New record created successfully2<br>";}
+			if ($conn->query($sql) === TRUE){/*echo "New record created successfully2<br>";*/}
 			else {echo "Error: " . $sql . "<br>" . $conn->error;}	
 		}
 		
@@ -56,17 +64,18 @@ if(!empty($_POST))
 	
 	// setup the session
 	$sql="
-		INSERT INTO sessions (start_date, deadline_date, initaition_date, verify_deadline_date);
+		INSERT INTO sessions (start_date, end_date, initiation_date, verify_deadline_date)
 		VALUES 
 		(CURDATE(), 
 		STR_TO_DATE('" . $_POST["nomineeResponseDeadline"] . "','%Y-%m-%d'),
 		STR_TO_DATE('" . $_POST["facultyNominationDeadline"] . "','%Y-%m-%d'),
 		STR_TO_DATE('" . $_POST["verificationDeadline"] . "','%Y-%m-%d'))";
-	if ($conn->query($sql) === TRUE){echo "New record created successfully3<br>";}
+	if ($conn->query($sql) === TRUE){/*echo "New record created successfully3<br>";*/}
 	else {echo "Error: " . $sql . "<br>" . $conn->error;}	
 	$conn->close();
 	
 	echo "Thank you for your submission";
+	die();
 }
 
 		
@@ -170,9 +179,9 @@ if(!empty($_POST))
 					
 					z++;
 					cell1.innerHTML='<input type="text" id="GCName'+z+'" name="GCName'+z+'" />';
-					cell2.innerHTML='<input type="text" id="GCEmail'+z+'" name="GCEmail'+z+'"/>';
+					cell2.innerHTML='<input type="email" id="GCEmail'+z+'" name="GCEmail'+z+'"/>';
 					cell3.innerHTML='<input type="text" id="GCUserName'+z+'" name="GCUserName'+z+'"/>';
-					cell4.innerHTML='<input type="text" id="GCUserPassword'+z+'" name=""GCUserPassword'+z+'" />';
+					cell4.innerHTML='<input type="password" id="GCUserPassword'+z+'" name=""GCUserPassword'+z+'" />';
 					cell5.innerHTML='<input type="button" class="buttons" value="remove" onclick="removeGC(iii)"/>';
      
 					table.appendChild('row');

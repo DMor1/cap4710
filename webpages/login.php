@@ -1,3 +1,17 @@
+<?php
+include_once("db.php");
+
+
+
+if(!empty($_POST))
+{
+	// check if pw is valid
+	// store cookie
+	$_COOKIE["user_id"];
+	$_SESSION["user_id"];
+
+}
+?>
 <html>
 	<head>
 		<title>Login</title>

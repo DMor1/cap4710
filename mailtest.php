@@ -1,6 +1,5 @@
 <?php
-         //$to = "biri@knights.ucf.edu";
-         $to = "dmor574@knights.ucf.edu";
+         $to = "biri@knights.ucf.edu";
 		 $subject = "COP4710 Automated Email - Test";
          
          $message .= "<h1>Email Heading</h1>";

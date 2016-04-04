@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Generation Time: Apr 03, 2016 at 10:15 PM
+-- Generation Time: Apr 04, 2016 at 02:43 AM
 -- Server version: 5.5.44-0+deb8u1
 -- PHP Version: 5.6.17-0+deb8u1
 
@@ -19,6 +19,19 @@ SET time_zone = "+00:00";
 --
 -- Database: `cop4710db`
 --
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `advisors`
+--
+
+CREATE TABLE `advisors` (
+  `user_id` int(11) NOT NULL,
+  `advisor_name` varchar(255) NOT NULL,
+  `start_year` int(4) NOT NULL,
+  `end_year` int(4) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
 
@@ -55,12 +68,15 @@ CREATE TABLE `nominees` (
   `session_id` int(11) NOT NULL,
   `nominee_user_id` int(11) NOT NULL,
   `nominated_by_user_id` int(11) NOT NULL,
-  `speak_test_id` int(11) NOT NULL,
-  `isverified` tinyint(1) NOT NULL,
+  `speak_test_id` int(11) DEFAULT NULL,
+  `isverified` tinyint(1) DEFAULT NULL,
   `ranking` int(11) NOT NULL,
-  `num_sem_as_grad` int(11) NOT NULL,
-  `num_sem_as_gta` int(11) NOT NULL
+  `num_sem_as_grad` int(11) DEFAULT NULL,
+  `num_sem_as_gta` int(11) DEFAULT NULL,
+  `is_curr_phd` tinyint(1) NOT NULL,
+  `is_new_phd` tinyint(1) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
 
 -- --------------------------------------------------------
 
@@ -90,7 +106,10 @@ CREATE TABLE `roles` (
 --
 
 INSERT INTO `roles` (`role_id`, `description`) VALUES
-(1, 'System Administrator');
+(1, 'System Administrator'),
+(2, 'GC Chair'),
+(3, 'Nominator'),
+(4, 'Nominee');
 
 -- --------------------------------------------------------
 
@@ -119,6 +138,12 @@ CREATE TABLE `sessions` (
   `verify_deadline_date` date NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
+--
+-- Dumping data for table `sessions`
+--
+
+
+
 -- --------------------------------------------------------
 
 --
@@ -130,6 +155,15 @@ CREATE TABLE `speak_test` (
   `status` varchar(255) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
+--
+-- Dumping data for table `speak_test`
+--
+
+INSERT INTO `speak_test` (`speak_test_id`, `status`) VALUES
+(1, 'Yes'),
+(2, 'No'),
+(3, 'Graduated from a U.S. institution');
+
 -- --------------------------------------------------------
 
 --
@@ -139,7 +173,9 @@ CREATE TABLE `speak_test` (
 CREATE TABLE `users` (
   `user_id` int(11) NOT NULL,
   `name` varchar(255) NOT NULL,
+  `phonenumber` varchar(255) NOT NULL,
   `pid` varchar(255) NOT NULL,
+  `email` varchar(255) NOT NULL,
   `username` varchar(255) NOT NULL,
   `password` varchar(255) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
@@ -148,8 +184,9 @@ CREATE TABLE `users` (
 -- Dumping data for table `users`
 --
 
-INSERT INTO `users` (`user_id`, `name`, `pid`, `username`, `password`) VALUES
-(1, 'System Admin', '', 'admin@test.com', '098f6bcd4621d373cade4e832627b4f6');
+INSERT INTO `users` (`user_id`, `name`, `phonenumber`, `pid`, `email`, `username`, `password`) VALUES
+(1, 'System Admin', '', '', 'admin@test.com', 'admin', '098f6bcd4621d373cade4e832627b4f6'),
+
 
 -- --------------------------------------------------------
 
@@ -167,11 +204,18 @@ CREATE TABLE `user_roles` (
 --
 
 INSERT INTO `user_roles` (`role_id`, `user_id`) VALUES
-(1, 1);
+(1, 1),
+
 
 --
 -- Indexes for dumped tables
 --
+
+--
+-- Indexes for table `advisors`
+--
+ALTER TABLE `advisors`
+  ADD PRIMARY KEY (`user_id`,`advisor_name`);
 
 --
 -- Indexes for table `courses`
@@ -232,7 +276,8 @@ ALTER TABLE `speak_test`
 -- Indexes for table `users`
 --
 ALTER TABLE `users`
-  ADD PRIMARY KEY (`user_id`);
+  ADD PRIMARY KEY (`user_id`),
+  ADD UNIQUE KEY `username` (`username`);
 
 --
 -- Indexes for table `user_roles`
@@ -254,27 +299,27 @@ ALTER TABLE `courses`
 -- AUTO_INCREMENT for table `roles`
 --
 ALTER TABLE `roles`
-  MODIFY `role_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `role_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 --
 -- AUTO_INCREMENT for table `sessions`
 --
 ALTER TABLE `sessions`
-  MODIFY `session_id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `session_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
 --
 -- AUTO_INCREMENT for table `speak_test`
 --
 ALTER TABLE `speak_test`
-  MODIFY `speak_test_id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `speak_test_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 --
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `user_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `user_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=35;
 --
 -- AUTO_INCREMENT for table `user_roles`
 --
 ALTER TABLE `user_roles`
-  MODIFY `role_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `role_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 --
 -- Constraints for dumped tables
 --
@@ -314,9 +359,15 @@ ALTER TABLE `scores`
 -- Constraints for table `user_roles`
 --
 ALTER TABLE `user_roles`
-  ADD CONSTRAINT `user_roles_fk1` FOREIGN KEY (`role_id`) REFERENCES `roles` (`role_id`),
-  ADD CONSTRAINT `user_roles_fk2` FOREIGN KEY (`user_id`) REFERENCES `users` (`User_ID`);
+  ADD CONSTRAINT `user_roles_fk2` FOREIGN KEY (`user_id`) REFERENCES `users` (`user_id`) ON DELETE CASCADE,
+  ADD CONSTRAINT `user_roles_fk1` FOREIGN KEY (`role_id`) REFERENCES `roles` (`role_id`);
 
+--
+-- Constraints for table `advisors`
+--  
+ALTER TABLE `advisors` ADD CONSTRAINT `advisors_fk1` FOREIGN KEY (`user_id`) REFERENCES `users`(`user_id`) ON DELETE RESTRICT ON UPDATE RESTRICT;
+  
+  
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;

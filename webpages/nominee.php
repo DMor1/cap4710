@@ -11,11 +11,13 @@ $nomineeUserRow = ""; // will be overwritten with mysql row data
 $nominatorobj = (object) array('name' => '', 'user_id' => '');
 if(!empty($_POST))
 {
-	// loop through and insert advisors
-	// Update users table
-	// Update nominees table
-	// loop through and insert courses
-	// create publications record
+	// TODO: Check Daniel's notes to see what else is remaining that isn't here
+	// TODO: loop through and insert advisors
+	// TODO: Update users table
+	// TODO: Update nominees table
+	// TODO: loop through and insert courses
+	// TODO: create publications record
+	
 	
 }
 else

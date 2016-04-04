@@ -61,7 +61,7 @@ if(!empty($_POST))
 		
 	}
 
-	mysqli_close($con);
+	mysqli_close($conn);
 	
 	
 	die(); // don't render code below this point

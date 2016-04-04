@@ -2,11 +2,8 @@
 include_once("login_check.php"); // this must come first
 include_once("db.php");
 
-// TODO: must ensure that this user is a system administrator role type
-
-//$obj = (object) array('name' => '', 'property' => 'value');
-//echo "$key=$value";
-
+// check the role and kick them off if they aren't a nominator
+check_role(1); // role_id 3 is for nominators
 
 //debug_print($_POST);
 

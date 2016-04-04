@@ -1,3 +1,80 @@
+<?php
+// TODO: start year and end year need a table constraint and/or a php page constraint to prevent end years that occur before start years and vice versa.
+
+
+
+include_once("db.php");
+$nominee_user_id = $_GET["u"]; // user_id
+$numberOfNominators = 0;
+$nomineeUserRow = ""; // will be overwritten with mysql row data
+// get list of nominators
+$nominatorobj = (object) array('name' => '', 'user_id' => '');
+if(!empty($_POST))
+{
+	// loop through and insert advisors
+	// Update users table
+	// Update nominees table
+	// loop through and insert courses
+	// create publications record
+	
+}
+else
+{
+	// Get nominator(s) // currently restricted to just one nominator
+	$sql = "
+	SELECT users.*
+	FROM users, nominees
+	WHERE users.user_id = nominees.nominated_by_user_id
+    and nominees.nominee_user_id = " . $nominee_user_id;
+	//debug_print($sql);
+	$result=mysqli_query($conn,$sql);
+		//debug_print($result);
+
+	if ($result)
+	{
+		$nominators = array();
+		while ($row=mysqli_fetch_array($result))
+		{
+			$nominatorobj->name = $row["name"];
+			$nominatorobj->user_id = $row["user_id"];
+			$nominators[$numberOfNominators] = $nominatorobj;
+			//echo $nominators[$i]->user_id;
+			$numberOfNominators++;
+		}
+		
+		
+		// Free result set
+		mysqli_free_result($result);
+		
+	}
+	//else{echo "nope";}
+	
+	
+	// Display currently known info about nominee
+	$sql = "
+	SELECT *
+	FROM users
+	INNER JOIN nominees
+	ON users.user_id = nominees.nominee_user_id
+	WHERE users.user_id = " . $nominee_user_id;
+	//debug_print($sql);
+	$result=mysqli_query($conn,$sql);
+		//debug_print($result);
+
+	if ($result)
+	{
+		// should only be one row
+		$nomineeUserRow=mysqli_fetch_array($result);
+		// Free result set
+		mysqli_free_result($result);
+	}
+	// Name
+
+	mysqli_close($conn);
+	
+}
+
+?>
 <html>
 	<head>
 		<title>Nominee UI</title>
@@ -6,17 +83,20 @@
 
 	<body>
 		<h2>Fill out your GTA application</h2>
-		<form>
+		<form method="post" action="<?php echo $_SERVER['PHP_SELF']; ?>">
 			<table id='table'>
 				<tr>
 					<td>Name of the nominator</td>
 					<td>&emsp;&emsp;</td>
 					<td>
 						<select name="nominatorName">
-							<option value="1">1</option>
-							<option value="2">2</option>
-							<option value="3">3</option>
-							<option value="4">4</option>
+						<?php
+							for($i = 0; $i<$numberOfNominators;$i++)
+							{
+								echo '<option value="' . $nominators[$i]->user_id
+								. '">' . $nominators[$i]->name . '</option>';
+							}
+						?>
 						</select>
 					</td>
 				</tr>
@@ -52,34 +132,36 @@
 				<tr>
 					<td>Your name</td>
 					<td></td>
-					<td><input type="text" name="nomineeName" id="nomineeName" /></td>
+					<td><input type="text" name="nomineeName" id="nomineeName" value="<?php echo $nomineeUserRow["name"]; ?>"/></td>
 				</tr>
 
 				<tr>
 					<td>Your PID</td>
 					<td></td>
-					<td><input type="text" name="pid" id="pid" /></td>
+					<td><input type="text" name="pid" id="pid" value="<?php echo $nomineeUserRow["pid"]; ?>" /></td>
 				</tr>
 
 				<tr>
 					<td>Your email</td>
 					<td></td>
-					<td><input type="email" name="nomineeEmail" id="nomineeEmail" /></td>
+					<td><input type="email" name="nomineeEmail" id="nomineeEmail" value="<?php echo $nomineeUserRow["email"]; ?>" /></td>
 				</tr>
 
 				<tr>
 					<td>Your phone number</td>
 					<td></td>
-					<td><input type="tel" name="nomineePhone" id="nomineePhone" /></td>
+					<td><input type="tel" name="nomineePhone" id="nomineePhone" value="<?php echo $nomineeUserRow["phonenumber"]; ?>"/></td>
 				</tr>
 
 				<tr>
 					<td>Are you a Ph.D. student in Computer Science?</td>
 					<td></td>
 					<td>
-						<input type="radio" name="isPhd" class="radios" value="yes"> Yes
+						<input type="radio" name="isPhd" class="radios" value="yes" 
+						<?php if(intval($nomineeUserRow["is_curr_phd"])==1){echo " checked ";}?>> Yes
 						</br>
-						<input type="radio" name="isPhd" class="radios" value="no"> No
+						<input type="radio" name="isPhd" class="radios" value="no"
+						<?php if(intval($nomineeUserRow["is_curr_phd"])==0){echo " checked ";}?>> No
 					</td>
 				</tr>
 
@@ -93,9 +175,11 @@
 					<td>Have you passed the SPEAK test?</td>
 					<td></td>
 					<td>
-						<input type="radio" name="passSpeak" class="radios" value="yes"> Yes
+						<input type="radio" name="passSpeak" class="radios" value="yes"
+						<?php if(intval($nomineeUserRow["speak_test_id"])==1){echo " checked ";}?>> Yes
 						</br>
-						<input type="radio" name="passSpeak" class="radios" value="no"> No
+						<input type="radio" name="passSpeak" class="radios" value="no"
+						<?php if(intval($nomineeUserRow["speak_test_id"])==2){echo " checked ";}?>> No
 					</td>
 				</tr>
 

@@ -4,10 +4,6 @@ include_once("db.php");
 
 // TODO: Email users on submit
 
-//$obj = (object) array('name' => '', 'property' => 'value');
-//echo "$key=$value";
-
-
 //debug_print($_POST);
 
 // check the role and kick them off if they aren't a nominator

@@ -186,9 +186,10 @@ if(!empty($_POST))
 					table.appendChild('row');
 			}
 			
-			function removeGC(iii){
-				document.getElementById('table').deleteRow(--iii);
+			function removeGC(input){
+				document.getElementById('table').deleteRow(--input);
 				z--;
+				iii--;
 			}
 			</script>
 				<!-- Name of GC Chair: 

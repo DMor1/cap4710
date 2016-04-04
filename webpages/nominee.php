@@ -139,25 +139,25 @@ else
 				<tr><td>&emsp;</td></tr>
 
 				<tr>
-					<td>Your name</td>
+					<td>Name</td>
 					<td></td>
 					<td><input type="text" name="nomineeName" id="nomineeName" value="<?php echo $nomineeUserRow["name"]; ?>"/></td>
 				</tr>
 
 				<tr>
-					<td>Your PID</td>
+					<td>PID</td>
 					<td></td>
 					<td><input type="text" name="pid" id="pid" value="<?php echo $nomineeUserRow["pid"]; ?>" /></td>
 				</tr>
 
 				<tr>
-					<td>Your email</td>
+					<td>Email</td>
 					<td></td>
 					<td><input type="email" name="nomineeEmail" id="nomineeEmail" value="<?php echo $nomineeUserRow["email"]; ?>" /></td>
 				</tr>
 
 				<tr>
-					<td>Your phone number</td>
+					<td>Phone number</td>
 					<td></td>
 					<td><input type="tel" name="nomineePhone" id="nomineePhone" value="<?php echo $nomineeUserRow["phonenumber"]; ?>"/></td>
 				</tr>
@@ -283,7 +283,7 @@ else
 					cell2.innerHTML='';
 					cell3.innerHTML='<input type="text" name="grade'+num_course+'" id="grade'+num_course+'"/>';
 					cell4.innerHTML='';
-					cell5.innerHTML='<input type="button" class="buttons" value="Remove" onclick="removeAdvisor(index_current_course)" />';
+					cell5.innerHTML='<input type="button" class="buttons" value="Remove" onclick="removeCourse(index_current_course)" />';
      
 					table.appendChild('row');
 					
@@ -319,12 +319,12 @@ else
                 }*/
 
                 function removeCourse(input) {
-                document.getElementById('course').deleteRow(--index_current_course);
+                document.getElementById('course').deleteRow(--input);
 				num_course--;
                 }
                 
                 function removeAdvisor(input) {
-                document.getElementById('table').deleteRow(--index_current_ad);
+                document.getElementById('table').deleteRow(--input);
                 num_Ad--;
 				index_current_course--;
                 }

@@ -133,7 +133,7 @@ else
 					<td></td>
 					<td><input type="text" name="startAdvisor1" id="startAdvisor1" /></td>
 					<td><input type="text" name="endAdvisor1" id="endAdvisor1" /></td>
-					<td><input type="button" class='buttons' value="add" onclick="addAdvisor()" id="button_advisor"/></td>
+					<td><input type="button" class='buttons' value="Add" onclick="addAdvisor()" id="button_advisor"/></td>
 				</tr>
 
 				<tr><td>&emsp;</td></tr>
@@ -283,7 +283,7 @@ else
 					cell2.innerHTML='';
 					cell3.innerHTML='<input type="text" name="grade'+num_course+'" id="grade'+num_course+'"/>';
 					cell4.innerHTML='';
-					cell5.innerHTML='<input type="button" class="buttons" value="remove" onclick="removeAdvisor(index_current_course)" />';
+					cell5.innerHTML='<input type="button" class="buttons" value="Remove" onclick="removeAdvisor(index_current_course)" />';
      
 					table.appendChild('row');
 					
@@ -305,7 +305,7 @@ else
 					cell2.innerHTML='';
 					cell3.innerHTML='<input type="text" name="startAdvisor'+num_Ad+'" id="startAdvisor'+num_Ad+'"/>';
 					cell4.innerHTML='<input type="text" name="endAdvisor'+num_Ad+'" id=""endAdvisor'+num_Ad+'" />';
-					cell5.innerHTML='<input type="button" class="buttons" value="remove" onclick="removeAdvisor(index_current_ad)" />';
+					cell5.innerHTML='<input type="button" class="buttons" value="Remove" onclick="removeAdvisor(index_current_ad)" />';
      
 					table.appendChild('row');
 

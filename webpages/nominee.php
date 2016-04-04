@@ -56,6 +56,8 @@ else
 	FROM users
 	INNER JOIN nominees
 	ON users.user_id = nominees.nominee_user_id
+	INNER JOIN sessions
+    ON sessions.session_id = nominees.session_id
 	WHERE users.user_id = " . $nominee_user_id;
 	//debug_print($sql);
 	$result=mysqli_query($conn,$sql);
@@ -69,6 +71,11 @@ else
 		mysqli_free_result($result);
 	}
 	// Name
+	
+	
+	//testing
+	//echo get_semesterString($nomineeUserRow["verify_deadline_date"]);
+	
 
 	mysqli_close($conn);
 	
@@ -180,6 +187,9 @@ else
 						</br>
 						<input type="radio" name="passSpeak" class="radios" value="no"
 						<?php if(intval($nomineeUserRow["speak_test_id"])==2){echo " checked ";}?>> No
+						</br>
+						<input type="radio" name="passSpeak" class="radios" value="no"
+						<?php if(intval($nomineeUserRow["speak_test_id"])==3){echo " checked ";}?>> Graduated from a U.S. institution
 					</td>
 				</tr>
 

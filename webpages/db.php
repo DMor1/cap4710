@@ -24,4 +24,25 @@ function debug_print($input)
 	echo var_dump($input);
 	echo '</pre>';
 }
+
+function get_semesterString($date)
+{
+	$year = substr($date,0,4);
+	$month = substr($date,5,2);
+	$semester = "";
+	if($month < 5)
+	{
+		$semester = "Spring ";
+	}
+	else if($month >= 5 && $month < 8)
+	{
+		$semester = "Summer ";
+	}
+	else
+	{
+		$semester = "Fall ";
+	}
+	return $semester . $year;
+	
+}
 ?>

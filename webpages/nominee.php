@@ -202,7 +202,7 @@ else
 				<tr class="list">
 					<td>Course Name</td>
 					<td></td>
-					<td>Grade Received</td>
+					<td> Letter Grade Received</td>
 					<td></td>
 					<td></td>
 				</tr>
@@ -319,13 +319,15 @@ else
                 }*/
 
                 function removeCourse(input) {
-                document.getElementById('course').deleteRow(--input);
+                document.getElementById('table').deleteRow(--input);
+				index_current_course--;
 				num_course--;
                 }
                 
                 function removeAdvisor(input) {
                 document.getElementById('table').deleteRow(--input);
                 num_Ad--;
+				index_current_ad--;
 				index_current_course--;
                 }
             </script>

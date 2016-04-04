@@ -5,9 +5,11 @@ if(isset($_COOKIE["user_id"]) && isset($_SESSION["user_id"]) && $_COOKIE["user_i
 {
 	// the user is already logged in
 	// Trash the session?
-	setcookie("user_id", $row["user_id"], -1, "/");
+	//setcookie("user_id", $row["user_id"], -1, "/");
 	unset($_SESSION["user_id"]);
-
+	unset($_SESSION["role_id"]);
+	unset($_SESSION["name"]);
+	unset($_SESSION["email"]);
 }
 
 if(!empty($_POST))
@@ -15,12 +17,17 @@ if(!empty($_POST))
 	// check if pw is valid
 	$sql="
 	SELECT
-		user_id
+		users.user_id as user_id,
+		users.name as name,
+		users.email as email,
+		user_roles.role_id as role_id
 	FROM
 		users
+	INNER JOIN user_roles 
+	ON users.user_id = user_roles.user_id
 	WHERE
-		username='" . $_POST["loginEmail"] ."' 
-		AND password ='" . md5($_POST["loginPassword"]) . "'";
+		users.username='" . $_POST["loginEmail"] ."' 
+		AND users.password ='" . md5($_POST["loginPassword"]) . "'";
 
 	if ($result=mysqli_query($conn,$sql))
 	{
@@ -38,8 +45,11 @@ if(!empty($_POST))
 		if($row["user_id"]!=null)
 		{
 			// store cookie
-			setcookie("user_id", $row["user_id"], time() + (86400 * 30), "/");
+			//setcookie("user_id", $row["user_id"], time() + (86400 * 30), "/");
 			$_SESSION["user_id"] = $row["user_id"];
+			$_SESSION["role_id"] = $row["role_id"];
+			$_SESSION["name"] = $row["name"];
+			$_SESSION["email"] = $row["email"];
 			echo "Sucessfully logged in.";
 		}
 		else

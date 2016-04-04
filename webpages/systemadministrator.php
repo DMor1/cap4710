@@ -2,6 +2,8 @@
 include_once("login_check.php"); // this must come first
 include_once("db.php");
 
+// TODO: must ensure that this user is a system administrator role type
+
 //$obj = (object) array('name' => '', 'property' => 'value');
 //echo "$key=$value";
 

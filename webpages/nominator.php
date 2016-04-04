@@ -1,3 +1,76 @@
+<?php
+include_once("login_check.php"); // this must come first
+include_once("db.php");
+
+// TODO: Email users on submit
+
+//$obj = (object) array('name' => '', 'property' => 'value');
+//echo "$key=$value";
+
+
+//debug_print($_POST);
+
+// check the role and kick them off if they aren't a nominator
+check_role(3); // role_id 3 is for nominators
+
+if(!empty($_POST))
+{
+
+	// create nominee user
+	$sql="INSERT into users (name, pid, email)
+	VALUES(
+	'" . $_POST["nomineeName"] . "',
+	'" . $_POST["nomineePID"] . "',
+	'" . $_POST["nomineeEmail"] . "')";
+	
+	
+	if($conn->query($sql)===TRUE)
+	{
+		// create user_role record
+		$user_id = $conn->insert_id;
+		$sql="INSERT INTO user_roles (user_id,role_id)
+		VALUES (" . $user_id . ",4)";//4=nominee
+		if ($conn->query($sql) === TRUE){/*echo "New record created successfully1<br>";*/}
+		else {echo "Error: " . $sql . "<br>" . $conn->error;}	
+		
+		// create nominee record
+		$sql="
+		INSERT INTO nominees
+			(session_id,
+			nominee_user_id,
+			nominated_by_user_id,
+			ranking,
+			is_curr_phd,
+			is_new_phd)
+		VALUES 
+		(
+			(select max(session_id) from sessions),
+			" . $user_id . ",
+			'" . $_SESSION["user_id"]."',
+			'" . $_POST["nomineeRanking"] . "',
+			'" . $_POST["currentPhd"] . "',
+			'" . $_POST["newPhd"] . "'
+		)";
+			
+			
+		if ($conn->query($sql) === TRUE){/*echo "New record created successfully2<br>";*/}
+		else {echo "Error: " . $sql . "<br>" . $conn->error;}	
+		
+	}
+	
+	
+	$conn->close();
+	
+	echo "Thank you for your submission";
+	die();
+}
+else
+{
+	// Display nominator of who nominated this person based on login
+	$nominator_name = $_SESSION["name"];
+	$nominator_email = $_SESSION["email"];
+}
+?>
 <!DOCTYPE html>
 <html>
 	<head>
@@ -8,18 +81,18 @@
 	<body>
 		<h2>Nominate and existing or incoming Ph.D student for a GTA</h1>
 
-		<form>
+		<form method="post" action="<?php echo $_SERVER['PHP_SELF']; ?>">
 			<table>
 				<tr>
 					<td>Name of Nominator</td>
 					<td></td>
-					<td><input type = "text" name = "nominatorName" id ="nominatorName"></td>
+					<td><?php echo $nominator_name; ?></td>
 				</tr>
 
 				<tr>
 					<td>Email of Nominator</td>
 					<td></td>
-					<td><input type = "email" name = "nominatorEmail" id="nominatorEmail"></td>
+					<td><?php echo $nominator_email; ?></td>
 				</tr>
 
 				<tr>

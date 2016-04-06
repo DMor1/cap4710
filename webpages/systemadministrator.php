@@ -104,10 +104,10 @@ if(!empty($_POST))
 				</tr>
 
 				<tr class="list">
-					<td><input type = "text" id = "chairName" name = "chairName"></td>
-					<td><input type = "email" id = "chairEmail" name = "chairEmail"></td>
-					<td><input type = "text" id = "chairUsername" name = "chairUsername"></td>
-					<td><input type = "password" id = "chairPassword" name = "chairPassword"></td>
+					<td><input type = "text" id = "chairName" name = "chairName" required></td>
+					<td><input type = "email" id = "chairEmail" name = "chairEmail" required ></td>
+					<td><input type = "text" id = "chairUsername" name = "chairUsername" required></td>
+					<td><input type = "password" id = "chairPassword" name = "chairPassword" required></td>
 					<td></td>
 				</tr>
 
@@ -120,37 +120,37 @@ if(!empty($_POST))
 				</tr>
 
 				<tr class="list">
-					<td><input type = "text" id = "GCName1" name = "GCName1"/></td>
-					<td><input type = "email" id = "GCEmail1" name = "GCEmail1"/></td>
-					<td><input type = "text" id = "GCUserName1" name = "GCUserName1"/></td>
-					<td><input type = "password" id = "GCUserPassword1" name = "GCUserPassword1"/></td>
+					<td><input type = "text" id = "GCName1" name = "GCName1" required /></td>
+					<td><input type = "email" id = "GCEmail1" name = "GCEmail1" required /></td>
+					<td><input type = "text" id = "GCUserName1" name = "GCUserName1" required/></td>
+					<td><input type = "password" id = "GCUserPassword1" name = "GCUserPassword1" required /></td>
 					<td><input type="button" class="buttons" value="Add" onclick="addGC()" /></td>
 				</tr>
 
 				<tr><td>&emsp;</td></tr>
 
 				<tr>
-					<td COLSPAN="2">What is the deadline for a faculty member to initiate a nomination?</td>
+					<td COLSPAN="2">What is the deadline for a faculty member to initiate a nomination? (mm/dd/yyyy)</td>
 				</tr>
 
 				<tr>
-					<td COLSPAN="2" class="submitrow"><input type = "date" id = "facultyNominationDeadline" name = "facultyNominationDeadline"></td>
+					<td COLSPAN="2" class="submitrow"><input type = "date" id = "facultyNominationDeadline" name = "facultyNominationDeadline" required /></td>
 				</tr>
 
 				<tr>
-					<td COLSPAN="3">What is the deadline for a nominee to respond to a nomination?</td>
+					<td COLSPAN="3">What is the deadline for a nominee to respond to a nomination? (mm/dd/yyyy)</td>
 				</tr>
 
 				<tr>
-					<td COLSPAN="2" class="submitrow"><input type = "date" id = "nomineeResponseDeadline" name = "nomineeResponseDeadline"></td>
+					<td COLSPAN="2" class="submitrow"><input type = "date" id = "nomineeResponseDeadline" name = "nomineeResponseDeadline" required /></td>
 				</tr>
 
 				<tr>
-					<td COLSPAN="3">What is the deadline for the nominator to verify a nominee's information and complete the nomination?</td>
+					<td COLSPAN="3">What is the deadline for the nominator to verify a nominee's information and complete the nomination? (mm/dd/yyyy)</td>
 				</tr>
 
 				<tr>
-					<td COLSPAN="2" class="submitrow"><input type = "date" id = "verificationDeadline" name = "verificationDeadline"></td>
+					<td COLSPAN="2" class="submitrow"><input type = "date" id = "verificationDeadline" name = "verificationDeadline" required /></td>
 				</tr>
 
 				<tr><td>&emsp;</td></tr>
@@ -177,11 +177,11 @@ if(!empty($_POST))
 					var cell5=row.insertCell(4);
 					
 					z++;
-					cell1.innerHTML='<input type="text" id="GCName'+z+'" name="GCName'+z+'" />';
-					cell2.innerHTML='<input type="email" id="GCEmail'+z+'" name="GCEmail'+z+'"/>';
-					cell3.innerHTML='<input type="text" id="GCUserName'+z+'" name="GCUserName'+z+'"/>';
-					cell4.innerHTML='<input type="password" id="GCUserPassword'+z+'" name=""GCUserPassword'+z+'" />';
-					cell5.innerHTML='<input type="button" class="buttons" value="remove" onclick="removeGC(iii)"/>';
+					cell1.innerHTML='<input type="text" id="GCName'+z+'" name="GCName'+z+'" required />';
+					cell2.innerHTML='<input type="email" id="GCEmail'+z+'" name="GCEmail'+z+'" required />';
+					cell3.innerHTML='<input type="text" id="GCUserName'+z+'" name="GCUserName'+z+'" required/>';
+					cell4.innerHTML='<input type="password" id="GCUserPassword'+z+'" name=""GCUserPassword'+z+'" required />';
+					cell5.innerHTML='<input type="button" class="buttons" value="remove" onclick="removeGC(iii)" required />';
      
 					table.appendChild('row');
 			}

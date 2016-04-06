@@ -206,7 +206,7 @@ else
 					<td>Name of the nominator</td>
 					<td>&emsp;&emsp;</td>
 					<td>
-						<select name="nominatorName">
+						<select name="nominatorName" required>
 						<?php
 							for($i = 0; $i<$numberOfNominators;$i++)
 							{
@@ -221,7 +221,7 @@ else
 				<tr>
 					<td>Name of current Ph.D. advisor</td>
 					<td></td>
-					<td><input type="text" name="advisorName" id="advisorName" /></td>
+					<td><input type="text" name="advisorName" id="advisorName" required/></td>
 				</tr>
 
 				<tr>
@@ -231,16 +231,16 @@ else
 				<tr class="list">
 					<td>Advisor Name</td>
 					<td></td>
-					<td>Start Year</td>
-					<td>End Year</td>
+					<td>Start Year (mm/dd/yyyy)</td>
+					<td>End Year (mm/dd/yyyy)</td>
 					<td></td>
 				</tr>
 
 				<tr class="list" id='advisor'>
 					<td><input type="text" name="past1" id="past1" /></td>
 					<td></td>
-					<td><input type="text" name="startAdvisor1" id="startAdvisor1" /></td>
-					<td><input type="text" name="endAdvisor1" id="endAdvisor1" /></td>
+					<td><input type="date" name="startAdvisor1" id="startAdvisor1" /></td>
+					<td><input type="date" name="endAdvisor1" id="endAdvisor1" /></td>
 					<td><input type="button" class='buttons' value="Add" onclick="addAdvisor()" id="button_advisor"/></td>
 				</tr>
 
@@ -249,25 +249,25 @@ else
 				<tr>
 					<td>Name</td>
 					<td></td>
-					<td><input type="text" name="nomineeName" id="nomineeName" value="<?php echo $nomineeUserRow["name"]; ?>"/></td>
+					<td><input type="text" name="nomineeName" id="nomineeName" value="<?php echo $nomineeUserRow["name"]; ?>" required /></td>
 				</tr>
 
 				<tr>
 					<td>PID</td>
 					<td></td>
-					<td><input type="text" name="pid" id="pid" value="<?php echo $nomineeUserRow["pid"]; ?>" /></td>
+					<td><input type="text" name="pid" id="pid" value="<?php echo $nomineeUserRow["pid"]; ?>" required /></td>
 				</tr>
 
 				<tr>
 					<td>Email</td>
 					<td></td>
-					<td><input type="email" name="nomineeEmail" id="nomineeEmail" value="<?php echo $nomineeUserRow["email"]; ?>" /></td>
+					<td><input type="email" name="nomineeEmail" id="nomineeEmail" value="<?php echo $nomineeUserRow["email"]; ?>" required /></td>
 				</tr>
 
 				<tr>
 					<td>Phone number</td>
 					<td></td>
-					<td><input type="tel" name="nomineePhone" id="nomineePhone" value="<?php echo $nomineeUserRow["phonenumber"]; ?>"/></td>
+					<td><input type="tel" name="nomineePhone" id="nomineePhone" value="<?php echo $nomineeUserRow["phonenumber"]; ?>" required /></td>
 				</tr>
 
 				<tr>
@@ -275,17 +275,17 @@ else
 					<td></td>
 					<td>
 						<input type="radio" name="isPhd" class="radios" value="1" 
-						<?php if(intval($nomineeUserRow["is_curr_phd"])==1){echo " checked ";}?>> Yes
+						<?php if(intval($nomineeUserRow["is_curr_phd"])==1){echo " checked ";}?> required > Yes
 						</br>
-						<input type="radio" name="isPhd" class="radios" value="0"
-						<?php if(intval($nomineeUserRow["is_curr_phd"])==0){echo " checked ";}?>> No
+						<input type="radio" name="isPhd" class="radios" value="0" 
+						<?php if(intval($nomineeUserRow["is_curr_phd"])==0){echo " checked ";}?> required> No
 					</td>
 				</tr>
 
 				<tr>
 					<td>How many semesters have you been a graduate student?</td>
 					<td></td>
-					<td><input type="text" name="numGradSemesters" id="numGradSemesters" /></td>
+					<td><input type="text" name="numGradSemesters" id="numGradSemesters"  required /></td>
 				</tr>
 
 				<tr>
@@ -293,13 +293,13 @@ else
 					<td></td>
 					<td>
 						<input type="radio" name="passSpeak" class="radios" value="1"
-						<?php if(intval($nomineeUserRow["speak_test_id"])==1){echo " checked ";}?>> Yes
+						<?php if(intval($nomineeUserRow["speak_test_id"])==1){echo " checked ";}?> required> Yes
 						</br>
 						<input type="radio" name="passSpeak" class="radios" value="2"
-						<?php if(intval($nomineeUserRow["speak_test_id"])==2){echo " checked ";}?>> No
+						<?php if(intval($nomineeUserRow["speak_test_id"])==2){echo " checked ";}?> required> No
 						</br>
 						<input type="radio" name="passSpeak" class="radios" value="3"
-						<?php if(intval($nomineeUserRow["speak_test_id"])==3){echo " checked ";}?>> Graduated from a U.S. institution
+						<?php if(intval($nomineeUserRow["speak_test_id"])==3){echo " checked ";}?> required> Graduated from a U.S. institution
 					</td>
 				</tr>
 
@@ -332,7 +332,7 @@ else
 				<tr>
 					<td>Enter your cumulative GPA for the above courses:</td>
 					<td></td>
-					<td><input type="text" name="GPA" id="GPA" /></td>
+					<td><input type="text" name="GPA" id="GPA" required /></td>
 				</tr>
 
 				<tr>
@@ -411,8 +411,8 @@ else
 					index_current_course++;
 					cell1.innerHTML='<input type="text" name="past'+num_Ad+'" id="past'+num_Ad+'" />';
 					cell2.innerHTML='';
-					cell3.innerHTML='<input type="text" name="startAdvisor'+num_Ad+'" id="startAdvisor'+num_Ad+'"/>';
-					cell4.innerHTML='<input type="text" name="endAdvisor'+num_Ad+'" id=""endAdvisor'+num_Ad+'" />';
+					cell3.innerHTML='<input type="date" name="startAdvisor'+num_Ad+'" id="startAdvisor'+num_Ad+'"/>';
+					cell4.innerHTML='<input type="date" name="endAdvisor'+num_Ad+'" id=""endAdvisor'+num_Ad+'" />';
 					cell5.innerHTML='<input type="button" class="buttons" value="Remove" onclick="removeAdvisor(index_current_ad)" />';
      
 					table.appendChild('row');

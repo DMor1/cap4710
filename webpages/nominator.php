@@ -94,33 +94,33 @@ else
 				<tr>
 					<td>Name of Nominee</td>
 					<td></td>
-					<td><input type = "text" name = "nomineeName" id="nomineeName"></td>
+					<td><input type = "text" name = "nomineeName" id="nomineeName" required ></td>
 				</tr>
 
 				<tr>
 					<td>Nominee Ranking</td>
 					<td></td>
-					<td><input type = "text" name = "nomineeRanking" id="nomineeRanking"></td>
+					<td><input type = "text" name = "nomineeRanking" id="nomineeRanking" required></td>
 				</tr>
 				
 				<tr>
 					<td>PID of Nominee</td>
 					<td></td>
-					<td><input type = "text" name = "nomineePID" id="nomineePID"></td>
+					<td><input type = "text" name = "nomineePID" id="nomineePID" required></td>
 				</tr>
 				
 				<tr>
 					<td>Email of Nominee</td>
 					<td></td>
-					<td><input type = "email" name = "nomineeEmail" id="nomineeEmail"></td>
+					<td><input type = "email" name = "nomineeEmail" id="nomineeEmail" required></td>
 				</tr>
 				
 				<tr>
 					<td>Is the nominee currently a Ph.D. </br> student in the Department of </br> Computer Science?</td>
 					<td>&emsp;&emsp;</td>
 					<td>
-						<input type="radio" name="currentPhd" class="radios" value="yes"> Yes<br>
-						<input type="radio" name="currentPhd" class="radios" value="no"> No
+						<input type="radio" name="currentPhd" class="radios" value="yes" required> Yes<br>
+						<input type="radio" name="currentPhd" class="radios" value="no" required> No
 					</td>
 				</tr>
 				
@@ -128,8 +128,8 @@ else
 					<td>Is the nominee a newly admitted </br> Ph.D. student?</td>
 					<td></td>
 					<td>
-						<input type="radio" name="newPhd" class="radios" value="yes"> Yes<br>
-						<input type="radio" name="newPhd" class="radios" value="no"> No
+						<input type="radio" name="newPhd" class="radios" value="yes" required> Yes<br>
+						<input type="radio" name="newPhd" class="radios" value="no" required> No
 					</td>
 				</tr>
 				

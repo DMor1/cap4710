@@ -203,7 +203,7 @@ else
 		<input type="hidden" id="u" name="u" value="<?php echo $nominee_user_id; ?>" />
 			<table id='table'>
 				<tr>
-					<td>Name of the nominator</td>
+					<td>Name of the nominator </td>
 					<td>&emsp;&emsp;</td>
 					<td>
 						<select name="nominatorName" required>
@@ -249,36 +249,36 @@ else
 				<tr>
 					<td>Name</td>
 					<td></td>
-					<td><input type="text" name="nomineeName" id="nomineeName" value="<?php echo $nomineeUserRow["name"]; ?>" required /></td>
+					<td><input type="text" name="nomineeName" id="nomineeName"  required value="<?php echo $nomineeUserRow["name"]; ?>"  /></td>
 				</tr>
 
 				<tr>
 					<td>PID</td>
 					<td></td>
-					<td><input type="text" name="pid" id="pid" value="<?php echo $nomineeUserRow["pid"]; ?>" required /></td>
+					<td><input type="text" name="pid" id="pid"  required value="<?php echo $nomineeUserRow["pid"]; ?>"  /></td>
 				</tr>
 
 				<tr>
 					<td>Email</td>
 					<td></td>
-					<td><input type="email" name="nomineeEmail" id="nomineeEmail" value="<?php echo $nomineeUserRow["email"]; ?>" required /></td>
+					<td><input type="email" name="nomineeEmail" id="nomineeEmail" required value="<?php echo $nomineeUserRow["email"]; ?>"  /></td>
 				</tr>
 
 				<tr>
 					<td>Phone number</td>
 					<td></td>
-					<td><input type="tel" name="nomineePhone" id="nomineePhone" value="<?php echo $nomineeUserRow["phonenumber"]; ?>" required /></td>
+					<td><input type="tel" name="nomineePhone" id="nomineePhone" value="<?php echo $nomineeUserRow["phonenumber"]; ?>"  /></td>
 				</tr>
 
 				<tr>
 					<td>Are you a Ph.D. student in Computer Science?</td>
 					<td></td>
 					<td>
-						<input type="radio" name="isPhd" class="radios" value="1" 
-						<?php if(intval($nomineeUserRow["is_curr_phd"])==1){echo " checked ";}?> required > Yes
+						<input type="radio" name="isPhd" class="radios" value="1" required
+						<?php if(intval($nomineeUserRow["is_curr_phd"])==1){echo " checked ";}?>   > Yes
 						</br>
-						<input type="radio" name="isPhd" class="radios" value="0" 
-						<?php if(intval($nomineeUserRow["is_curr_phd"])==0){echo " checked ";}?> required> No
+						<input type="radio" name="isPhd" class="radios" value="0" required
+						<?php if(intval($nomineeUserRow["is_curr_phd"])==0){echo " checked ";}?> > No
 					</td>
 				</tr>
 
@@ -292,14 +292,14 @@ else
 					<td>Have you passed the SPEAK test?</td>
 					<td></td>
 					<td>
-						<input type="radio" name="passSpeak" class="radios" value="1"
-						<?php if(intval($nomineeUserRow["speak_test_id"])==1){echo " checked ";}?> required> Yes
+						<input type="radio" name="passSpeak" class="radios" value="1" required
+						<?php if(intval($nomineeUserRow["speak_test_id"])==1){echo " checked ";}?> > Yes
 						</br>
-						<input type="radio" name="passSpeak" class="radios" value="2"
-						<?php if(intval($nomineeUserRow["speak_test_id"])==2){echo " checked ";}?> required> No
+						<input type="radio" name="passSpeak" class="radios" value="2" required
+						<?php if(intval($nomineeUserRow["speak_test_id"])==2){echo " checked ";}?> > No
 						</br>
-						<input type="radio" name="passSpeak" class="radios" value="3"
-						<?php if(intval($nomineeUserRow["speak_test_id"])==3){echo " checked ";}?> required> Graduated from a U.S. institution
+						<input type="radio" name="passSpeak" class="radios" value="3" required
+						<?php if(intval($nomineeUserRow["speak_test_id"])==3){echo " checked ";}?> > Graduated from a U.S. institution
 					</td>
 				</tr>
 

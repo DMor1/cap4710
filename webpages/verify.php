@@ -1,114 +1,138 @@
 <?php
-include_once("login_check.php"); // this must come first
-include_once("db.php");
+	//Import External files
+	include_once("login_check.php"); //This must come first, import checkrole function
+	include_once("db.php"); //Connect to database and initialize session
 
-check_role(3); // role_id 3 is for nominators
+	//role_id = 3 for Nominators
+	//Verify valid role
+	check_role(3);
 
-$nominee_user_id = $_GET["u"]; // user_id
+	//Store user id
+	$nominee_user_id = $_GET["u"]; 
 
-
-if(!empty($_POST))
-{
-	$nominee_user_id = $_POST["u"];
-	$isverified = -1;
-	if($_POST["verify_action"] == "Yes")
+	//Continue if form was submitted (POST is not empty)
+	if(!empty($_POST))
 	{
-		$isverified = 1;
-	}
-	else if($_POST["verify_action"] == "No")
-	{
-		$isverified = 0;
-	}
+		//Store user id		
+		$nominee_user_id = $_POST["u"];
+		
+		//Verified flag
+		$isverified = -1;
+		
+		//Check POST request if verified, store result
+		if($_POST["verify_action"] == "Yes")
+			$isverified = 1;
+		else if($_POST["verify_action"] == "No")
+			$isverified = 0;
 	
-	if($isverified > -1)
-	{
-		echo "Thank you for your submission";
-		// Update nominees table
-		$sql="
-				UPDATE nominees 
-				SET 
-				isverified = " . $isverified . "
-				WHERE nominee_user_id = " . $nominee_user_id . "
-				AND session_id = (select max(session_id) from sessions)";
-			if ($conn->query($sql) === TRUE){/*echo "New record created successfully2<br>";*/}
-			else {echo "Error: " . $sql . "<br>" . $conn->error;}	
-		$conn->close();	
+		//If user is properly verified, prompt user and update database
+		if($isverified > -1)
+		{
+			//Prompt user - submission approved
+			echo "Thank you for your submission";
+
+			//SQL Query to update nominee table
+			$sql="
+					UPDATE nominees 
+					SET 
+					isverified = " . $isverified . "
+					WHERE nominee_user_id = " . $nominee_user_id . "
+					AND session_id = (select max(session_id) from sessions)";
+		
+			//Execute sql query
+			if ($conn->query($sql) === TRUE)
+			{
+				//Query successfully executed, nominee updated
+			}
+			else 
+			{
+				//Error updating nominee table
+				echo "Error: " . $sql . "<br>" . $conn->error;
+			}
+			
+			//Close database connection
+			$conn->close();	
+		}
+		else
+		{
+			//User was not properly verified
+			echo "This page was submitted incorrectly.";
+		}	
+	
+		//Exit script, don't render the rest of the page
+		die();
 	}
 	else
 	{
-		echo "This page was submitted incorrectly.";
-	}
-	
-	
-	die();
-}
-else
-{
-// Get basic data about nominee
-	$sql="
-		SELECT 
-			users.name AS nominator_name,
-			table1.* 
-		FROM
-		(
+		//Form was not submitted
+		//SQL Query to obtain nominee information
+		$sql="
 			SELECT 
-				users.name AS nominees_name,
-				users.phonenumber AS nominees_phonenumber,
-				users.pid AS nominees_pid,
-				users.email AS nominees_email,
-				nominees.is_curr_phd AS nominees_isphd,
-				nominees.num_sem_as_grad AS nominees_numgrad,
-				speak_test.status AS speak_test_status,
-				nominees.phd_advisor_name AS nominees_phdadvisor,
-				nominees.cummulative_gpa AS nominees_gpa,
-				publications.publication_name_and_citations AS pub_namesandcits,
-				nominees.nominated_by_user_id AS nominated_by_user_id
-			FROM users 
-			INNER JOIN nominees
-			ON nominees.nominee_user_id = users.user_id
-			AND nominees.session_id = (select max(session_id) from sessions)
-			INNER JOIN speak_test
-			ON speak_test.speak_test_id = nominees.speak_test_id
-			INNER JOIN publications
-			ON publications.nominee_user_id = users.user_id
-			AND publications.session_id = (select max(session_id) from sessions)
-			WHERE user_id = " . $nominee_user_id . "
-		) table1
-		INNER JOIN users
-		ON table1.nominated_by_user_id = users.user_id";
-	//debug_print($sql);
-	$result=mysqli_query($conn,$sql);
-		//debug_print($result);
+				users.name AS nominator_name,
+				table1.* 
+			FROM
+			(
+				SELECT 
+					users.name AS nominees_name,
+					users.phonenumber AS nominees_phonenumber,
+					users.pid AS nominees_pid,
+					users.email AS nominees_email,
+					nominees.is_curr_phd AS nominees_isphd,
+					nominees.num_sem_as_grad AS nominees_numgrad,
+					speak_test.status AS speak_test_status,
+					nominees.phd_advisor_name AS nominees_phdadvisor,
+					nominees.cummulative_gpa AS nominees_gpa,
+					publications.publication_name_and_citations AS pub_namesandcits,
+					nominees.nominated_by_user_id AS nominated_by_user_id
+				FROM users 
+				INNER JOIN nominees
+				ON nominees.nominee_user_id = users.user_id
+				AND nominees.session_id = (select max(session_id) from sessions)
+				INNER JOIN speak_test
+				ON speak_test.speak_test_id = nominees.speak_test_id
+				INNER JOIN publications
+				ON publications.nominee_user_id = users.user_id
+				AND publications.session_id = (select max(session_id) from sessions)
+				WHERE user_id = " . $nominee_user_id . "
+			) table1
+			INNER JOIN users
+			ON table1.nominated_by_user_id = users.user_id";
+	
+		//Execute query and store results
+		$result=mysqli_query($conn,$sql);
 
-	if ($result)
-	{
-		// should only be one row
-		$nomineeUserRow=mysqli_fetch_array($result);
-		// Free result set
-		mysqli_free_result($result);
+		//Check if query returned any results
+		if ($result)
+		{
+			//Result was found - Should be one row - Store 
+			$nomineeUserRow=mysqli_fetch_array($result);
+
+			//Free memory from results
+			mysqli_free_result($result);
+		}
+
+	
+		//SQL Query - Get data about advisor
+		$sql = "
+			SELECT *
+			FROM advisors
+			WHERE user_id = " . $nominee_user_id;
+		
+		//Execute query and store result
+		$advisors_result=mysqli_query($conn,$sql);
+
+		//SQL Query - Get all courses the user took
+		$sql = "
+			SELECT * FROM courses_taken
+			INNER JOIN courses
+			ON courses.course_id = courses_taken.course_id
+			WHERE courses_taken.user_id = " . $nominee_user_id;
+	
+		//Execute Query and store results
+		$courses_result=mysqli_query($conn,$sql);
 	}
-
-	
-	// Get data for advisors
-	$sql = "
-	SELECT *
-	FROM advisors
-	WHERE user_id = " . $nominee_user_id;
-	//debug_print($sql);
-	$advisors_result=mysqli_query($conn,$sql);
-		//debug_print($result);
-
-	$sql = "
-		SELECT * FROM courses_taken
-		INNER JOIN courses
-		ON courses.course_id = courses_taken.course_id
-		WHERE courses_taken.user_id = " . $nominee_user_id;
-	//debug_print($sql);
-	$courses_result=mysqli_query($conn,$sql);
-	
-	
-}
 ?>
+
 <html>
 	<head>
 		<title>Verify</title>
@@ -273,6 +297,9 @@ else
 			</table>
 	</body>
 </html>
+
 <?php
-$conn->close(); // since inline html the db is being used, this has to be closed at the end
+	//Close Database connection
+	//Since inline html uses the database, this must be closed at the end
+	$conn->close(); 
 ?>

@@ -50,12 +50,12 @@
 				$_SESSION["email"] = $row["email"];
 
 				//Display success message
-				echo "Sucessfully logged in.";
+				//echo "Sucessfully logged in."; // can't echo before a redirect
 			}
 			else
 			{
 				//Display Error - Unsuccessful login
-				echo "Bad username or password.";
+				echo "Bad username or password."; // not redirecting, show error instead.
 			}
 
 			//Free memory from query result
@@ -65,6 +65,28 @@
 		//Close connection to database
 		mysqli_close($conn);
 	
+		// Redirect the user to their proper page.
+		if($_SESSION["role_id"]==1)
+		{
+			// System admin
+			header('Location: systemadministrator.php');
+		}
+		else if($_SESSION["role_id"]==2)
+		{
+			// GC Chair
+			header('Location: gcmembers.php');
+		}
+		else if($_SESSION["role_id"]==3)
+		{
+			// Nominators
+			header('Location: nominator.php');
+		}
+		else if($_SESSION["role_id"]==4)
+		{
+			// will never be seen I believe since nominees login via email link automagically.
+			//echo "ERROR, unexpected login?";
+		}
+		
 		//If form submitted, don't render login page
 		die(); 
 	}

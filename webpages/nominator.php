@@ -1,72 +1,99 @@
 <?php
-include_once("login_check.php"); // this must come first
-include_once("db.php");
+	//Import External Files
+	include_once("login_check.php"); //This must come first, import checkrole function
+	include_once("db.php"); //Connect to database and initialize session
 
-// TODO: Email users on submit
+	//TODO: Email users on submit
 
-//debug_print($_POST);
+	//role_id = 3 for Nominators
+	//Verify valid role - kick off if not nominator
+	check_role(3); 
 
-// check the role and kick them off if they aren't a nominator
-check_role(3); // role_id 3 is for nominators
-
-if(!empty($_POST))
-{
-
-	// create nominee user
-	$sql="INSERT into users (name, pid, email)
-	VALUES(
-	'" . $_POST["nomineeName"] . "',
-	'" . $_POST["nomineePID"] . "',
-	'" . $_POST["nomineeEmail"] . "')";
-	
-	
-	if($conn->query($sql)===TRUE)
+	//Continue if form was submitted (POST is not empty)
+	if(!empty($_POST))
 	{
-		// create user_role record
-		$user_id = $conn->insert_id;
-		$sql="INSERT INTO user_roles (user_id,role_id)
-		VALUES (" . $user_id . ",4)";//4=nominee
-		if ($conn->query($sql) === TRUE){/*echo "New record created successfully1<br>";*/}
-		else {echo "Error: " . $sql . "<br>" . $conn->error;}	
-		
-		// create nominee record
+		//SQL Query - Create nominee user
 		$sql="
-		INSERT INTO nominees
-			(session_id,
-			nominee_user_id,
-			nominated_by_user_id,
-			ranking,
-			is_curr_phd,
-			is_new_phd)
-		VALUES 
-		(
-			(select max(session_id) from sessions),
-			" . $user_id . ",
-			'" . $_SESSION["user_id"]."',
-			'" . $_POST["nomineeRanking"] . "',
-			'" . $_POST["currentPhd"] . "',
-			'" . $_POST["newPhd"] . "'
-		)";
-			
-			
-		if ($conn->query($sql) === TRUE){/*echo "New record created successfully2<br>";*/}
-		else {echo "Error: " . $sql . "<br>" . $conn->error;}	
+			INSERT into users (name, pid, email)
+			VALUES(
+				'" . $_POST["nomineeName"] . "',
+				'" . $_POST["nomineePID"] . "',
+				'" . $_POST["nomineeEmail"] . "')";	
+	
+		//Execute sql query and continue if successful
+		if($conn->query($sql)===TRUE)
+		{
+			// create user_role record
+			$user_id = $conn->insert_id;
+
+			//SQL Query - Insert user role 
+			//user role = 4 for nominee
+			$sql="
+				INSERT INTO user_roles (user_id,role_id)
+				VALUES (" . $user_id . ",4)";
+
+			//Execute Query
+			if ($conn->query($sql) === TRUE)
+			{
+				//Query executed successfully
+				/*echo "New record created successfully1<br>";*/
+			}
+			else 
+			{
+				//Query failed
+				echo "Error: " . $sql . "<br>" . $conn->error;
+			}	
 		
+			//SQL Query - Create nominee record
+			$sql="
+				INSERT INTO nominees
+					(session_id,
+					nominee_user_id,
+					nominated_by_user_id,
+					ranking,
+					is_curr_phd,
+					is_new_phd)
+				VALUES 
+				(
+					(select max(session_id) from sessions),
+					" . $user_id . ",
+					'" . $_SESSION["user_id"]."',
+					'" . $_POST["nomineeRanking"] . "',
+					'" . $_POST["currentPhd"] . "',
+					'" . $_POST["newPhd"] . "'
+				)";		
+			
+			//Execute query
+			if ($conn->query($sql) === TRUE)
+			{
+				//Query executed successfully
+				/*echo "New record created successfully2<br>";*/
+			}
+			else 
+			{
+				//Query failed
+				echo "Error: " . $sql . "<br>" . $conn->error;
+			}		
+		}
+	
+		//Close connection to database
+		$conn->close();
+	
+		//Prompt user - successful submission
+		echo "Thank you for your submission";
+
+		//Exit script - dont render the rest of the page
+		die();
 	}
-	
-	
-	$conn->close();
-	
-	echo "Thank you for your submission";
-	die();
-}
-else
-{
-	// Display nominator of who nominated this person based on login
-	$nominator_name = $_SESSION["name"];
-	$nominator_email = $_SESSION["email"];
-}
+	else
+	{
+		//Form was not submitted (yet)
+		// Display nominator of who nominated this person based on login
+		$nominator_name = $_SESSION["name"];
+		$nominator_email = $_SESSION["email"];
+	}
 ?>
+
 <!DOCTYPE html>
 <html>
 	<head>

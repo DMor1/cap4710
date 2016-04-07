@@ -1,200 +1,204 @@
 <?php
-// TODO: start year and end year need a table constraint and/or a php page constraint to prevent end years that occur before start years and vice versa.
+	// TODO: start year and end year need a table constraint and/or a php page constraint to prevent end years that occur before start years and vice versa.
 
+	//Import External Files 
+	include_once("db.php"); //Connect to database and initialize session
 
+	//Declare variables
+	$nominee_user_id = $_GET["u"]; // user_id
+	$numberOfNominators = 0;
+	$nomineeUserRow = ""; // will be overwritten with mysql row data
 
-include_once("db.php");
-$nominee_user_id = $_GET["u"]; // user_id
-$numberOfNominators = 0;
-$nomineeUserRow = ""; // will be overwritten with mysql row data
-// get list of nominators
-$nominatorobj = (object) array('name' => '', 'user_id' => '');
-if(!empty($_POST))
-{
-	$nominee_user_id = $_POST["u"];
-	//debug_print($_POST);
-	// TODO: Check Daniel's notes to see what else is remaining that isn't here
+	// get list of nominators
+	$nominatorobj = (object) array('name' => '', 'user_id' => '');
 	
-	// loop through and insert advisors
-	// get the total number of dynamic rows
-	$maxkeyint = intval("0");
-	foreach($_POST as $key=>$value)
+	//Continue if form was submitted (POST is not empty)
+	if(!empty($_POST))
 	{
-	  if(preg_match('/past/',$key))
-	  {
-		  $temp_key = intval(filter_var($key, FILTER_SANITIZE_NUMBER_INT));
-		  //debug_print($temp_key);
-		  //debug_print($maxkeyint);
-		  //max($maxkeyint, $temp_key); // this was for some reason, super buggy
-		  if($temp_key > $maxkeyint)
-		  {
-			  $maxkeyint = $temp_key;
-		  }
-	  }
-	}
-	//debug_print($maxkeyint);
+		$nominee_user_id = $_POST["u"];
+
+		// TODO: Check Daniel's notes to see what else is remaining that isn't here
 	
-	// since we know the names of the columns and the max number to iterate just iterate through the users one at a time
-	for($i = 1; $i<=$maxkeyint; $i++)
-	{
-		// insert user $i
-		// insert user_role for user
-		
-		//["past1"], ["startAdvisor1"],["endAdvisor1"]
-		// since past is a primary key value it cannot be null
-		if($_POST["past".$i] != null || $_POST["past".$i] != "")
+		// loop through and insert advisors
+		// get the total number of dynamic rows
+		$maxkeyint = intval("0");
+		foreach($_POST as $key=>$value)
 		{
-			$sql="
-				INSERT into advisors (user_id, advisor_name, start_year, end_year)
-				VALUES(" . $nominee_user_id . ",'" . $_POST["past".$i] . "'," .  $_POST["startAdvisor".$i] . "," . $_POST["endAdvisor".$i] . ")";
-			if ($conn->query($sql) === TRUE){/*echo "New record created successfully2<br>";*/}
-			else {echo "Error: " . $sql . "<br>" . $conn->error;}	
+	  	
+			if(preg_match('/past/',$key))
+	  		{
+		  		$temp_key = intval(filter_var($key, FILTER_SANITIZE_NUMBER_INT));
+		  		//debug_print($temp_key);
+		  		//debug_print($maxkeyint);
+		  		//max($maxkeyint, $temp_key); // this was for some reason, super buggy
+		  	
+				if($temp_key > $maxkeyint)
+		  		{
+					$maxkeyint = $temp_key;
+		  		}
+	  		}
 		}
-	}
+
+		//Since names of columns and the max number to iterate just iterate through the users one at a time
+		for($i = 1; $i<=$maxkeyint; $i++)
+		{
+			// insert user $i
+			// insert user_role for user
+		
+			//["past1"], ["startAdvisor1"],["endAdvisor1"]
+			// since past is a primary key value it cannot be null
+			if($_POST["past".$i] != null || $_POST["past".$i] != "")
+			{
+				$sql="
+					INSERT into advisors (user_id, advisor_name, start_year, end_year)
+					VALUES(" . $nominee_user_id . ",'" . $_POST["past".$i] . "'," .  $_POST["startAdvisor".$i] . "," . $_POST["endAdvisor".$i] . ")";
+			
+				if ($conn->query($sql) === TRUE){/*echo "New record created successfully2<br>";*/}
+				else {echo "Error: " . $sql . "<br>" . $conn->error;}	
+			}
+		}	
 	
-	
-	// Update users table
-	$sql="
-			UPDATE users 
-			SET name = '" . $_POST["nomineeName"] . "',
-			pid = '" . $_POST["pid"] . "',
-			phonenumber = '" . $_POST["nomineePhone"] . "'
-			WHERE user_id = " . $nominee_user_id;
-		if ($conn->query($sql) === TRUE){/*echo "New record created successfully2<br>";*/}
-		else {echo "Error: " . $sql . "<br>" . $conn->error;}	
-	
-	// Update nominees table
-	$sql="
-			UPDATE nominees 
-			SET 
-			is_curr_phd = " . $_POST["isPhd"] . ",
-			num_sem_as_grad = " . $_POST["numGradSemesters"] . ",
-			speak_test_id = " . $_POST["passSpeak"] . ",
-			cummulative_gpa =  '" . $_POST["GPA"] . "',
-			phd_advisor_name =  '" . $_POST["advisorName"] . "'
-			WHERE nominee_user_id = " . $nominee_user_id . "
-			AND session_id = (select max(session_id) from sessions)";
-		if ($conn->query($sql) === TRUE){/*echo "New record created successfully2<br>";*/}
-		else {echo "Error: " . $sql . "<br>" . $conn->error;}	
-	
-	
-	
-	// loop through and insert courses
-	$maxkeyint = intval("0");
-	foreach($_POST as $key=>$value)
-	{
-	  if(preg_match('/course/',$key))
-	  {
-		  $temp_key = intval(filter_var($key, FILTER_SANITIZE_NUMBER_INT));
-		  //debug_print($temp_key);
-		  //debug_print($maxkeyint);
-		  //max($maxkeyint, $temp_key); // this was for some reason, super buggy
-		  if($temp_key > $maxkeyint)
-		  {
-			  $maxkeyint = $temp_key;
-		  }
-	  }
-	}
-	//debug_print($maxkeyint);
-	
-	// since we know the names of the columns and the max number to iterate just iterate through the users one at a time
-	for($i = 1; $i<=$maxkeyint; $i++)
-	{
-		// insert user $i
-		// insert user_role for user
-		////GCName1=GCEmail1=GCUserName1=GCUserPassword1=
+		// Update users table
 		$sql="
-			INSERT into courses (course_name, course_grade)
-			VALUES('" . $_POST["course".$i] . "','" .  $_POST["grade".$i] . "')";
-		if($conn->query($sql)===TRUE)
-		{
-			$sql="INSERT INTO courses_taken (course_id,user_id)
-			VALUES (" . $conn->insert_id . "," . $nominee_user_id . ")";
+			UPDATE users 
+				SET name = '" . $_POST["nomineeName"] . "',
+				pid = '" . $_POST["pid"] . "',
+				phonenumber = '" . $_POST["nomineePhone"] . "'
+			WHERE user_id = " . $nominee_user_id;
+		
 			if ($conn->query($sql) === TRUE){/*echo "New record created successfully2<br>";*/}
 			else {echo "Error: " . $sql . "<br>" . $conn->error;}	
-		}
-		
-	}
 	
-	// create publications record
-	$sql="
+		// Update nominees table
+		$sql="
+			UPDATE nominees 
+				SET 
+				is_curr_phd = " . $_POST["isPhd"] . ",
+				num_sem_as_grad = " . $_POST["numGradSemesters"] . ",
+				speak_test_id = " . $_POST["passSpeak"] . ",
+				cummulative_gpa =  '" . $_POST["GPA"] . "',
+				phd_advisor_name =  '" . $_POST["advisorName"] . "'
+				WHERE nominee_user_id = " . $nominee_user_id . "
+				AND session_id = (select max(session_id) from sessions)";
+		
+		if ($conn->query($sql) === TRUE){/*echo "New record created successfully2<br>";*/}
+		else {echo "Error: " . $sql . "<br>" . $conn->error;}	
+	
+		// loop through and insert courses
+		$maxkeyint = intval("0");
+		foreach($_POST as $key=>$value)
+		{
+	  		if(preg_match('/course/',$key))
+	  		{
+		 		$temp_key = intval(filter_var($key, FILTER_SANITIZE_NUMBER_INT));
+		  		//debug_print($temp_key);
+		  		//debug_print($maxkeyint);
+		  		//max($maxkeyint, $temp_key); // this was for some reason, super buggy
+		  		
+				if($temp_key > $maxkeyint)
+		  		{
+			  		$maxkeyint = $temp_key;
+		  		}
+	  		}
+		}
+
+		//debug_print($maxkeyint);
+	
+		// since we know the names of the columns and the max number to iterate just iterate through the users one at a time
+		for($i = 1; $i<=$maxkeyint; $i++)
+		{
+			// insert user $i
+			// insert user_role for user
+			////GCName1=GCEmail1=GCUserName1=GCUserPassword1=
+			$sql="
+				INSERT into courses (course_name, course_grade)
+				VALUES('" . $_POST["course".$i] . "','" .  $_POST["grade".$i] . "')";
+			
+			if($conn->query($sql)===TRUE)
+			{
+				$sql="INSERT INTO courses_taken (course_id,user_id)
+				VALUES (" . $conn->insert_id . "," . $nominee_user_id . ")";
+				
+				if ($conn->query($sql) === TRUE){/*echo "New record created successfully2<br>";*/}
+				else {echo "Error: " . $sql . "<br>" . $conn->error;}	
+			}
+		}
+
+		// create publications record
+		$sql="
 			INSERT into publications (session_id, nominee_user_id, publication_name_and_citations)
 			VALUES((select max(session_id) from sessions)," . $nominee_user_id . ",'" . $_POST["publications"] . "')";
+		
 		if ($conn->query($sql) === TRUE){/*echo "New record created successfully2<br>";*/}
 		else {echo "Error: " . $sql . "<br>" . $conn->error;}	
-	
 		
-	echo "Thank you for your submission";	
-	die();
-}
-else
-{
-	// Get nominator(s) // currently restricted to just one nominator
-	$sql = "
-	SELECT users.*
-	FROM users, nominees
-	WHERE users.user_id = nominees.nominated_by_user_id
-    and nominees.nominee_user_id = " . $nominee_user_id . "
-	AND nominees.session_id = (select max(session_id) from sessions)";
-	//debug_print($sql);
-	$result=mysqli_query($conn,$sql);
+		echo "Thank you for your submission";	
+		
+		die();
+	}
+	else
+	{
+		// Get nominator(s) // currently restricted to just one nominator
+		$sql = "
+		SELECT users.*
+		FROM users, nominees
+		WHERE users.user_id = nominees.nominated_by_user_id
+    	and nominees.nominee_user_id = " . $nominee_user_id . "
+		AND nominees.session_id = (select max(session_id) from sessions)";
+		//debug_print($sql);
+		$result=mysqli_query($conn,$sql);
 		//debug_print($result);
 
-	if ($result)
-	{
-		$nominators = array();
-		while ($row=mysqli_fetch_array($result))
+		if ($result)
 		{
-			$nominatorobj->name = $row["name"];
-			$nominatorobj->user_id = $row["user_id"];
-			$nominators[$numberOfNominators] = $nominatorobj;
-			//echo $nominators[$i]->user_id;
-			$numberOfNominators++;
+			$nominators = array();
+			while ($row=mysqli_fetch_array($result))
+			{
+				$nominatorobj->name = $row["name"];
+				$nominatorobj->user_id = $row["user_id"];
+				$nominators[$numberOfNominators] = $nominatorobj;
+				//echo $nominators[$i]->user_id;
+				$numberOfNominators++;
+			}
+		
+			// Free result set
+			mysqli_free_result($result);		
+		}
+		//else{echo "nope";}
+	
+		// Display currently known info about nominee
+		$sql = "
+			SELECT *
+			FROM users
+			INNER JOIN nominees
+			ON users.user_id = nominees.nominee_user_id
+			INNER JOIN sessions
+    		ON sessions.session_id = nominees.session_id
+			WHERE users.user_id = " . $nominee_user_id;
+		
+		//debug_print($sql);
+		$result=mysqli_query($conn,$sql);
+		//debug_print($result);
+
+		if ($result)
+		{
+			// should only be one row
+			$nomineeUserRow=mysqli_fetch_array($result);
+			// Free result set
+			mysqli_free_result($result);
 		}
 		
-		// Free result set
-		mysqli_free_result($result);
-		
+		// Name	
+		//testing
+		//echo get_semesterString($nomineeUserRow["verify_deadline_date"]);
+
+		mysqli_close($conn);
 	}
-	//else{echo "nope";}
-	
-	
-	// Display currently known info about nominee
-	$sql = "
-	SELECT *
-	FROM users
-	INNER JOIN nominees
-	ON users.user_id = nominees.nominee_user_id
-	INNER JOIN sessions
-    ON sessions.session_id = nominees.session_id
-	WHERE users.user_id = " . $nominee_user_id;
-	//debug_print($sql);
-	$result=mysqli_query($conn,$sql);
-		//debug_print($result);
-
-	if ($result)
-	{
-		// should only be one row
-		$nomineeUserRow=mysqli_fetch_array($result);
-		// Free result set
-		mysqli_free_result($result);
-	}
-	// Name
-	
-	
-	//testing
-	//echo get_semesterString($nomineeUserRow["verify_deadline_date"]);
-	
-
-	mysqli_close($conn);
-	
-}
-
 ?>
 <html>
 	<head>
 		<title>Nominee UI</title>
-		<link rel="stylesheet" href="style.css">
+		<link rel="stylesheet" href="styles/style.css">
 	</head>
 
 	<body>

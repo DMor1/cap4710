@@ -1,9 +1,7 @@
-<!doctype html>
-
 <html> 
 	 <head>  
 		<title>GC Members</title> 
-		<link rel="stylesheet" href="style.css">
+		<link rel="stylesheet" href="styles/style.css">
 	 </head>
    
 	<body>   

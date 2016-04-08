@@ -50,11 +50,23 @@
 		}	
 		
 	}
+	/*
+	$order="asc";
+	if($_GET["order"]!=null || $_GET["order"]!="" )
+	{
+		// TODO: this is a lil complicated, but basically the order of what something is per column has to be properly tracked in order to swap between asc and desc and there isn't enough time to really invest into it.
+		// It should pretty much swap between desc and asc if the SAME column is clicked
+		// and if a different column is clicked, it should use ASC as the default
+		// EST time: 2 hours? or 6 hours if no php experience, it's a pain/tedious/kinda difficult
+		$order = 
+	}
 	
-	
-	
+	*/
 
-	$orderby = "name";
+	// default sort is nominator_name
+	$orderby = ($_GET["sort"]!=null || $_GET["sort"]!="" ) ? $orderby = $_GET["sort"] : "nominator_name"; 
+	
+	//debug_print($orderby);
 	$sql = "
 	SELECT 
 		q1.session_id,
@@ -112,7 +124,8 @@
 		WHERE sessions.session_id = (SELECT MAX(sessions.session_id) from sessions)
 	) q1
 	INNER JOIN users
-	ON users.user_id = q1.nominated_by_user_id";
+	ON users.user_id = q1.nominated_by_user_id
+	ORDER BY '" . $orderby . "'";
 	
 	//debug_print($sql);
 	$gcqueryresults=mysqli_query($conn,$sql);
@@ -138,13 +151,22 @@
 							if($rowNumber==1)
 							{								
 								echo '<tr class="gctable">';
-								echo '<th>Name of Nominator</th>';
+								echo '<th>';
+								if($orderby!="nominator_name")
+								{echo '<a href="' . $_SERVER['PHP_SELF'] . '?sort=nominator_name&order='.$order.'">Name of Nominator</a>';}
+								else{echo '<span class="currentColumn">Name of Nominator</span>';}
+								
+								echo '</th>';
 								echo '<th>Name of nominee</th>';     
 								echo '<th>Rank</th>';
 								echo '<th>Student status</th>';
 								echo '<th>' . $gcqueryrow["score_list"] . '</th>';
 								echo '<th>Average</th>';        
-								echo '<th>Score</th>';    
+								echo '<th>';
+								if($orderby!="this_gc_score")
+								{echo '<a href="' . $_SERVER['PHP_SELF'] . '?sort=this_gc_score&order='.$order.'">Score</a>';}
+								else{echo '<span class="currentColumn">Score</span>';}      
+								echo '</th>';
 								echo '</tr>';
 								$session_id = $gcqueryrow["session_id"]; // only need to store this once for later
 							}

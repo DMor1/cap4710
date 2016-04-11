@@ -138,9 +138,9 @@
 				</tr>
 
 				<tr class="list">
-					<td><input type = "text" id = "chairName" name = "chairName" required></td>
+					<td><input type = "text" id = "chairName" name = "chairName" required   pattern="^[-a-zA-Z ]*" ></td>
 					<td><input type = "email" id = "chairEmail" name = "chairEmail" required ></td>
-					<td><input type = "text" id = "chairUsername" name = "chairUsername" required></td>
+					<td><input type = "text" id = "chairUsername" name = "chairUsername" required   pattern="^[-a-zA-Z ]*" ></td>
 					<td><input type = "password" id = "chairPassword" name = "chairPassword" required></td>
 					<td></td>
 				</tr>
@@ -154,9 +154,9 @@
 				</tr>
 
 				<tr class="list">
-					<td><input type = "text" id = "GCName1" name = "GCName1" required /></td>
+					<td><input type = "text" id = "GCName1" name = "GCName1" required   pattern="^[-a-zA-Z ]*"  /></td>
 					<td><input type = "email" id = "GCEmail1" name = "GCEmail1" required /></td>
-					<td><input type = "text" id = "GCUserName1" name = "GCUserName1" required/></td>
+					<td><input type = "text" id = "GCUserName1" name = "GCUserName1" required   pattern="^[-a-zA-Z ]*" /></td>
 					<td><input type = "password" id = "GCUserPassword1" name = "GCUserPassword1" required /></td>
 					<td><input type="button" class="buttons" value="Add" onclick="addGC()" /></td>
 				</tr>
@@ -211,9 +211,9 @@
 					var cell5=row.insertCell(4);
 					
 					z++;
-					cell1.innerHTML='<input type="text" id="GCName'+z+'" name="GCName'+z+'" required />';
+					cell1.innerHTML='<input type="text" id="GCName'+z+'" name="GCName'+z+'" required   pattern="^[-a-zA-Z ]*"  />';
 					cell2.innerHTML='<input type="email" id="GCEmail'+z+'" name="GCEmail'+z+'" required />';
-					cell3.innerHTML='<input type="text" id="GCUserName'+z+'" name="GCUserName'+z+'" required/>';
+					cell3.innerHTML='<input type="text" id="GCUserName'+z+'" name="GCUserName'+z+'" required   pattern="^[-a-zA-Z ]*" />'; 
 					cell4.innerHTML='<input type="password" id="GCUserPassword'+z+'" name=""GCUserPassword'+z+'" required />';
 					cell5.innerHTML='<input type="button" class="buttons" value="remove" onclick="removeGC(iii)" required />';
      
@@ -247,5 +247,9 @@
 				<input type = "text" id = "verificationDeadline" name = "verificationDeadline"><br> -->
 
 		</form>
+		<a href='logout.php'>Log out</a><br>
+		<a href='changepassword.php'>Change password</a>
+
+
 	</body>
 </html>

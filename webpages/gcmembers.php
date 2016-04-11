@@ -195,6 +195,8 @@
           <input type="hidden" name="session_id" id="session_id" value="<?php echo $session_id; ?>">
 	 	<input type="submit" class="buttons" value="Submit" />
 		</form>
+		<a href='logout.php'>Log out</a><br>
+		<a href='changepassword.php'>Change password</a>
 	</body>
 
 </html>

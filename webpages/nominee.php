@@ -225,7 +225,7 @@
 				<tr>
 					<td>Name of current Ph.D. advisor</td>
 					<td></td>
-					<td><input type="text" name="advisorName" id="advisorName" required/></td>
+					<td><input type="text" name="advisorName" id="advisorName" required   pattern="^[-a-zA-Z ]*" /></td>
 				</tr>
 
 				<tr>
@@ -241,7 +241,7 @@
 				</tr>
 
 				<tr class="list" id='advisor'>
-					<td><input type="text" name="past1" id="past1" /></td>
+					<td><input type="text" name="past1" id="past1"   pattern="^[-a-zA-Z ]*" /></td>
 					<td></td>
 					<td><input type="date" name="startAdvisor1" id="startAdvisor1" /></td>
 					<td><input type="date" name="endAdvisor1" id="endAdvisor1" /></td>
@@ -325,7 +325,7 @@
 					</td>
 					<td></td>
 					<td>
-						<input type="text" name="grade1" id="grade1" />
+						<input type="text" name="grade1" id="grade1"   pattern="^[A-F][+-]{1}"  />
 					</td>
 					<td></td>
 					<td><input type="button" class="buttons" value="Add" onclick="addCourse()" /></td>
@@ -393,7 +393,7 @@
 					num_course++;
 					cell1.innerHTML='<input type="text" name="course'+num_course+'" id="course'+num_course+'" />';
 					cell2.innerHTML='';
-					cell3.innerHTML='<input type="text" name="grade'+num_course+'" id="grade'+num_course+'"/>';
+					cell3.innerHTML='<input type="text" name="grade'+num_course+'" id="grade'+num_course+'"  pattern="^[A-F][+-]{1}"/>';
 					cell4.innerHTML='';
 					cell5.innerHTML='<input type="button" class="buttons" value="Remove" onclick="removeCourse(index_current_course)" />';
      
@@ -413,7 +413,7 @@
 					
 					num_Ad++;
 					index_current_course++;
-					cell1.innerHTML='<input type="text" name="past'+num_Ad+'" id="past'+num_Ad+'" />';
+					cell1.innerHTML='<input type="text" name="past'+num_Ad+'" id="past'+num_Ad+'" pattern="^[-a-zA-Z ]*"/>';
 					cell2.innerHTML='';
 					cell3.innerHTML='<input type="date" name="startAdvisor'+num_Ad+'" id="startAdvisor'+num_Ad+'"/>';
 					cell4.innerHTML='<input type="date" name="endAdvisor'+num_Ad+'" id=""endAdvisor'+num_Ad+'" />';
@@ -522,5 +522,6 @@
 
 			<textarea rows="5" cols="50" name="publications" id="publications"></textarea> -->
 		</form>
+		<a href='logout.php'>Log out</a><br>
 	</body>
 </html>

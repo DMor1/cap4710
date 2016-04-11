@@ -104,7 +104,7 @@
 	<body>
 		<h2>Nominate and existing or incoming Ph.D student for a GTA</h1>
 
-		<form method="post" action="<?php echo $_SERVER['PHP_SELF']; ?>">
+		<form id="myform" method="post" onsubmit="return validation()" action="<?php echo $_SERVER['PHP_SELF']; ?>" >
 			<table>
 				<tr>
 					<td>Name of Nominator</td>
@@ -118,22 +118,22 @@
 					<td><?php echo $nominator_email; ?></td>
 				</tr>
 
-				<tr>
+				tr>
 					<td>Name of Nominee</td>
 					<td></td>
-					<td><input type = "text" name = "nomineeName" id="nomineeName" required ></td>
+					<td><input type = "text" name = "nomineeName" id="nomineeName"  pattern="^[-a-zA-Z ]*" required ></td>
 				</tr>
 
 				<tr>
 					<td>Nominee Ranking</td>
 					<td></td>
-					<td><input type = "text" name = "nomineeRanking" id="nomineeRanking" required></td>
+					<td><input type = "number" name = "nomineeRanking" min="1" max="100" step="1" id="nomineeRanking" required></td>
 				</tr>
 				
 				<tr>
 					<td>PID of Nominee</td>
 					<td></td>
-					<td><input type = "text" name = "nomineePID" id="nomineePID" required></td>
+					<td><input type = "text" name = "nomineePID" id="nomineePID" pattern="^[A-Z][1-9]{7}"  required></td>
 				</tr>
 				
 				<tr>
@@ -197,5 +197,7 @@
 				<input type="radio" name="newPhd" value="no"> No<br>
 		-->
 		</form>
+		<a href='logout.php'>Log out</a><br>
+		<a href='changepassword.php'>Change password</a>
 	</body>
 </html>

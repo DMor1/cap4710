@@ -16,6 +16,7 @@
 	if(!empty($_POST))
 	{
 		$nominee_user_id = $_POST["u"];
+		$GLOBALS['uid'] = $nominee_user_id;
 
 		// TODO: Check Daniel's notes to see what else is remaining that isn't here
 	
@@ -130,7 +131,23 @@
 			VALUES((select max(session_id) from sessions)," . $nominee_user_id . ",'" . $_POST["publications"] . "')";
 		
 		if ($conn->query($sql) === TRUE){/*echo "New record created successfully2<br>";*/}
-		else {echo "Error: " . $sql . "<br>" . $conn->error;}	
+		else {echo "Error: " . $sql . "<br>" . $conn->error;}
+
+		for($i = 0; $i<$numberOfNominators;$i++)
+		{
+			$to = "newmark.robert@gmail.com";
+			$subject = "You have been chosen as a member of the Graduate Committee";
+			$nominee = $_POST["nomineeName"];
+			$nominator = $nominators[$i]->name;
+			$uid = $_POST["u"];
+			$message = include '/email_templates/nominatoremail.php';
+
+			$headers = "MIME-Version: 1.0" . "\r\n";
+			$headers .= "Content-type:text/html;charset=UTF-8" . "\r\n";
+			$headers .= 'From: <automatedcop4710@gmail.com>' . "\r\n";
+
+			echo $message;
+		}	
 		
 		echo "Thank you for your submission";	
 		
@@ -207,10 +224,10 @@
 		<input type="hidden" id="u" name="u" value="<?php echo $nominee_user_id; ?>" />
 			<table id='table'>
 				<tr>
-					<td>Name of the nominator </td>
+					<td>Name of the nominator</td>
 					<td>&emsp;&emsp;</td>
 					<td>
-						<select name="nominatorName" required>
+						<select name="nominatorName">
 						<?php
 							for($i = 0; $i<$numberOfNominators;$i++)
 							{
@@ -225,7 +242,7 @@
 				<tr>
 					<td>Name of current Ph.D. advisor</td>
 					<td></td>
-					<td><input type="text" name="advisorName" id="advisorName" required   pattern="^[-a-zA-Z ]*" /></td>
+					<td><input type="text" name="advisorName" id="advisorName" /></td>
 				</tr>
 
 				<tr>
@@ -235,16 +252,16 @@
 				<tr class="list">
 					<td>Advisor Name</td>
 					<td></td>
-					<td>Start Year (mm/dd/yyyy)</td>
-					<td>End Year (mm/dd/yyyy)</td>
+					<td>Start Year</td>
+					<td>End Year</td>
 					<td></td>
 				</tr>
 
 				<tr class="list" id='advisor'>
-					<td><input type="text" name="past1" id="past1"   pattern="^[-a-zA-Z ]*" /></td>
+					<td><input type="text" name="past1" id="past1" /></td>
 					<td></td>
-					<td><input type="date" name="startAdvisor1" id="startAdvisor1" /></td>
-					<td><input type="date" name="endAdvisor1" id="endAdvisor1" /></td>
+					<td><input type="text" name="startAdvisor1" id="startAdvisor1" /></td>
+					<td><input type="text" name="endAdvisor1" id="endAdvisor1" /></td>
 					<td><input type="button" class='buttons' value="Add" onclick="addAdvisor()" id="button_advisor"/></td>
 				</tr>
 
@@ -253,57 +270,57 @@
 				<tr>
 					<td>Name</td>
 					<td></td>
-					<td><input type="text" name="nomineeName" id="nomineeName"  required value="<?php echo $nomineeUserRow["name"]; ?>"  /></td>
+					<td><input type="text" name="nomineeName" id="nomineeName" value="<?php echo $nomineeUserRow["name"]; ?>"/></td>
 				</tr>
 
 				<tr>
 					<td>PID</td>
 					<td></td>
-					<td><input type="text" name="pid" id="pid"  required value="<?php echo $nomineeUserRow["pid"]; ?>"  /></td>
+					<td><input type="text" name="pid" id="pid" value="<?php echo $nomineeUserRow["pid"]; ?>" /></td>
 				</tr>
 
 				<tr>
 					<td>Email</td>
 					<td></td>
-					<td><input type="email" name="nomineeEmail" id="nomineeEmail" required value="<?php echo $nomineeUserRow["email"]; ?>"  /></td>
+					<td><input type="email" name="nomineeEmail" id="nomineeEmail" value="<?php echo $nomineeUserRow["email"]; ?>" /></td>
 				</tr>
 
 				<tr>
 					<td>Phone number</td>
 					<td></td>
-					<td><input type="tel" name="nomineePhone" id="nomineePhone" value="<?php echo $nomineeUserRow["phonenumber"]; ?>"  /></td>
+					<td><input type="tel" name="nomineePhone" id="nomineePhone" value="<?php echo $nomineeUserRow["phonenumber"]; ?>"/></td>
 				</tr>
 
 				<tr>
 					<td>Are you a Ph.D. student in Computer Science?</td>
 					<td></td>
 					<td>
-						<input type="radio" name="isPhd" class="radios" value="1" required
-						<?php if(intval($nomineeUserRow["is_curr_phd"])==1){echo " checked ";}?>   > Yes
+						<input type="radio" name="isPhd" class="radios" value="1" 
+						<?php if(intval($nomineeUserRow["is_curr_phd"])==1){echo " checked ";}?>> Yes
 						</br>
-						<input type="radio" name="isPhd" class="radios" value="0" required
-						<?php if(intval($nomineeUserRow["is_curr_phd"])==0){echo " checked ";}?> > No
+						<input type="radio" name="isPhd" class="radios" value="0"
+						<?php if(intval($nomineeUserRow["is_curr_phd"])==0){echo " checked ";}?>> No
 					</td>
 				</tr>
 
 				<tr>
 					<td>How many semesters have you been a graduate student?</td>
 					<td></td>
-					<td><input type="text" name="numGradSemesters" id="numGradSemesters"  required /></td>
+					<td><input type="text" name="numGradSemesters" id="numGradSemesters" /></td>
 				</tr>
 
 				<tr>
 					<td>Have you passed the SPEAK test?</td>
 					<td></td>
 					<td>
-						<input type="radio" name="passSpeak" class="radios" value="1" required
-						<?php if(intval($nomineeUserRow["speak_test_id"])==1){echo " checked ";}?> > Yes
+						<input type="radio" name="passSpeak" class="radios" value="1"
+						<?php if(intval($nomineeUserRow["speak_test_id"])==1){echo " checked ";}?>> Yes
 						</br>
-						<input type="radio" name="passSpeak" class="radios" value="2" required
-						<?php if(intval($nomineeUserRow["speak_test_id"])==2){echo " checked ";}?> > No
+						<input type="radio" name="passSpeak" class="radios" value="2"
+						<?php if(intval($nomineeUserRow["speak_test_id"])==2){echo " checked ";}?>> No
 						</br>
-						<input type="radio" name="passSpeak" class="radios" value="3" required
-						<?php if(intval($nomineeUserRow["speak_test_id"])==3){echo " checked ";}?> > Graduated from a U.S. institution
+						<input type="radio" name="passSpeak" class="radios" value="3"
+						<?php if(intval($nomineeUserRow["speak_test_id"])==3){echo " checked ";}?>> Graduated from a U.S. institution
 					</td>
 				</tr>
 
@@ -325,7 +342,7 @@
 					</td>
 					<td></td>
 					<td>
-						<input type="text" name="grade1" id="grade1"   pattern="^[A-F][+-]{1}"  />
+						<input type="text" name="grade1" id="grade1" />
 					</td>
 					<td></td>
 					<td><input type="button" class="buttons" value="Add" onclick="addCourse()" /></td>
@@ -336,7 +353,7 @@
 				<tr>
 					<td>Enter your cumulative GPA for the above courses:</td>
 					<td></td>
-					<td><input type="text" name="GPA" id="GPA" required /></td>
+					<td><input type="text" name="GPA" id="GPA" /></td>
 				</tr>
 
 				<tr>
@@ -393,7 +410,7 @@
 					num_course++;
 					cell1.innerHTML='<input type="text" name="course'+num_course+'" id="course'+num_course+'" />';
 					cell2.innerHTML='';
-					cell3.innerHTML='<input type="text" name="grade'+num_course+'" id="grade'+num_course+'"  pattern="^[A-F][+-]{1}"/>';
+					cell3.innerHTML='<input type="text" name="grade'+num_course+'" id="grade'+num_course+'"/>';
 					cell4.innerHTML='';
 					cell5.innerHTML='<input type="button" class="buttons" value="Remove" onclick="removeCourse(index_current_course)" />';
      
@@ -413,10 +430,10 @@
 					
 					num_Ad++;
 					index_current_course++;
-					cell1.innerHTML='<input type="text" name="past'+num_Ad+'" id="past'+num_Ad+'" pattern="^[-a-zA-Z ]*"/>';
+					cell1.innerHTML='<input type="text" name="past'+num_Ad+'" id="past'+num_Ad+'" />';
 					cell2.innerHTML='';
-					cell3.innerHTML='<input type="date" name="startAdvisor'+num_Ad+'" id="startAdvisor'+num_Ad+'"/>';
-					cell4.innerHTML='<input type="date" name="endAdvisor'+num_Ad+'" id=""endAdvisor'+num_Ad+'" />';
+					cell3.innerHTML='<input type="text" name="startAdvisor'+num_Ad+'" id="startAdvisor'+num_Ad+'"/>';
+					cell4.innerHTML='<input type="text" name="endAdvisor'+num_Ad+'" id=""endAdvisor'+num_Ad+'" />';
 					cell5.innerHTML='<input type="button" class="buttons" value="Remove" onclick="removeAdvisor(index_current_ad)" />';
      
 					table.appendChild('row');

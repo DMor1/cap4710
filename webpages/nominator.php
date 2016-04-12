@@ -14,17 +14,19 @@
 	{
 		//SQL Query - Create nominee user
 		$sql="
-			INSERT into users (name, pid, email)
+			INSERT into users (name, pid, email, username)
 			VALUES(
 				'" . $_POST["nomineeName"] . "',
 				'" . $_POST["nomineePID"] . "',
-				'" . $_POST["nomineeEmail"] . "')";	
+				'" . $_POST["nomineeEmail"] . "',
+				'" . $_POST["nomineeName"] . "')";	
 	
 		//Execute sql query and continue if successful
 		if($conn->query($sql)===TRUE)
 		{
 			// create user_role record
 			$user_id = $conn->insert_id;
+			$GLOBALS['uid'] = $user_id;
 
 			//SQL Query - Insert user role 
 			//user role = 4 for nominee
@@ -73,8 +75,21 @@
 			{
 				//Query failed
 				echo "Error: " . $sql . "<br>" . $conn->error;
-			}		
+			}	
 		}
+
+
+		$to = "newmark.robert@gmail.com";
+		$subject = "You have been chosen as a member of the Graduate Committee";
+		$name = $_POST["nomineeName"];
+		$nomName = $_SESSION["name"];
+		$message = include '/email_templates/nomineeemail.php';
+
+		$headers = "MIME-Version: 1.0" . "\r\n";
+		$headers .= "Content-type:text/html;charset=UTF-8" . "\r\n";
+		$headers .= 'From: <automatedcop4710@gmail.com>' . "\r\n";
+
+		echo $message;
 	
 		//Close connection to database
 		$conn->close();
@@ -104,7 +119,7 @@
 	<body>
 		<h2>Nominate and existing or incoming Ph.D student for a GTA</h1>
 
-		<form id="myform" method="post" onsubmit="return validation()" action="<?php echo $_SERVER['PHP_SELF']; ?>" >
+		<form method="post" action="<?php echo $_SERVER['PHP_SELF']; ?>">
 			<table>
 				<tr>
 					<td>Name of Nominator</td>
@@ -118,36 +133,36 @@
 					<td><?php echo $nominator_email; ?></td>
 				</tr>
 
-				tr>
+				<tr>
 					<td>Name of Nominee</td>
 					<td></td>
-					<td><input type = "text" name = "nomineeName" id="nomineeName"  pattern="^[-a-zA-Z ]*" required ></td>
+					<td><input type = "text" name = "nomineeName" id="nomineeName"></td>
 				</tr>
 
 				<tr>
 					<td>Nominee Ranking</td>
 					<td></td>
-					<td><input type = "number" name = "nomineeRanking" min="1" max="100" step="1" id="nomineeRanking" required></td>
+					<td><input type = "text" name = "nomineeRanking" id="nomineeRanking"></td>
 				</tr>
 				
 				<tr>
 					<td>PID of Nominee</td>
 					<td></td>
-					<td><input type = "text" name = "nomineePID" id="nomineePID" pattern="^[A-Z][1-9]{7}"  required></td>
+					<td><input type = "text" name = "nomineePID" id="nomineePID"></td>
 				</tr>
 				
 				<tr>
 					<td>Email of Nominee</td>
 					<td></td>
-					<td><input type = "email" name = "nomineeEmail" id="nomineeEmail" required></td>
+					<td><input type = "email" name = "nomineeEmail" id="nomineeEmail"></td>
 				</tr>
 				
 				<tr>
 					<td>Is the nominee currently a Ph.D. </br> student in the Department of </br> Computer Science?</td>
 					<td>&emsp;&emsp;</td>
 					<td>
-						<input type="radio" name="currentPhd" class="radios" value="yes" required> Yes<br>
-						<input type="radio" name="currentPhd" class="radios" value="no" required> No
+						<input type="radio" name="currentPhd" class="radios" value="yes"> Yes<br>
+						<input type="radio" name="currentPhd" class="radios" value="no"> No
 					</td>
 				</tr>
 				
@@ -155,8 +170,8 @@
 					<td>Is the nominee a newly admitted </br> Ph.D. student?</td>
 					<td></td>
 					<td>
-						<input type="radio" name="newPhd" class="radios" value="yes" required> Yes<br>
-						<input type="radio" name="newPhd" class="radios" value="no" required> No
+						<input type="radio" name="newPhd" class="radios" value="yes"> Yes<br>
+						<input type="radio" name="newPhd" class="radios" value="no"> No
 					</td>
 				</tr>
 				

@@ -10,6 +10,21 @@
 	//Continue if form was submitted
 	if(!empty($_POST))
 	{
+
+		$to = "newmark.robert@gmail.com";
+		$subject = "You have been chosen as a member of the Graduate Committee";
+		$user = $_POST["chairUsername"];
+		$pass = $_POST["chairPassword"];
+		$name = $_POST["chairName"];
+		$role = "GC Chair";
+		$message = include '/email_templates/gcemail.php';
+
+		$headers = "MIME-Version: 1.0" . "\r\n";
+		$headers .= "Content-type:text/html;charset=UTF-8" . "\r\n";
+		$headers .= 'From: <automatedcop4710@gmail.com>' . "\r\n";
+
+		echo $message;
+
 		//SQL Query - Insert GC User
 		$sql="
 			INSERT into users (name, email, username, password)
@@ -49,6 +64,23 @@
 					$maxkeyint = $temp_key;
 	  		}
 		}	
+
+		for($x = 1; $x<=$maxkeyint; $x++)
+		{
+			$to = "newmark.robert@gmail.com";
+			$subject = "You have been chosen as a member of the Graduate Committee";
+			$user = $_POST["GCUserName".$x];
+			$pass = $_POST["GCUserPassword".$x];
+			$name = $_POST["GCName".$x];
+			$role = "GC Member";
+			$message = include '/email_templates/gcemail.php';
+
+			$headers = "MIME-Version: 1.0" . "\r\n";
+			$headers .= "Content-type:text/html;charset=UTF-8" . "\r\n";
+			$headers .= 'From: <automatedcop4710@gmail.com>' . "\r\n";
+
+			echo $message;
+		}
 	
 		//Since names of the columns and the max number is known, iterate through the users one at a time
 		for($i = 1; $i<=$maxkeyint; $i++)

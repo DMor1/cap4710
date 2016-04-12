@@ -2,6 +2,7 @@
 	//Import External Files
 	include_once("login_check.php"); //This must come first, import checkrole function
 	include_once("db.php"); //Connect to database and initialize session
+	include_once("email_templates/gcemail.php");
 
 	//role_id = 1 for system administrator
 	//verify role and kick off if not system administrator
@@ -73,14 +74,13 @@
 			$pass = $_POST["GCUserPassword".$x];
 			$name = $_POST["GCName".$x];
 			$role = "GC Member";
-			//$message = include 'email_templates/gcemail.php';
-			$message = file_get_contents('http://raspbiripi.ddns.net/webpages/email_templates/gcemail.php');
-
+			$message = getGCEmailBody($name, $role, $user , $pass); 
+					
 			$headers = "MIME-Version: 1.0" . "\r\n";
 			$headers .= "Content-type:text/html;charset=UTF-8" . "\r\n";
 			$headers .= 'From: <automatedcop4710@gmail.com>' . "\r\n";
 
-			mail($to, $subject, include_once('email_templates/gcemail.php'), $headers);
+			mail($to, $subject, $message, $headers);
 		}
 	
 		//Since names of the columns and the max number is known, iterate through the users one at a time

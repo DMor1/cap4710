@@ -83,7 +83,7 @@
 		$subject = "You have been chosen as a member of the Graduate Committee";
 		$name = $_POST["nomineeName"];
 		$nomName = $_SESSION["name"];
-		$message = include '/email_templates/nomineeemail.php';
+		$message = include 'email_templates/nomineeemail.php';
 
 		$headers = "MIME-Version: 1.0" . "\r\n";
 		$headers .= "Content-type:text/html;charset=UTF-8" . "\r\n";

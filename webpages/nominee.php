@@ -3,7 +3,7 @@
 
 	//Import External Files 
 	include_once("db.php"); //Connect to database and initialize session
-
+	include_once("email_templates/nominatoremail.php");
 	//Declare variables
 	$nominee_user_id = $_GET["u"]; // user_id
 	$numberOfNominators = 0;

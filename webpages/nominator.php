@@ -2,7 +2,8 @@
 	//Import External Files
 	include_once("login_check.php"); //This must come first, import checkrole function
 	include_once("db.php"); //Connect to database and initialize session
-
+	include_once("email_templates/nomineeemail.php");
+	
 	//TODO: Email users on submit
 
 	//role_id = 3 for Nominators

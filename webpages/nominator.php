@@ -120,7 +120,7 @@
 	<body>
 		<table>
 			<tr>
-				<td><h2>Nominate and existing or incoming Ph.D student for a GTA</h2></td>
+				<td><h2>Nominate a student to become a GTA</h2></td>
 				<td>&emsp;&emsp;&emsp;&emsp;</td>
 				<td><input type="button" href='changepassword.php' class="logout" value="Change Password"></td>
 				<td><input type="button" href='logout.php' class="logout" value="Log Out"></td>
@@ -140,6 +140,8 @@
 					<td></td>
 					<td><?php echo $nominator_email; ?></td>
 				</tr>
+
+				<tr><td>&emsp;</td></tr>
 
 				<tr>
 					<td>Name of Nominee</td>

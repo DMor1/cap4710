@@ -100,7 +100,7 @@
 
 	<body>
 		<div class="loginscreen">
-			<h1>Login to your account</h1>
+			<h1>GTASS Login</h1>
 
 			<form method="post" action="<?php echo $_SERVER['PHP_SELF']; ?>">
 				<table>

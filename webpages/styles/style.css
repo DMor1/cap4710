@@ -16,6 +16,15 @@ input
 	outline:none;
 	text-align: center;
 }
+select
+{
+	border-radius:10px;
+	border:2px solid black;
+	padding:5px;
+	width:250px;
+	outline:none;
+	text-align: center;
+}
 input:focus
 {
 	background-color:#DDDDDD;
@@ -90,4 +99,14 @@ textarea
 .currentColumn
 {
 	text-decoration: underline;
+}
+.logout
+{
+	border-radius:0px;
+	border:2px solid black;
+	padding:5px;
+	width:250px;
+	outline:none;
+	text-align: center;
+	width:100%;
 }

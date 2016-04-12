@@ -3,7 +3,7 @@
 	include_once("login_check.php"); //This must come first, import checkrole function
 	include_once("db.php"); //Connect to database and initialize session
 	include_once("email_templates/nomineeemail.php");
-	
+
 	//TODO: Email users on submit
 
 	//role_id = 3 for Nominators
@@ -118,7 +118,14 @@
 	</head>
 
 	<body>
-		<h2>Nominate and existing or incoming Ph.D student for a GTA</h1>
+		<table>
+			<tr>
+				<td><h2>Nominate and existing or incoming Ph.D student for a GTA</h2></td>
+				<td>&emsp;&emsp;&emsp;&emsp;</td>
+				<td><input type="button" href='changepassword.php' class="logout" value="Change Password"></td>
+				<td><input type="button" href='logout.php' class="logout" value="Log Out"></td>
+			</tr>
+		</table>
 
 		<form method="post" action="<?php echo $_SERVER['PHP_SELF']; ?>">
 			<table>
@@ -184,36 +191,6 @@
 					</td>
 				</tr>
 			</table>
-
-		<!--
-				Name of Nominator
-				<input type = "text" name = "nominatorName"></br>
-
-				Email of Nominator
-				<input type = "text" name = "nominatorEmail"></br>
-
-				Name of Nominee
-				<input type = "text" name = "nomineeName"></br>
-
-				Nominee Ranking
-				<input type = "text" name = "nomineeRanking"></br>
-
-				PID of Nominee
-				<input type = "text" name = "nomineePID"></br>
-
-				Email of Nominee
-				<input type = "text" name = "nomineeEmail"></br>
-
-				Is the nominee currently a Ph.D. student in the Department of Computer Science? </br>
-				<input type="radio" name="currentPhd" value="yes"> Yes<br>
-				<input type="radio" name="currentPhd" value="no"> No<br>
-
-				Is the nominee a newly admitted Ph.D. student?</br>
-				<input type="radio" name="newPhd" value="yes"> Yes<br>
-				<input type="radio" name="newPhd" value="no"> No<br>
-		-->
 		</form>
-		<a href='logout.php'>Log out</a><br>
-		<a href='changepassword.php'>Change password</a>
 	</body>
 </html>

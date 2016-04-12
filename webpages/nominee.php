@@ -4,7 +4,7 @@
 	//Import External Files 
 	include_once("db.php"); //Connect to database and initialize session
 	include_once("email_templates/nominatoremail.php");
-	
+
 	//Declare variables
 	$nominee_user_id = $_GET["u"]; // user_id
 	$numberOfNominators = 0;
@@ -220,15 +220,21 @@
 	</head>
 
 	<body>
-		<h2>Fill out your GTA application</h2>
 		<form method="post" action="<?php echo $_SERVER['PHP_SELF']; ?>">
 		<input type="hidden" id="u" name="u" value="<?php echo $nominee_user_id; ?>" />
 			<table id='table'>
 				<tr>
+					<td colspan="4"><h2>Fill out your GTA application</h2></td>
+					<td>
+						<input type="button" href='logout.php' class="logout" value="Log Out">
+					</td>
+				</tr>
+
+				<tr>
 					<td>Name of the nominator</td>
 					<td>&emsp;&emsp;</td>
 					<td>
-						<select name="nominatorName">
+						<select name="nominatorName" >
 						<?php
 							for($i = 0; $i<$numberOfNominators;$i++)
 							{
@@ -461,85 +467,6 @@
 				index_current_course--;
                 }
             </script>
-			<!-- Name of the nominator
-			<input type="text" name="nominatorName" id="nominatorName" />
-			</br>
-
-			Name of current Ph.D. advisor
-			<input type="text" name="advisorName" id="advisorName" />
-			</br>
-
-			List your past advisors and years involved:
-			</br>
-			Name:
-			<input type="text" name="past1" id="past1" />
-			&emsp;
-			<input type="text" name="startAdvisor1" id="startAdvisor1" /> to
-			<input type="text" name="endAdvisor1" id="endAdvisor1" />
-			&emsp;
-			<input type="button" value="Add" />
-			</br>
-
-			Your name
-			<input type="text" name="nomineeName" id="nomineeName" />
-			</br>
-
-			Your PID
-			<input type="text" name="pid" id="pid" />
-			</br>
-
-			Your email
-			<input type="text" name="nomineeEmail" id="nomineeEmail" />
-			</br>
-
-			Your phone number
-			<input type="text" name="nomineePhone" id="nomineePhone" />
-			</br>
-
-			Are you a Ph.D. student in Computer Science?
-			</br>
-			<input type="radio" name="isPhd" id="isPhd" value="yes">Yes
-			</br>
-			<input type="radio" name="isPhd" id="isPhd" value="no">No
-			</br>
-
-			How many semesters have you been a graduate student?
-			<input type="text" name="numGradSemesters" id="numGradSemesters" />
-			</br>
-
-			Have you passed the SPEAK test?
-			</br>
-			<input type="radio" name="passSpeak" id="passSpeak" value="yes">Yes
-			</br>
-			<input type="radio" name="passSpeak" id="passSpeak" value="no">No
-			</br>
-			<input type="radio" name="passSpeak" id="passSpeak" value="grad">Graduated from a U.S. institution
-			</br>
-
-			How many semesters (including Summers) have you worked as a GTA?
-			<input type="text" name="numGtaSemesters" id="numGtaSemesters" />
-			</br>
-
-			List all graduate-level courses you have completed, and the grade you received for each:
-			</br>
-			Course #1:
-			<input type="text" name="course1" id="course1" />
-			Grade #1:
-			<input type="text" name="grade1" id="grade1" />
-			&emsp;
-			<input type="button" value="Add" />
-			Will able to add more courses
-			</br>
-
-			Enter your cumulative GPA for the above courses
-			<input type="text" name="GPA" id="GPA" />
-			</br>
-
-			List all publications, and provide citation:
-			</br>
-
-			<textarea rows="5" cols="50" name="publications" id="publications"></textarea> -->
 		</form>
-		<a href='logout.php'>Log out</a><br>
 	</body>
 </html>

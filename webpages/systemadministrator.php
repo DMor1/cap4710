@@ -73,8 +73,9 @@
 			$pass = $_POST["GCUserPassword".$x];
 			$name = $_POST["GCName".$x];
 			$role = "GC Member";
-			$message = include 'email_templates/gcemail.php';
-			$message = "<h1>Test Email</h1>";
+			//$message = include 'email_templates/gcemail.php';
+			$message = file_get_contents('email_templates/gcemail.php');
+
 			$headers = "MIME-Version: 1.0" . "\r\n";
 			$headers .= "Content-type:text/html;charset=UTF-8" . "\r\n";
 			$headers .= 'From: <automatedcop4710@gmail.com>' . "\r\n";

@@ -1,20 +1,19 @@
 <?php
 	include_once("login_check.php"); //This must come first, import checkrole function
 	include_once("db.php"); //Connect to database and initialize session
-		check_role(2); //Verify valid role - kick off if not gcchair type
+	
+	check_role(2); //Verify valid role - kick off if not gcchair type
 		
 	$updated_values=false; // for output to screen that scores have been updated or not on page load
-	if(!empty($_POST))
-	{
 	
-		
-		
+	if(!empty($_POST))
+	{	
 		// loop through to find the number of score rows that need to be updated
 		// get the total number of dynamic rows
 		$maxkeyint = intval("0");
+
 		foreach($_POST as $key=>$value)
 		{
-	  	
 			if(preg_match('/nomineeUserID/',$key))
 	  		{
 		  		$temp_key = intval(filter_var($key, FILTER_SANITIZE_NUMBER_INT));

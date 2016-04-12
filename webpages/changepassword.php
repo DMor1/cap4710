@@ -4,8 +4,7 @@
 	
 	//if role is nominee, will kick out
 	check_not_role(4);
-	
-	
+		
 	$passwordErr="";
 	if(!empty($_POST))
 	{
@@ -14,8 +13,7 @@
 		$newpassword2=md5($_POST["newloginPasswordR"]);
 		//echo "$oldpassword<br>$newpassword1<br>$newpassword2<br>";
 		
-		//query to get password from db
-		
+		//query to get password from db	
 		$sql="
 		SELECT password
 		FROM users
@@ -32,11 +30,8 @@
 		//check if the typed in login password is right
 
 		if($oldpassword==$oldpassworddb){
-			
-		//check if the 2 new passwords match
+			//check if the 2 new passwords match
 			if($newpassword1 == $newpassword2){
-			
-				
 				//update the the newpassword
 				$sql="
 				UPDATE users
@@ -63,17 +58,11 @@
 		else{
 			die("Old password doesn't match<br><a href='changepassword.php'>Return</a>");
 		}
-		
-		
 	}	
 	
-		
-		//Prompt user
-		//echo "Thank you for your submission";
-		
-	
+	//Prompt user
+	//echo "Thank you for your submission";	
 	//check if the role isn't nominee
-	
 ?>
 
 

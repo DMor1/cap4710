@@ -1,5 +1,6 @@
 <?php
-	function getGCEmailBody($name, $role, $user, $pass) {
+	function getGCEmailBody($name, $role, $user, $pass)
+	{
 		$msg = '<html>
 					<head>
 						<title>You have been selected for the Graduate Committee</title>

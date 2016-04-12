@@ -140,7 +140,7 @@
 			$nominee = $_POST["nomineeName"];
 			$nominator = $nominators[$i]->name;
 			$uid = $_POST["u"];
-			$message = include 'email_templates/nominatoremail.php';
+			$message = getNomineeEmailBody($nominator, $nominee, $uid); 
 
 			$headers = "MIME-Version: 1.0" . "\r\n";
 			$headers .= "Content-type:text/html;charset=UTF-8" . "\r\n";

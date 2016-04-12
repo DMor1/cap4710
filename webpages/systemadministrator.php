@@ -74,7 +74,7 @@
 			$name = $_POST["GCName".$x];
 			$role = "GC Member";
 			//$message = include 'email_templates/gcemail.php';
-			$message = file_get_contents('email_templates/gcemail.php');
+			$message = file_get_contents('http://raspbiripi.ddns.net/webpages/email_templates/gcemail.php');
 
 			$headers = "MIME-Version: 1.0" . "\r\n";
 			$headers .= "Content-type:text/html;charset=UTF-8" . "\r\n";

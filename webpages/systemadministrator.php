@@ -12,7 +12,7 @@
 	{
 
 		$to = "newmark.robert@gmail.com";
-		$subject = "You have been chosen as a member of the Graduate Committee";
+		$subject = "You have been chosen as the chair of the Graduate Committee";
 		$user = $_POST["chairUsername"];
 		$pass = $_POST["chairPassword"];
 		$name = $_POST["chairName"];
@@ -23,7 +23,7 @@
 		$headers .= "Content-type:text/html;charset=UTF-8" . "\r\n";
 		$headers .= 'From: <automatedcop4710@gmail.com>' . "\r\n";
 
-		echo $message;
+		mail($to, $subject, $message, $headers);
 
 		//SQL Query - Insert GC User
 		$sql="
@@ -79,7 +79,7 @@
 			$headers .= "Content-type:text/html;charset=UTF-8" . "\r\n";
 			$headers .= 'From: <automatedcop4710@gmail.com>' . "\r\n";
 
-			echo $message;
+			mail($to, $subject, $message, $headers);
 		}
 	
 		//Since names of the columns and the max number is known, iterate through the users one at a time

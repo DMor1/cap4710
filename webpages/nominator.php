@@ -89,7 +89,7 @@
 		$headers .= "Content-type:text/html;charset=UTF-8" . "\r\n";
 		$headers .= 'From: <automatedcop4710@gmail.com>' . "\r\n";
 
-		echo $message;
+		mail($to, $subject, $message, $headers);
 	
 		//Close connection to database
 		$conn->close();

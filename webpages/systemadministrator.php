@@ -231,7 +231,7 @@
 				<tr><td>&emsp;</td></tr>
 
 				<tr>
-					<td COLSPAN="2">What is the deadline for a faculty member to initiate a nomination? (mm/dd/yyyy)</td>
+					<td COLSPAN="2">What is the deadline for a faculty member to initiate a nomination?</td>
 				</tr>
 
 				<tr>
@@ -239,7 +239,7 @@
 				</tr>
 
 				<tr>
-					<td COLSPAN="3">What is the deadline for a nominee to respond to a nomination? (mm/dd/yyyy)</td>
+					<td COLSPAN="3">What is the deadline for a nominee to respond to a nomination?</td>
 				</tr>
 
 				<tr>
@@ -247,7 +247,7 @@
 				</tr>
 
 				<tr>
-					<td COLSPAN="3">What is the deadline for the nominator to verify a nominee's information and complete the nomination? (mm/dd/yyyy)</td>
+					<td COLSPAN="3">What is the deadline for the nominator to verify a nominee's information and complete the nomination?</td>
 				</tr>
 
 				<tr>

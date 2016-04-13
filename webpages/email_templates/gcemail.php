@@ -16,7 +16,7 @@
 							<p>Password: ' . $pass . '</p>
 						</p>
 
-						<p>In order to access the scoring table please click on the following url: <a href="gcmembers.php">Click Here</a></p>
+						<p>In order to access the scoring table please click on the following url: <a href="http://raspbiripi.ddns.net/webpages/gcmembers.php">Click Here</a></p>
 					</body>
 					
 					<footer>

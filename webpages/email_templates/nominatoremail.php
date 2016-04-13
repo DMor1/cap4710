@@ -13,7 +13,7 @@
 
 						<p>Before that can fully become a GTA, you must verify their information.</p>
 
-						<p><a href="verify.php?u=' . $uid . '">Click here</a> to verify their information.</p>
+						<p><a href="http://raspbiripi.ddns.net/webpages/verify.php?u=' . $uid . '">Click here</a> to verify their information.</p>
 					</body>
 
 					<footer>

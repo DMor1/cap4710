@@ -87,6 +87,7 @@
 				speak_test_id = '" . $_POST["passSpeak"] . "',
 				cummulative_gpa =  '" . $_POST["GPA"] . "',
 				num_sem_as_gta = '" . $_POST["numGtaSemesters"] . "',
+				respondNomination = CURDATE(),
 				phd_advisor_name =  '" . $_POST["advisorName"] . "'
 				WHERE nominee_user_id = " . $_SESSION['u'] . "
 				AND session_id = (select max(session_id) from sessions)";

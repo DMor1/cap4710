@@ -35,7 +35,8 @@
 			$sql="
 					UPDATE nominees 
 					SET 
-					isverified = " . $isverified . "
+					isverified = " . $isverified . ",
+					verifiedNomination = CURDATE()
 					WHERE nominee_user_id = " . $nominee_user_id . "
 					AND session_id = (select max(session_id) from sessions)";
 		
@@ -79,6 +80,7 @@
 					users.email AS nominees_email,
 					nominees.is_curr_phd AS nominees_isphd,
 					nominees.num_sem_as_grad AS nominees_numgrad,
+					nominees.num_sem_as_gta AS nominees_numgta,
 					speak_test.status AS speak_test_status,
 					nominees.phd_advisor_name AS nominees_phdadvisor,
 					nominees.cummulative_gpa AS nominees_gpa,
@@ -143,12 +145,14 @@
 		<h2>Verify the information of <?php echo $nomineeUserRow["nominees_name"]; ?></h2>
 		<table>
 				<tr>
-					<td>Name of the nominator:</td>
+					<td>Your name:</td>
 					<td>&emsp;&emsp;</td>
 					<td>
 						<?php echo $nomineeUserRow["nominator_name"]; ?>
 					</td>
 				</tr>
+
+				<tr><td>&emsp;</td></tr>
 
 				<tr>
 					<td>Name of current Ph.D. advisor:</td>
@@ -190,49 +194,55 @@
 				<tr><td>&emsp;</td></tr>
 
 				<tr>
-					<td>Your name</td>
+					<td>Name</td>
 					<td></td>
-					<td><?php echo $_SESSION["name"]; ?></td>
+					<td><?php echo $nomineeUserRow["nominees_name"]; ?></td>
 				</tr>
 
 				<tr>
-					<td>Your PID</td>
+					<td>PID</td>
 					<td></td>
 					<td><?php echo $nomineeUserRow["nominees_pid"]; ?></td>
 				</tr>
 
 				<tr>
-					<td>Your email</td>
+					<td>Email</td>
 					<td></td>
 					<td><?php echo $nomineeUserRow["nominees_email"]; ?></td>
 				</tr>
 
 				<tr>
-					<td>Your phone number</td>
+					<td>Phone number</td>
 					<td></td>
 					<td><?php echo $nomineeUserRow["nominees_phonenumber"]; ?></td>
 				</tr>
 
 				<tr>
-					<td>Are you a Ph.D. student in Computer Science?</td>
+					<td>Ph.D. student in Computer Science?</td>
 					<td></td>
 					<td><?php echo $nomineeUserRow["nominees_isphd"]; ?></td>
 				</tr>
 
 				<tr>
-					<td>How many semesters have you been a graduate student?</td>
+					<td>How many semesters have they been a graduate student?</td>
 					<td></td>
 					<td><?php echo $nomineeUserRow["nominees_numgrad"]; ?></td>
 				</tr>
 
 				<tr>
-					<td>Have you passed the SPEAK test?</td>
+					<td>How many semesters have they worked as a GTA?</td>
+					<td></td>
+					<td><?php echo $nomineeUserRow["nominees_numgta"]; ?></td>
+				</tr>
+
+				<tr>
+					<td>Have they passed the SPEAK test?</td>
 					<td></td>
 					<td><?php echo $nomineeUserRow["speak_test_status"]; ?></td>
 				</tr>
 
 				<tr>
-					<td COLSPAN="3">List all graduate-level courses you have completed, as well as the grade you received for each:</td>
+					<td COLSPAN="3">List of all of the graduate level courses completed, as well as the grade received:</td>
 				</tr>
 
 				<tr class="list">
@@ -267,13 +277,13 @@
 				<tr><td>&emsp;</td></tr>
 
 				<tr>
-					<td>Enter your cumulative GPA for the above courses:</td>
+					<td>Cumulative GPA for the above courses:</td>
 					<td></td>
 					<td><?php echo $nomineeUserRow["nominees_gpa"]; ?></td>
 				</tr>
 
 				<tr>
-					<td>List all publications, and prove citation:</td>
+					<td>All publications, and prove citation:</td>
 					<td></td>
 					<td><pre><?php echo $nomineeUserRow["pub_namesandcits"]; ?></pre></td>
 				</tr>

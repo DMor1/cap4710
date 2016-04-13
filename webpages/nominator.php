@@ -55,7 +55,8 @@
 					nominated_by_user_id,
 					ranking,
 					is_curr_phd,
-					is_new_phd)
+					is_new_phd,
+					)
 				VALUES 
 				(
 					(select max(session_id) from sessions),

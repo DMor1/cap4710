@@ -1,4 +1,6 @@
 <?php
+	include_once(dirname(__FILE__).'/../config/config.php');
+
 	function getGCEmailBody($name, $role, $user, $pass)
 	{
 		$msg = '<html>
@@ -16,9 +18,9 @@
 							<p>Password: ' . $pass . '</p>
 						</p>
 
-						<p>In order to access the scoring table please click on the following url: <a href="http://raspbiripi.ddns.net/webpages/gcmembers.php">Click Here</a></p>
+						<p>In order to access the scoring table please click on the following url: <a href="http://'. getHostURL() . 'gcmembers.php">Click Here</a></p>
 					</body>
-					
+
 					<footer>
 						<hr>
 							GTAMS Administration

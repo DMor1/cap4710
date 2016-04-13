@@ -241,7 +241,7 @@
 					<td>Name of the nominator</td>
 					<td>&emsp;&emsp;</td>
 					<td>
-						<select name="nominatorName" >
+						<select name="nominatorName" required >
 						<?php
 							for($i = 0; $i<$numberOfNominators;$i++)
 							{

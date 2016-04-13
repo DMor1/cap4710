@@ -55,8 +55,8 @@
 			else
 			{
 				//Display Error - Unsuccessful login
-				echo "Bad username or password."; // not redirecting, show error instead.
-				echo "<a href='raspbiripi.ddns.net/webpages/login.php'>Click here</a> to try logging in again.";
+				echo "Bad username or password. "; // not redirecting, show error instead.
+				echo "<a href='login.php'>Click here</a> to try logging in again.";
 			}
 
 			//Free memory from query result

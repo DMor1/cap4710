@@ -6,8 +6,10 @@
 	include_once("email_templates/nominatoremail.php");
 
 	//Declare variables
-	if(isset($_GET['u'])) 
+	if(isset($_GET['u'])) {
 		$nominee_user_id = $_GET["u"]; // user_id
+		$_SESSION['u'] = $nominee_user_id;
+	}
 
 	if(isset($_GET['nator']))
 		$nominator_user_id = $_GET["nator"]; //Nominator user id
@@ -55,21 +57,21 @@
 			{
 				$sql="
 					INSERT into advisors (user_id, advisor_name, start_year, end_year)
-					VALUES(" . $nominee_user_id . ",'" . $_POST["past".$i] . "'," .  $_POST["startAdvisor".$i] . "," . $_POST["endAdvisor".$i] . ")";
+					VALUES(" . $_SESSION['u'] . ",'" . $_POST["past".$i] . "'," .  $_POST["startAdvisor".$i] . "," . $_POST["endAdvisor".$i] . ")";
 			
 				if ($conn->query($sql) === TRUE){/*echo "New record created successfully2<br>";*/}
 				else {echo "Error: " . $sql . "<br>" . $conn->error;}	
 			}
-		}	
-	
+		}
+
 		// Update users table
 		$sql="
 			UPDATE users 
-				SET name = '" . $_POST["nomineeName"] . "',
+			SET name = '" . $_POST["nomineeName"] . "',
 				pid = '" . $_POST["pid"] . "',
 				phonenumber = '" . $_POST["nomineePhone"] . "'
-			WHERE user_id = " . $nominee_user_id;
-		
+			WHERE user_id = '" . $_SESSION['u'] . "'";
+	
 			if ($conn->query($sql) === TRUE){/*echo "New record created successfully2<br>";*/}
 			else {echo "Error: " . $sql . "<br>" . $conn->error;}	
 	
@@ -83,7 +85,7 @@
 				cummulative_gpa =  '" . $_POST["GPA"] . "',
 				num_sem_as_gta = '" . $_POST["numGtaSemesters"] . "',
 				phd_advisor_name =  '" . $_POST["advisorName"] . "'
-				WHERE nominee_user_id = " . $nominee_user_id . "
+				WHERE nominee_user_id = " . $_SESSION['u'] . "
 				AND session_id = (select max(session_id) from sessions)";
 		
 		if ($conn->query($sql) === TRUE){/*echo "New record created successfully2<br>";*/}
@@ -122,7 +124,7 @@
 			if($conn->query($sql)===TRUE)
 			{
 				$sql="INSERT INTO courses_taken (course_id,user_id)
-				VALUES (" . $conn->insert_id . "," . $nominee_user_id . ")";
+				VALUES (" . $conn->insert_id . "," . $_SESSION['u'] . ")";
 				
 				if ($conn->query($sql) === TRUE){/*echo "New record created successfully2<br>";*/}
 				else {echo "Error: " . $sql . "<br>" . $conn->error;}	
@@ -132,7 +134,7 @@
 		// create publications record
 		$sql="
 			INSERT into publications (session_id, nominee_user_id, publication_name_and_citations)
-			VALUES((select max(session_id) from sessions)," . $nominee_user_id . ",'" . $_POST["publications"] . "')";
+			VALUES((select max(session_id) from sessions)," . $_SESSION['u'] . ",'" . $_POST["publications"] . "')";
 		
 		if ($conn->query($sql) === TRUE){/*echo "New record created successfully2<br>";*/}
 		else {echo "Error: " . $sql . "<br>" . $conn->error;}

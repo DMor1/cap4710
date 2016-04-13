@@ -122,8 +122,16 @@
 			<tr>
 				<td><h2>Nominate a student to become a GTA</h2></td>
 				<td>&emsp;&emsp;&emsp;&emsp;</td>
-				<td><input type="button" href='changepassword.php' class="logout" value="Change Password"></td>
-				<td><input type="button" href='logout.php' class="logout" value="Log Out"></td>
+				<td>
+					<a href="changepassword.php">
+						<input type="button" class="logout" value="Change Password">
+					</a>
+				</td>
+				<td>
+					<a href="logout.php">
+						<input type="button" class="logout" value="Log Out">
+					</a>
+				</td>
 			</tr>
 		</table>
 

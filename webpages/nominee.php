@@ -6,8 +6,12 @@
 	include_once("email_templates/nominatoremail.php");
 
 	//Declare variables
-	$nominee_user_id = $_GET["u"]; // user_id
-	$nominator_user_id = $_GET["nator"]; //Nominator user id
+	if(isset($_GET['u'])) 
+		$nominee_user_id = $_GET["u"]; // user_id
+
+	if(isset($_GET['nator']))
+		$nominator_user_id = $_GET["nator"]; //Nominator user id
+	
 	$numberOfNominators = 0;
 	$nomineeUserRow = ""; // will be overwritten with mysql row data
 
@@ -17,8 +21,6 @@
 	//Continue if form was submitted (POST is not empty)
 	if(!empty($_POST))
 	{
-		$nominee_user_id = $_POST["u"];
-
 		// TODO: Check Daniel's notes to see what else is remaining that isn't here
 	
 		// loop through and insert advisors
@@ -135,10 +137,10 @@
 		if ($conn->query($sql) === TRUE){/*echo "New record created successfully2<br>";*/}
 		else {echo "Error: " . $sql . "<br>" . $conn->error;}
 
-		$to = "";
+		$to = getUserEmail($nominator_user_id);
 		$subject = "Please verify the information of the nominee";
 		$nominee = $_POST["nomineeName"];
-		$nominator = "";
+		$nominator = "Test Nominator Line 139";
 		$uid = $_POST["u"];
 		$message = getNomineeEmailBody($nominator, $nominee, $uid); 
 
@@ -148,12 +150,6 @@
 
 		mail($to, $subject, $message, $headers);
 
-		echo $to;
-
-		echo $natorid;
-
-		echo $message;
-		
 		echo "Thank you for your submission";	
 		
 		die();

@@ -161,7 +161,7 @@
 				<tr>
 					<td>Nominee Ranking</td>
 					<td></td>
-					<td><input type = "text" name = "nomineeRanking" id="nomineeRanking" required></td>
+					<td><input type = "number" name = "nomineeRanking" id="nomineeRanking" required></td>
 				</tr>
 				
 				<tr>

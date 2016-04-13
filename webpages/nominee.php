@@ -70,7 +70,8 @@
 		// Update users table
 		$sql="
 			UPDATE users 
-			SET name = '" . $_POST["nomineeName"] . "',
+			SET fname = '" . $_POST["nomineeFName"] . "',
+				lname = '" . $_POST["nomineeLName"] . "',
 				pid = '" . $_POST["pid"] . "',
 				phonenumber = '" . $_POST["nomineePhone"] . "'
 			WHERE user_id = '" . $_SESSION['u'] . "'";
@@ -145,16 +146,18 @@
 
 		$to = getUserEmail($_SESSION["nator"]);
 		$subject = "Please verify the information of the nominee";
-		$nominee = $_POST["nomineeName"];
+		$nomineef = $_POST["nomineeFName"];
+		$nomineel = $_POST["nomineeLName"];
 		$nominator = getUserName($_SESSION["nator"]);
 		$uid = $_POST["u"];
-		$message = getNominatorEmailBody($nominator, $nominee, $uid); 
+		$message = getNominatorEmailBody($nominator, $nomineef, $nomineel, $uid); 
 
 		$headers = "MIME-Version: 1.0" . "\r\n";
 		$headers .= "Content-type:text/html;charset=UTF-8" . "\r\n";
 		$headers .= 'From: <automatedcop4710@gmail.com>' . "\r\n";
 
 		mail($to, $subject, $message, $headers);
+		echo $message;
 
 		echo "Thank you for your submission";	
 		
@@ -178,7 +181,7 @@
 			$nominators = array();
 			while ($row=mysqli_fetch_array($result))
 			{
-				$nominatorobj->name = $row["name"];
+				$nominatorobj->lname = $row["lname"];
 				$nominatorobj->user_id = $row["user_id"];
 				$nominators[$numberOfNominators] = $nominatorobj;
 				//echo $nominators[$i]->user_id;
@@ -242,12 +245,12 @@
 					<td>Name of the nominator</td>
 					<td>&emsp;&emsp;</td>
 					<td>
-						<select name="nominatorName" required >
+						<select name="nominatorLName" required >
 						<?php
 							for($i = 0; $i<$numberOfNominators;$i++)
 							{
 								echo '<option value="' . $nominators[$i]->user_id
-								. '">' . $nominators[$i]->name . '</option>';
+								. '">' . $nominators[$i]->lname . '</option>';
 							}
 						?>
 						</select>
@@ -285,7 +288,8 @@
 				<tr>
 					<td>Name</td>
 					<td></td>
-					<td><input type="text" name="nomineeName" id="nomineeName" value="<?php echo $nomineeUserRow["name"]; ?>" required/></td>
+					<td><input type="text" name="nomineeFName" id="nomineeFName" value="<?php echo $nomineeUserRow["fname"]; ?>" required/>
+						<input type="text" name="nomineeLName" id="nomineeLName" value="<?php echo $nomineeUserRow["lname"]; ?>" required/></td>
 				</tr>
 
 				<tr>

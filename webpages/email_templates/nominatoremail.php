@@ -1,7 +1,7 @@
 <?php
 	include_once(dirname(__FILE__).'/../config/config.php');
 
-	function getNominatorEmailBody($nominator, $nominee, $uid)
+	function getNominatorEmailBody($nominator, $nomineef, $nomineel, $uid)
 	{
 		$msg = '<html>
 					<head>
@@ -9,9 +9,9 @@
 					</head>
 
 					<body>
-						<p>Dear ' . $nominator . ',</p>
+						<p>Dear Professor ' . $nominator . ',</p>
 
-						<p>Nominee ' . $nominee . ' has filled out their form to become a GTA.</p>
+						<p>Nominee ' . $nomineef . ' ' . $nomineel . ' has filled out their form to become a GTA.</p>
 
 						<p>In order to finalize their nomination, you must verify their information.</p>
 

@@ -1,7 +1,7 @@
 <?php
 	include_once(dirname(__FILE__).'/../config/config.php');
 
-	function getJobEmailBody($name, $login, $pass)
+	function getJobEmailBody($name, $lname, $login, $pass)
 	{
 		$msg = '<html>
 					<head>
@@ -9,7 +9,7 @@
 					</head>
 
 					<body>
-						<p>Dear ' . $name . ',</p>
+						<p>Dear ' . $name . ' ' . $lname . ',</p>
 
 						<p>You have been selected by the system administrator to be a nomiator for this session</p>
 

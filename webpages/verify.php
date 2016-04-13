@@ -69,12 +69,14 @@
 		//SQL Query to obtain nominee information
 		$sql="
 			SELECT 
-				users.name AS nominator_name,
+				users.fname AS nominator_first_name,
+				users.lname AS nominator_last_name,
 				table1.* 
 			FROM
 			(
 				SELECT 
-					users.name AS nominees_name,
+					users.fname AS nominees_first_name,
+					users.lname AS nominees_last_name,
 					users.phonenumber AS nominees_phonenumber,
 					users.pid AS nominees_pid,
 					users.email AS nominees_email,
@@ -142,13 +144,13 @@
 	</head>
 
 	<body>
-		<h2>Verify the information of <?php echo $nomineeUserRow["nominees_name"]; ?></h2>
+		<h2>Verify the information of <?php echo $nomineeUserRow["nominees_first_name"] . " " .$nomineeUserRow["nominees_last_name"]; ?></h2>
 		<table>
 				<tr>
 					<td>Your name:</td>
 					<td>&emsp;&emsp;</td>
 					<td>
-						<?php echo $nomineeUserRow["nominator_name"]; ?>
+						<?php echo $nomineeUserRow["nominator_first_name"] . " " . $nomineeUserRow["nominator_last_name"]; ?>
 					</td>
 				</tr>
 
@@ -196,7 +198,7 @@
 				<tr>
 					<td>Name</td>
 					<td></td>
-					<td><?php echo $nomineeUserRow["nominees_name"]; ?></td>
+					<td><?php echo $nomineeUserRow["nominees_first_name"] . " " . $nomineeUserRow["nominees_last_name"]; ?></td>
 				</tr>
 
 				<tr>

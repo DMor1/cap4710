@@ -70,14 +70,14 @@
 	function getUserName($user_id) {
 		global $conn;
 		$returnValue = "Name Not Found";
-		$sql = "SELECT name FROM users WHERE user_id = " . $user_id;
+		$sql = "SELECT lname FROM users WHERE user_id = " . $user_id;
 		
 		$result=mysqli_query($conn,$sql);
 		
 		if ($result)
 		{
 			$row=mysqli_fetch_array($result);
-			$returnValue=$row["name"];
+			$returnValue=$row["lname"];
 		}
 
 		return $returnValue;

@@ -1,7 +1,7 @@
 <?php
 	include_once(dirname(__FILE__).'/../config/config.php');
 
-	function getGCEmailBody($name, $role, $user, $pass)
+	function getGCEmailBody($fname, $lname, $role, $user, $pass)
 	{
 		$msg = '<html>
 					<head>
@@ -9,7 +9,7 @@
 					</head>			
 					
 					<body>
-						<p>Hello ' . $name . ',</p>
+						<p>Hello ' . $fname . ' ' . $lname .',</p>
 		
 						<p>The System Administrator for this session has chosen you as ' . $role . '</p>
 

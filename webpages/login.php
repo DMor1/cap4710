@@ -6,7 +6,8 @@
 	//User already logged in - Trash the session?
 	unset($_SESSION["user_id"]);
 	unset($_SESSION["role_id"]);
-	unset($_SESSION["name"]);
+	unset($_SESSION["fname"]);
+	unset($_SESSION["lname"]);
 	unset($_SESSION["email"]);
 	
 	//Execute if POST is NOT empty (Form Submitted)
@@ -16,7 +17,8 @@
 		$sql="
 		SELECT
 			users.user_id as user_id,
-			users.lname || ', ' || users.fname as name,
+			users.fname as fname,
+			users.lname as lname,
 			users.email as email,
 			user_roles.role_id as role_id
 		FROM
@@ -40,7 +42,8 @@
 				//Store session values
 				$_SESSION["user_id"] = $row["user_id"];
 				$_SESSION["role_id"] = $row["role_id"];
-				$_SESSION["name"] = $row["name"];
+				$_SESSION["fname"] = $row["fname"];
+				$_SESSION["lname"] = $row["lname"];
 				$_SESSION["email"] = $row["email"];
 
 				//Display success message

@@ -1,11 +1,11 @@
 <?php
 	//Import External files
-	include_once("login_check.php"); //This must come first, import checkrole function
+	//include_once("login_check.php"); //This must come first, import checkrole function
 	include_once("db.php"); //Connect to database and initialize session
 
 	//role_id = 3 for Nominators
 	//Verify valid role
-	check_role(3);
+	//check_role(3);
 
 	//Store user id
 	$nominee_user_id = $_GET["u"]; 

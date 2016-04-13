@@ -81,7 +81,7 @@
 
 
 		$to = $_POST["nomineeEmail"];
-		$subject = "You have been chosen as a member of the Graduate Committee";
+		$subject = "You have been nominated to be a GTA";
 		$name = $_POST["nomineeName"];
 		$natorName = $_SESSION["name"];
 		$natorId = $_SESSION["user_id"]; //Nominator id 

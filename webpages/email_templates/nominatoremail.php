@@ -11,7 +11,7 @@
 
 						<p>Nominee ' . $nominee . ' has filled out their form to become a GTA.</p>
 
-						<p>Before that can fully become a GTA, you must verify their information.</p>
+						<p>In order to finalize their nomination, you must verify their information.</p>
 
 						<p><a href="http://raspbiripi.ddns.net/webpages/verify.php?u=' . $uid . '">Click here</a> to verify their information.</p>
 					</body>

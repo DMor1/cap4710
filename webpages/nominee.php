@@ -140,9 +140,10 @@
 		else {echo "Error: " . $sql . "<br>" . $conn->error;}
 
 		$to = getUserEmail($_SESSION["u"]);
+		echo $to;
 		$subject = "Please verify the information of the nominee";
 		$nominee = $_POST["nomineeName"];
-		$nominator = "Test Nominator Line 139";
+		$nominator = getUserName($_SESSION["u"]);
 		$uid = $_POST["u"];
 		$message = getNominatorEmailBody($nominator, $nominee, $uid); 
 
@@ -150,7 +151,7 @@
 		$headers .= "Content-type:text/html;charset=UTF-8" . "\r\n";
 		$headers .= 'From: <automatedcop4710@gmail.com>' . "\r\n";
 
-		//mail($to, $subject, $message, $headers);
+		mail($to, $subject, $message, $headers);
 
 		echo "Thank you for your submission";	
 		
@@ -326,6 +327,8 @@
 					<td><input type="text" name="numGtaSemesters" id="numGtaSemesters" /></td>
 				</tr>
 
+				<tr><td>&emsp;</td></tr>
+
 				<tr>
 					<td>Have you passed the SPEAK test?</td>
 					<td></td>
@@ -340,8 +343,11 @@
 						<?php if(intval($nomineeUserRow["speak_test_id"])==3){echo " checked ";}?>> Graduated from a U.S. institution
 					</td>
 				</tr>
+				
+				<tr><td>&emsp;</td></tr>
 
 				<tr>
+
 					<td COLSPAN="3">List all graduate-level courses you have completed, as well as the grade you received for each:</td>
 				</tr>
 

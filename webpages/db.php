@@ -30,7 +30,7 @@
 
 	//Given a date, return the semester it is part of (Fall, Spring, Summer)
 	function get_semesterString($date)
-	{
+	{	
 		//Strip out year and month
 		$year = substr($date,0,4);
 		$month = substr($date,5,2);
@@ -46,5 +46,19 @@
 		
 		//Return semester and year
 		return $semester . $year;	
+	}
+	
+	function getUserEmail($user_id)
+	{
+		$returnValue = "error@raspbiripi.ddns.net";
+		$sql = "SELECT email FROM users WHERE user_id = " . $user_id;
+		$result=mysqli_query($conn,$sql);
+		if ($result)
+		{
+			$row=mysqli_fetch_array($result);
+			$returnValue=$row["email"];
+		}
+		
+		return $returnValue;
 	}
 ?>

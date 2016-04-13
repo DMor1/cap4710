@@ -12,8 +12,7 @@
 	//Continue if form was submitted
 	if(!empty($_POST))
 	{
-
-		$to = "";
+		$to = $_POST["chairEmail"];
 		$subject = "You have been chosen as the chair of the Graduate Committee";
 		$user = $_POST["chairUsername"];
 		$pass = $_POST["chairPassword"];
@@ -69,7 +68,7 @@
 
 		for($x = 1; $x<=$maxkeyint; $x++)
 		{
-			$to = "";
+			$to = $_POST["GCEmail".$x];
 			$subject = "You have been chosen as a member of the Graduate Committee";
 			$user = $_POST["GCUserName".$x];
 			$pass = $_POST["GCUserPassword".$x];

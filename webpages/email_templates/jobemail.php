@@ -1,4 +1,6 @@
 <?php
+	include_once(dirname(__FILE__).'/../config/config.php');
+
 	function getJobEmailBody($name, $login, $pass)
 	{
 		$msg = '<html>
@@ -15,7 +17,7 @@
 						<p>Password: ' . $pass . '</p>
 						<p>As a nominator you must choose students to become GTAs, and rank them against each other.</p>
 
-						<p>To start doing so <a href="http://raspbiripi.ddns.net/webpages/nominator.php">click here</a>.</p>
+						<p>To start doing so <a href="http://' . getHostURL()  . 'nominator.php">click here</a>.</p>
 					</body>
 
 					<footer>

@@ -385,7 +385,7 @@
 				<tr>
 					<td>List all publications, and prove citation:</td>
 					<td></td>
-					<td><textarea rows="5" cols="50" name="publications" id="publications" required></textarea></td>
+					<td><textarea rows="5" cols="50" name="publications" id="publications"></textarea></td>
 				</tr>
 
 				<tr><td>&emsp;</td></tr>

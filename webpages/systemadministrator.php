@@ -24,7 +24,7 @@
 		$headers .= "Content-type:text/html;charset=UTF-8" . "\r\n";
 		$headers .= 'From: <automatedcop4710@gmail.com>' . "\r\n";
 
-		//mail($to, $subject, $message, $headers);
+		mail($to, $subject, $message, $headers);
 
 		//SQL Query - Insert GC User
 		$sql="
@@ -80,7 +80,7 @@
 			$headers .= "Content-type:text/html;charset=UTF-8" . "\r\n";
 			$headers .= 'From: <automatedcop4710@gmail.com>' . "\r\n";
 
-			//mail($to, $subject, $message, $headers);
+			mail($to, $subject, $message, $headers);
 		}
 	
 		//Since names of the columns and the max number is known, iterate through the users one at a time
@@ -145,7 +145,7 @@
 			$headers .= "Content-type:text/html;charset=UTF-8" . "\r\n";
 			$headers .= 'From: <automatedcop4710@gmail.com>' . "\r\n";
 
-			//mail($to, $subject, $message, $headers);
+			mail($to, $subject, $message, $headers);
 		}
 	
 		//Since names of the columns and the max number is known, iterate through the users one at a time

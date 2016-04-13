@@ -1,4 +1,6 @@
 <?php
+	include_once(dirname(__FILE__).'/../config/config.php');
+
 	function getNominatorEmailBody($nominator, $nominee, $uid)
 	{
 		$msg = '<html>
@@ -13,7 +15,7 @@
 
 						<p>In order to finalize their nomination, you must verify their information.</p>
 
-						<p><a href="http://raspbiripi.ddns.net/webpages/verify.php?u=' . $uid . '">Click here</a> to verify their information.</p>
+						<p><a href="http://' . getHostURL()  . 'verify.php?u=' . $uid . '">Click here</a> to verify their information.</p>
 					</body>
 
 					<footer>

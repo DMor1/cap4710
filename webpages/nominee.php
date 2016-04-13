@@ -77,9 +77,9 @@
 		$sql="
 			UPDATE nominees 
 				SET 
-				is_curr_phd = " . $_POST["isPhd"] . ",
-				num_sem_as_grad = " . $_POST["numGradSemesters"] . ",
-				speak_test_id = " . $_POST["passSpeak"] . ",
+				is_curr_phd = '" . $_POST["isPhd"] . "',
+				num_sem_as_grad = '" . $_POST["numGradSemesters"] . "',
+				speak_test_id = '" . $_POST["passSpeak"] . "',
 				cummulative_gpa =  '" . $_POST["GPA"] . "',
 				num_sem_as_gta = '" . $_POST["numGtaSemesters"] . "',
 				phd_advisor_name =  '" . $_POST["advisorName"] . "'
@@ -226,7 +226,9 @@
 				<tr>
 					<td colspan="4"><h2>Fill out your GTA application</h2></td>
 					<td>
-						<input type="button" href='logout.php' class="logout" value="Log Out">
+						<a href="logout.php">
+							<input type="button" class="logout" value="Log Out">
+						</a>
 					</td>
 				</tr>
 
@@ -317,6 +319,12 @@
 				</tr>
 
 				<tr>
+					<td>How many semesters have you worked as a GTA?</td>
+					<td></td>
+					<td><input type="text" name="numGtaSemesters" id="numGtaSemesters" /></td>
+				</tr>
+
+				<tr>
 					<td>Have you passed the SPEAK test?</td>
 					<td></td>
 					<td>
@@ -381,7 +389,7 @@
 			<script>
 				var index_current_ad=5;
 				var num_Ad=1; var num_course=1;
-				var index_current_course=16;
+				var index_current_course=17;
 			
 			</script>
 			

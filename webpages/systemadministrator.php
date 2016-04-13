@@ -3,7 +3,7 @@
 	include_once("login_check.php"); //This must come first, import checkrole function
 	include_once("db.php"); //Connect to database and initialize session
 	include_once("email_templates/gcemail.php");
-	include_once("email_templates/jobemail.php")
+	include_once("email_templates/jobemail.php");
 
 	//role_id = 1 for system administrator
 	//verify role and kick off if not system administrator
@@ -191,10 +191,10 @@
 				</tr>
 
 				<tr class="list">
-					<td>Member Name</td>
-					<td>Member Email</td>
-					<td>Member Username</td>
-					<td>Member Password</td>
+					<td>GC Member Name</td>
+					<td>GC Member Email</td>
+					<td>GC Member Username</td>
+					<td>GC Member Password</td>
 					<td></td>
 				</tr>
 
@@ -204,6 +204,28 @@
 					<td><input type = "text" id = "GCUserName1" name = "GCUserName1" required   pattern="^[-a-zA-Z ]*" /></td>
 					<td><input type = "password" id = "GCUserPassword1" name = "GCUserPassword1" required /></td>
 					<td><input type="button" class="buttons" value="Add" onclick="addGC()" /></td>
+				</tr>
+
+				<tr><td>&emsp;</td></tr>
+
+				<tr>
+					<td>Nominators:</td>
+				</tr>
+
+				<tr class="list">
+					<td>Nominator's Name</td>
+					<td>Nominator's Email</td>
+					<td>Nominator's Username</td>
+					<td>Nominator's Password</td>
+					<td></td>
+				</tr>
+
+				<tr class="list">
+					<td><input type = "text" id = "nomName1" name = "nomName1" required pattern="^[-a-zA-Z ]*"  /></td>
+					<td><input type = "email" id = "nomEmail1" name = "nomEmail1" required /></td>
+					<td><input type = "text" id = "nomUserName1" name = "nomUserName1" required pattern="^[-a-zA-Z ]*" /></td>
+					<td><input type = "password" id = "nomUserPassword1" name = "nomUserPassword1" required /></td>
+					<td><input type="button" class="buttons" value="Add" onclick="addNom()" /></td>
 				</tr>
 
 				<tr><td>&emsp;</td></tr>
@@ -243,32 +265,67 @@
 
 			<script>
 			
-			var iii=5;
+			var iii=6;
 			var z=1;
-			function addGC(){
-					var table=document.getElementById("table");
-					var row=table.insertRow(iii++);
-					row.className='list';
-					var cell1=row.insertCell(0);
-					var cell2=row.insertCell(1);
-					var cell3=row.insertCell(2);
-					var cell4=row.insertCell(3);
-					var cell5=row.insertCell(4);
-					
-					z++;
-					cell1.innerHTML='<input type="text" id="GCName'+z+'" name="GCName'+z+'" required   pattern="^[-a-zA-Z ]*"  />';
-					cell2.innerHTML='<input type="email" id="GCEmail'+z+'" name="GCEmail'+z+'" required />';
-					cell3.innerHTML='<input type="text" id="GCUserName'+z+'" name="GCUserName'+z+'" required   pattern="^[-a-zA-Z ]*" />'; 
-					cell4.innerHTML='<input type="password" id="GCUserPassword'+z+'" name=""GCUserPassword'+z+'" required />';
-					cell5.innerHTML='<input type="button" class="buttons" value="remove" onclick="removeGC(iii)" required />';
-     
-					table.appendChild('row');
+			var nomRows=10;
+			var nomNum=1;
+
+			function addGC()
+			{
+				var table=document.getElementById("table");
+				var row=table.insertRow(iii++);
+				nomRows++;
+				row.className='list';
+				var cell1=row.insertCell(0);
+				var cell2=row.insertCell(1);
+				var cell3=row.insertCell(2);
+				var cell4=row.insertCell(3);
+				var cell5=row.insertCell(4);
+				
+				z++;
+				cell1.innerHTML='<input type="text" id="GCName'+z+'" name="GCName'+z+'" required   pattern="^[-a-zA-Z ]*"  />';
+				cell2.innerHTML='<input type="email" id="GCEmail'+z+'" name="GCEmail'+z+'" required />';
+				cell3.innerHTML='<input type="text" id="GCUserName'+z+'" name="GCUserName'+z+'" required   pattern="^[-a-zA-Z ]*" />'; 
+				cell4.innerHTML='<input type="password" id="GCUserPassword'+z+'" name=""GCUserPassword'+z+'" required />';
+				cell5.innerHTML='<input type="button" class="buttons" value="Remove" onclick="removeGC(iii)" required />';
+ 
+				table.appendChild('row');
 			}
 			
-			function removeGC(input){
+			function removeGC(input)
+			{
 				document.getElementById('table').deleteRow(--input);
+				nomRows--;
 				z--;
 				iii--;
+			}
+
+			function addNom()
+			{
+				var table=document.getElementById("table");
+				var row=table.insertRow(nomRows++);
+				row.className='list';
+				var cella=row.insertCell(0);
+				var cellb=row.insertCell(1);
+				var cellc=row.insertCell(2);
+				var celld=row.insertCell(3);
+				var celle=row.insertCell(4);
+				
+				nomNum++;
+				cella.innerHTML='<input type="text" id="nomName'+nomNum+'" name="nomName'+nomNum+'" required   pattern="^[-a-zA-X ]*"  />';
+				cellb.innerHTML='<input type="email" id="nomEmail'+nomNum+'" name="nomEmail'+nomNum+'" required />';
+				cellc.innerHTML='<input type="text" id="nomUserName'+nomNum+'" name="nomUserName'+nomNum+'" required   pattern="^[-a-zA-Z ]*" />'; 
+				celld.innerHTML='<input type="password" id="nomUserPassword'+nomNum+'" name=""nomUserPassword'+nomNum+'" required />';
+				celle.innerHTML='<input type="button" class="buttons" value="Remove" onclick="removeNom(nomRows)" required />';
+ 
+				table.appendChild('row');
+			}
+
+			function removeNom(input)
+			{
+				document.getElementById('table').deleteRow(--input);
+				nomRows--;
+				nomNum--;
 			}
 			</script>
 		</form>

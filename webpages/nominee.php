@@ -139,18 +139,18 @@
 		if ($conn->query($sql) === TRUE){/*echo "New record created successfully2<br>";*/}
 		else {echo "Error: " . $sql . "<br>" . $conn->error;}
 
-		$to = getUserEmail($nominator_user_id);
+		$to = getUserEmail($_SESSION["u"]);
 		$subject = "Please verify the information of the nominee";
 		$nominee = $_POST["nomineeName"];
 		$nominator = "Test Nominator Line 139";
 		$uid = $_POST["u"];
-		$message = getNomineeEmailBody($nominator, $nominee, $uid); 
+		$message = getNominatorEmailBody($nominator, $nominee, $uid); 
 
 		$headers = "MIME-Version: 1.0" . "\r\n";
 		$headers .= "Content-type:text/html;charset=UTF-8" . "\r\n";
 		$headers .= 'From: <automatedcop4710@gmail.com>' . "\r\n";
 
-		mail($to, $subject, $message, $headers);
+		//mail($to, $subject, $message, $headers);
 
 		echo "Thank you for your submission";	
 		

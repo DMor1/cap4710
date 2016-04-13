@@ -84,13 +84,14 @@
 		$subject = "You have been chosen as a member of the Graduate Committee";
 		$name = $_POST["nomineeName"];
 		$nomName = $_SESSION["name"];
-		$message = getNomineeEmailBody($name, $nomName, $uid); 
+		$nator = $_SESSION["user_id"]; 
+		$message = getNomineeEmailBody($name, $nomName, $uid, $nator); 
 
 		$headers = "MIME-Version: 1.0" . "\r\n";
 		$headers .= "Content-type:text/html;charset=UTF-8" . "\r\n";
 		$headers .= 'From: <automatedcop4710@gmail.com>' . "\r\n";
 
-		mail($to, $subject, $message, $headers);
+		//mail($to, $subject, $message, $headers);
 	
 		//Close connection to database
 		$conn->close();

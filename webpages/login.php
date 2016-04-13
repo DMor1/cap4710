@@ -99,11 +99,13 @@
 	</head>
 
 	<body>
-		<div class="loginscreen">
-			<h1>GTASS Login</h1>
-
+		<div class="loginscreen" style="padding-top:100px;">
 			<form method="post" action="<?php echo $_SERVER['PHP_SELF']; ?>">
 				<table>
+					<tr style="text-align:center;">
+						<td colspan="3"><h1>GTASS Login</h1></td>
+					</tr>
+
 					<tr>
 						<td>Username:</td>
 						<td>&emsp;</td>

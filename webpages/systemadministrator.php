@@ -3,6 +3,7 @@
 	include_once("login_check.php"); //This must come first, import checkrole function
 	include_once("db.php"); //Connect to database and initialize session
 	include_once("email_templates/gcemail.php");
+	include_once("email_templates/jobemail.php")
 
 	//role_id = 1 for system administrator
 	//verify role and kick off if not system administrator
@@ -12,7 +13,7 @@
 	if(!empty($_POST))
 	{
 
-		$to = "newmark.robert@gmail.com";
+		$to = "";
 		$subject = "You have been chosen as the chair of the Graduate Committee";
 		$user = $_POST["chairUsername"];
 		$pass = $_POST["chairPassword"];
@@ -68,7 +69,7 @@
 
 		for($x = 1; $x<=$maxkeyint; $x++)
 		{
-			$to = "newmark.robert@gmail.com";
+			$to = "";
 			$subject = "You have been chosen as a member of the Graduate Committee";
 			$user = $_POST["GCUserName".$x];
 			$pass = $_POST["GCUserPassword".$x];

@@ -18,7 +18,6 @@
 	if(!empty($_POST))
 	{
 		$nominee_user_id = $_POST["u"];
-		$GLOBALS['uid'] = $nominee_user_id;
 
 		// TODO: Check Daniel's notes to see what else is remaining that isn't here
 	
@@ -80,6 +79,7 @@
 				num_sem_as_grad = " . $_POST["numGradSemesters"] . ",
 				speak_test_id = " . $_POST["passSpeak"] . ",
 				cummulative_gpa =  '" . $_POST["GPA"] . "',
+				num_sem_as_gta = '" . $_POST["numGtaSemesters"] . "',
 				phd_advisor_name =  '" . $_POST["advisorName"] . "'
 				WHERE nominee_user_id = " . $nominee_user_id . "
 				AND session_id = (select max(session_id) from sessions)";
@@ -138,7 +138,7 @@
 		$to = "";
 		$subject = "Please verify the information of the nominee";
 		$nominee = $_POST["nomineeName"];
-		$nominator = $nominators[$i]->name;
+		$nominator = "";
 		$uid = $_POST["u"];
 		$message = getNomineeEmailBody($nominator, $nominee, $uid); 
 
@@ -147,6 +147,12 @@
 		$headers .= 'From: <automatedcop4710@gmail.com>' . "\r\n";
 
 		mail($to, $subject, $message, $headers);
+
+		echo $to;
+
+		echo $natorid;
+
+		echo $message;
 		
 		echo "Thank you for your submission";	
 		

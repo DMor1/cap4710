@@ -80,7 +80,7 @@
 		}
 
 
-		$to = "newmark.robert@gmail.com";
+		$to = "";
 		$subject = "You have been chosen as a member of the Graduate Committee";
 		$name = $_POST["nomineeName"];
 		$nomName = $_SESSION["name"];

@@ -3,7 +3,7 @@
 	{
 		$msg = '<html>
 					<head>
-						<title> Please verify the information of a nominee</title>
+						<title>Please verify the information of a nominee</title>
 					</head>
 
 					<body>

@@ -3,9 +3,9 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Generation Time: Apr 04, 2016 at 02:43 AM
+-- Generation Time: Apr 14, 2016 at 03:59 AM
 -- Server version: 5.5.44-0+deb8u1
--- PHP Version: 5.6.17-0+deb8u1
+-- PHP Version: 5.6.19-0+deb8u1
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET time_zone = "+00:00";
@@ -74,9 +74,13 @@ CREATE TABLE `nominees` (
   `num_sem_as_grad` int(11) DEFAULT NULL,
   `num_sem_as_gta` int(11) DEFAULT NULL,
   `is_curr_phd` tinyint(1) NOT NULL,
-  `is_new_phd` tinyint(1) NOT NULL
+  `is_new_phd` tinyint(1) NOT NULL,
+  `cummulative_gpa` varchar(255) NOT NULL,
+  `phd_advisor_name` varchar(255) NOT NULL,
+  `receiveNomination` date DEFAULT NULL,
+  `respondNomination` date DEFAULT NULL,
+  `verifiedNomination` date DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-
 
 -- --------------------------------------------------------
 
@@ -107,7 +111,7 @@ CREATE TABLE `roles` (
 
 INSERT INTO `roles` (`role_id`, `description`) VALUES
 (1, 'System Administrator'),
-(2, 'GC Chair'),
+(2, 'GC Committee'),
 (3, 'Nominator'),
 (4, 'Nominee');
 
@@ -137,12 +141,6 @@ CREATE TABLE `sessions` (
   `initiation_date` date NOT NULL,
   `verify_deadline_date` date NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-
---
--- Dumping data for table `sessions`
---
-
-
 
 -- --------------------------------------------------------
 
@@ -185,8 +183,7 @@ CREATE TABLE `users` (
 --
 
 INSERT INTO `users` (`user_id`, `name`, `phonenumber`, `pid`, `email`, `username`, `password`) VALUES
-(1, 'System Admin', '', '', 'admin@test.com', 'admin', '098f6bcd4621d373cade4e832627b4f6'),
-
+(1, 'System Admin', '', '', 'admin@test.com', 'admin', '098f6bcd4621d373cade4e832627b4f6');
 
 -- --------------------------------------------------------
 
@@ -204,8 +201,7 @@ CREATE TABLE `user_roles` (
 --
 
 INSERT INTO `user_roles` (`role_id`, `user_id`) VALUES
-(1, 1),
-
+(1, 1);
 
 --
 -- Indexes for dumped tables
@@ -294,7 +290,7 @@ ALTER TABLE `user_roles`
 -- AUTO_INCREMENT for table `courses`
 --
 ALTER TABLE `courses`
-  MODIFY `course_id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `course_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 --
 -- AUTO_INCREMENT for table `roles`
 --
@@ -304,7 +300,7 @@ ALTER TABLE `roles`
 -- AUTO_INCREMENT for table `sessions`
 --
 ALTER TABLE `sessions`
-  MODIFY `session_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
+  MODIFY `session_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 --
 -- AUTO_INCREMENT for table `speak_test`
 --
@@ -314,7 +310,7 @@ ALTER TABLE `speak_test`
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `user_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=35;
+  MODIFY `user_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=144;
 --
 -- AUTO_INCREMENT for table `user_roles`
 --
@@ -325,49 +321,49 @@ ALTER TABLE `user_roles`
 --
 
 --
+-- Constraints for table `advisors`
+--
+ALTER TABLE `advisors`
+  ADD CONSTRAINT `advisors_fk1` FOREIGN KEY (`user_id`) REFERENCES `users` (`user_id`);
+
+--
 -- Constraints for table `courses_taken`
 --
 ALTER TABLE `courses_taken`
-  ADD CONSTRAINT `courses_taken_fk1` FOREIGN KEY (`course_id`) REFERENCES `courses` (`course_id`),
-  ADD CONSTRAINT `courses_taken_fk2` FOREIGN KEY (`user_id`) REFERENCES `users` (`User_ID`);
+  ADD CONSTRAINT `courses_taken_fk1` FOREIGN KEY (`course_id`) REFERENCES `courses` (`course_id`) ON DELETE CASCADE,
+  ADD CONSTRAINT `courses_taken_fk2` FOREIGN KEY (`user_id`) REFERENCES `users` (`user_id`);
 
 --
 -- Constraints for table `nominees`
 --
 ALTER TABLE `nominees`
   ADD CONSTRAINT `nominees_fk1` FOREIGN KEY (`session_id`) REFERENCES `sessions` (`session_id`),
-  ADD CONSTRAINT `nominees_fk2` FOREIGN KEY (`nominee_user_id`) REFERENCES `users` (`User_ID`),
-  ADD CONSTRAINT `nominees_fk3` FOREIGN KEY (`nominated_by_user_id`) REFERENCES `users` (`User_ID`),
-  ADD CONSTRAINT `nominees_fk4` FOREIGN KEY (`speak_test_id`) REFERENCES `speak_test` (`Speak_test_id`);
+  ADD CONSTRAINT `nominees_fk2` FOREIGN KEY (`nominee_user_id`) REFERENCES `users` (`user_id`),
+  ADD CONSTRAINT `nominees_fk3` FOREIGN KEY (`nominated_by_user_id`) REFERENCES `users` (`user_id`),
+  ADD CONSTRAINT `nominees_fk4` FOREIGN KEY (`speak_test_id`) REFERENCES `speak_test` (`speak_test_id`);
 
 --
 -- Constraints for table `publications`
 --
 ALTER TABLE `publications`
   ADD CONSTRAINT `publications_fk1` FOREIGN KEY (`session_id`) REFERENCES `sessions` (`session_id`),
-  ADD CONSTRAINT `publications_fk2` FOREIGN KEY (`nominee_user_id`) REFERENCES `users` (`User_ID`);
+  ADD CONSTRAINT `publications_fk2` FOREIGN KEY (`nominee_user_id`) REFERENCES `users` (`user_id`);
 
 --
 -- Constraints for table `scores`
 --
 ALTER TABLE `scores`
   ADD CONSTRAINT `scores_fk1` FOREIGN KEY (`session_id`) REFERENCES `sessions` (`session_id`),
-  ADD CONSTRAINT `scores_fk2` FOREIGN KEY (`nominee_user_id`) REFERENCES `users` (`User_ID`),
-  ADD CONSTRAINT `scores_fk3` FOREIGN KEY (`gc_user_id`) REFERENCES `users` (`User_ID`);
+  ADD CONSTRAINT `scores_fk2` FOREIGN KEY (`nominee_user_id`) REFERENCES `users` (`user_id`),
+  ADD CONSTRAINT `scores_fk3` FOREIGN KEY (`gc_user_id`) REFERENCES `users` (`user_id`);
 
 --
 -- Constraints for table `user_roles`
 --
 ALTER TABLE `user_roles`
-  ADD CONSTRAINT `user_roles_fk2` FOREIGN KEY (`user_id`) REFERENCES `users` (`user_id`) ON DELETE CASCADE,
-  ADD CONSTRAINT `user_roles_fk1` FOREIGN KEY (`role_id`) REFERENCES `roles` (`role_id`);
+  ADD CONSTRAINT `user_roles_fk1` FOREIGN KEY (`role_id`) REFERENCES `roles` (`role_id`),
+  ADD CONSTRAINT `user_roles_fk2` FOREIGN KEY (`user_id`) REFERENCES `users` (`user_id`) ON DELETE CASCADE;
 
---
--- Constraints for table `advisors`
---  
-ALTER TABLE `advisors` ADD CONSTRAINT `advisors_fk1` FOREIGN KEY (`user_id`) REFERENCES `users`(`user_id`) ON DELETE RESTRICT ON UPDATE RESTRICT;
-  
-  
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;

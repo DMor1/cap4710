@@ -1,6 +1,7 @@
 <?php
 	include_once("login_check.php"); //This must come first, import checkrole function
 	include_once("db.php"); //Connect to database and initialize session
+
 	
 	check_role(2); //Verify valid role - kick off if not gcchair type
 		
@@ -158,11 +159,11 @@
 								else{echo '<span class="currentColumn">Name of Nominator</span>';}
 								
 								echo '</th>';
-								echo '<th>Name of nominee</th>';     
-								echo '<th>Rank by Nominator</th>';
-								echo '<th>Student Status</th>';
+								echo '<th>Name of Nominee</th>';     
+								echo '<th>Rank of Nominee</th>';
+								echo '<th>Existing Student?</th>';
 								echo '<th>' . $gcqueryrow["score_list"] . '</th>';
-								echo '<th>Average</th>';        
+								echo '<th>Average Score</th>';        
 								echo '<th>';
 								if($orderby!="this_gc_score")
 								{echo '<a href="' . $_SERVER['PHP_SELF'] . '?sort=this_gc_score&order='.$order.'">Score</a>';}
@@ -171,12 +172,16 @@
 								echo '</tr>';
 								$session_id = $gcqueryrow["session_id"]; // only need to store this once for later
 							}
+							if($gcqueryrow["is_new_phd"] == 0)
+								$existing="Yes";							
+							else
+								$existing="No";
 							
-						echo '<tr>';
+						echo '<tr style="text-align:center;">';
 						echo '	<td>' . $gcqueryrow["nominator_name"] . '</td>';
 						echo '	<td>' . $gcqueryrow["nominee_name"] . '</td>';
 						echo '	<td>' . $gcqueryrow["ranking"] . '</td>';
-						echo '	<td>' . $gcqueryrow["is_new_phd"] . '</td>';
+						echo '	<td>' . $existing . '</td>';
 						echo '	<td>' . $gcqueryrow["score_list"] . '</td>';
 						echo '	<td>' . $gcqueryrow["score_avg"] . '</td>';
 						echo '	<td>

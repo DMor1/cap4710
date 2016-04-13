@@ -326,7 +326,7 @@
 				<tr>
 					<td>How many semesters have you worked as a GTA?</td>
 					<td></td>
-					<td><input type="text" name="numGtaSemesters" id="numGtaSemesters" /></td>
+					<td><input type="text" name="numGtaSemesters" id="numGtaSemesters" required/></td>
 				</tr>
 
 				<tr><td>&emsp;</td></tr>

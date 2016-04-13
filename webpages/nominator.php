@@ -146,25 +146,25 @@
 				<tr>
 					<td>Name of Nominee</td>
 					<td></td>
-					<td><input type = "text" name = "nomineeName" id="nomineeName"></td>
+					<td><input type = "text" name = "nomineeName" id="nomineeName" required></td>
 				</tr>
 
 				<tr>
 					<td>Nominee Ranking</td>
 					<td></td>
-					<td><input type = "text" name = "nomineeRanking" id="nomineeRanking"></td>
+					<td><input type = "text" name = "nomineeRanking" id="nomineeRanking" required></td>
 				</tr>
 				
 				<tr>
 					<td>PID of Nominee</td>
 					<td></td>
-					<td><input type = "text" name = "nomineePID" id="nomineePID"></td>
+					<td><input type = "text" name = "nomineePID" id="nomineePID" required></td>
 				</tr>
 				
 				<tr>
 					<td>Email of Nominee</td>
 					<td></td>
-					<td><input type = "email" name = "nomineeEmail" id="nomineeEmail"></td>
+					<td><input type = "email" name = "nomineeEmail" id="nomineeEmail" required></td>
 				</tr>
 				
 				<tr>

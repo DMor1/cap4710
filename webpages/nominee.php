@@ -249,7 +249,7 @@
 				<tr>
 					<td>Name of current Ph.D. advisor</td>
 					<td></td>
-					<td><input type="text" name="advisorName" id="advisorName" /></td>
+					<td><input type="text" name="advisorName" id="advisorName" required/></td>
 				</tr>
 
 				<tr>
@@ -265,10 +265,10 @@
 				</tr>
 
 				<tr class="list" id='advisor'>
-					<td><input type="text" name="past1" id="past1" /></td>
+					<td><input type="text" name="past1" id="past1" required/></td>
 					<td></td>
-					<td><input type="text" name="startAdvisor1" id="startAdvisor1" /></td>
-					<td><input type="text" name="endAdvisor1" id="endAdvisor1" /></td>
+					<td><input type="text" name="startAdvisor1" id="startAdvisor1" required/></td>
+					<td><input type="text" name="endAdvisor1" id="endAdvisor1" required/></td>
 					<td><input type="button" class='buttons' value="Add" onclick="addAdvisor()" id="button_advisor"/></td>
 				</tr>
 
@@ -277,25 +277,25 @@
 				<tr>
 					<td>Name</td>
 					<td></td>
-					<td><input type="text" name="nomineeName" id="nomineeName" value="<?php echo $nomineeUserRow["name"]; ?>"/></td>
+					<td><input type="text" name="nomineeName" id="nomineeName" value="<?php echo $nomineeUserRow["name"]; ?>" required/></td>
 				</tr>
 
 				<tr>
 					<td>PID</td>
 					<td></td>
-					<td><input type="text" name="pid" id="pid" value="<?php echo $nomineeUserRow["pid"]; ?>" /></td>
+					<td><input type="text" name="pid" id="pid" value="<?php echo $nomineeUserRow["pid"]; ?>" required/></td>
 				</tr>
 
 				<tr>
 					<td>Email</td>
 					<td></td>
-					<td><input type="email" name="nomineeEmail" id="nomineeEmail" value="<?php echo $nomineeUserRow["email"]; ?>" /></td>
+					<td><input type="email" name="nomineeEmail" id="nomineeEmail" value="<?php echo $nomineeUserRow["email"]; ?>" required/></td>
 				</tr>
 
 				<tr>
 					<td>Phone number</td>
 					<td></td>
-					<td><input type="tel" name="nomineePhone" id="nomineePhone" value="<?php echo $nomineeUserRow["phonenumber"]; ?>"/></td>
+					<td><input type="tel" name="nomineePhone" id="nomineePhone" value="<?php echo $nomineeUserRow["phonenumber"]; ?>" required/></td>
 				</tr>
 
 				<tr>
@@ -313,7 +313,7 @@
 				<tr>
 					<td>How many semesters have you been a graduate student?</td>
 					<td></td>
-					<td><input type="text" name="numGradSemesters" id="numGradSemesters" /></td>
+					<td><input type="text" name="numGradSemesters" id="numGradSemesters" required/></td>
 				</tr>
 
 				<tr>
@@ -345,11 +345,11 @@
 
 				<tr class="list">
 					<td>
-						<input type="text" name="course1" id="course1" />
+						<input type="text" name="course1" id="course1" required/>
 					</td>
 					<td></td>
 					<td>
-						<input type="text" name="grade1" id="grade1" />
+						<input type="text" name="grade1" id="grade1" required/>
 					</td>
 					<td></td>
 					<td><input type="button" class="buttons" value="Add" onclick="addCourse()" /></td>
@@ -360,20 +360,20 @@
 				<tr>
 					<td>Enter your cumulative GPA for the above courses:</td>
 					<td></td>
-					<td><input type="text" name="GPA" id="GPA" /></td>
+					<td><input type="text" name="GPA" id="GPA" required/></td>
 				</tr>
 
 				<tr>
 					<td>List all publications, and prove citation:</td>
 					<td></td>
-					<td><textarea rows="5" cols="50" name="publications" id="publications"></textarea></td>
+					<td><textarea rows="5" cols="50" name="publications" id="publications" required></textarea></td>
 				</tr>
 
 				<tr><td>&emsp;</td></tr>
 
 				<tr>
 					<td colspan="5" class="submitrow">
-						<input type="submit" class="buttons" value="Submit">
+						<input type="submit" class="buttons" value="Submit" required>
 					</td>
 				</tr>
 			</table>

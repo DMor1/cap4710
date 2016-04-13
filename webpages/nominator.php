@@ -27,7 +27,7 @@
 		{
 			// create user_role record
 			$user_id = $conn->insert_id;
-			$GLOBALS['uid'] = $user_id;
+			$_SESSION['u'] = $user_id;
 
 			//SQL Query - Insert user role 
 			//user role = 4 for nominee
@@ -80,11 +80,12 @@
 		}
 
 
-		$to = "newmark.robert@gmail.com";
-		$subject = "You have been chosen as a member of the Graduate Committee";
+		$to = $_POST["nomineeEmail"];
+		$subject = "You have been nominated to be a GTA";
 		$name = $_POST["nomineeName"];
-		$nomName = $_SESSION["name"];
-		$message = getNomineeEmailBody($name, $nomName, $uid); 
+		$natorName = $_SESSION["name"];
+		$natorId = $_SESSION["user_id"]; //Nominator id 
+		$message = getNomineeEmailBody($name, $natorName, $_SESSION["u"], $natorId); 
 
 		$headers = "MIME-Version: 1.0" . "\r\n";
 		$headers .= "Content-type:text/html;charset=UTF-8" . "\r\n";
@@ -122,8 +123,16 @@
 			<tr>
 				<td><h2>Nominate a student to become a GTA</h2></td>
 				<td>&emsp;&emsp;&emsp;&emsp;</td>
-				<td><input type="button" href='changepassword.php' class="logout" value="Change Password"></td>
-				<td><input type="button" href='logout.php' class="logout" value="Log Out"></td>
+				<td>
+					<a href="changepassword.php">
+						<input type="button" class="logout" value="Change Password">
+					</a>
+				</td>
+				<td>
+					<a href="logout.php">
+						<input type="button" class="logout" value="Log Out">
+					</a>
+				</td>
 			</tr>
 		</table>
 

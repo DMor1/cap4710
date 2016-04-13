@@ -1,5 +1,5 @@
 <?php
-	function getNomineeEmailBody($name, $nomName, $uid)
+	function getNomineeEmailBody($name, $nomName, $uid, $nator)
 	{
 		$msg = '<html>
 					<head>
@@ -16,8 +16,7 @@
 						<p>After you have you successfully entered your information and submitted, your nominator will
 						 then look, and verify, your information.</p> 
 
-						<p><a href="http://raspbiripi.ddns.net/webpages/nominee.php?u=' . $uid . '>Click here</a> to fill 
-						out your nominee form.</p>"
+						<p><a href="http://raspbiripi.ddns.net/webpages/nominee.php?u=' . $uid . '&nator=' . $nator .'">Click here</a> to fill out your nominee form.</p>
 					</body>
 
 					<footer>

@@ -6,7 +6,17 @@
 	include_once("email_templates/nominatoremail.php");
 
 	//Declare variables
-	$nominee_user_id = $_GET["u"]; // user_id
+	if(isset($_GET['u'])) {
+		$nominee_user_id = $_GET["u"]; // user_id
+		$_SESSION['u'] = $nominee_user_id;
+	}
+
+	if(isset($_GET['nator'])){
+		$nominator_user_id = $_GET["nator"]; //Nominator user id
+		$_SESSION['nator']=$nominator_user_id;
+	}
+		
+	
 	$numberOfNominators = 0;
 	$nomineeUserRow = ""; // will be overwritten with mysql row data
 
@@ -16,9 +26,6 @@
 	//Continue if form was submitted (POST is not empty)
 	if(!empty($_POST))
 	{
-		$nominee_user_id = $_POST["u"];
-		$GLOBALS['uid'] = $nominee_user_id;
-
 		// TODO: Check Daniel's notes to see what else is remaining that isn't here
 	
 		// loop through and insert advisors
@@ -53,21 +60,21 @@
 			{
 				$sql="
 					INSERT into advisors (user_id, advisor_name, start_year, end_year)
-					VALUES(" . $nominee_user_id . ",'" . $_POST["past".$i] . "'," .  $_POST["startAdvisor".$i] . "," . $_POST["endAdvisor".$i] . ")";
+					VALUES(" . $_SESSION['u'] . ",'" . $_POST["past".$i] . "'," .  $_POST["startAdvisor".$i] . "," . $_POST["endAdvisor".$i] . ")";
 			
 				if ($conn->query($sql) === TRUE){/*echo "New record created successfully2<br>";*/}
 				else {echo "Error: " . $sql . "<br>" . $conn->error;}	
 			}
-		}	
-	
+		}
+
 		// Update users table
 		$sql="
 			UPDATE users 
-				SET name = '" . $_POST["nomineeName"] . "',
+			SET name = '" . $_POST["nomineeName"] . "',
 				pid = '" . $_POST["pid"] . "',
 				phonenumber = '" . $_POST["nomineePhone"] . "'
-			WHERE user_id = " . $nominee_user_id;
-		
+			WHERE user_id = '" . $_SESSION['u'] . "'";
+	
 			if ($conn->query($sql) === TRUE){/*echo "New record created successfully2<br>";*/}
 			else {echo "Error: " . $sql . "<br>" . $conn->error;}	
 	
@@ -75,12 +82,13 @@
 		$sql="
 			UPDATE nominees 
 				SET 
-				is_curr_phd = " . $_POST["isPhd"] . ",
-				num_sem_as_grad = " . $_POST["numGradSemesters"] . ",
-				speak_test_id = " . $_POST["passSpeak"] . ",
+				is_curr_phd = '" . $_POST["isPhd"] . "',
+				num_sem_as_grad = '" . $_POST["numGradSemesters"] . "',
+				speak_test_id = '" . $_POST["passSpeak"] . "',
 				cummulative_gpa =  '" . $_POST["GPA"] . "',
+				num_sem_as_gta = '" . $_POST["numGtaSemesters"] . "',
 				phd_advisor_name =  '" . $_POST["advisorName"] . "'
-				WHERE nominee_user_id = " . $nominee_user_id . "
+				WHERE nominee_user_id = " . $_SESSION['u'] . "
 				AND session_id = (select max(session_id) from sessions)";
 		
 		if ($conn->query($sql) === TRUE){/*echo "New record created successfully2<br>";*/}
@@ -119,7 +127,7 @@
 			if($conn->query($sql)===TRUE)
 			{
 				$sql="INSERT INTO courses_taken (course_id,user_id)
-				VALUES (" . $conn->insert_id . "," . $nominee_user_id . ")";
+				VALUES (" . $conn->insert_id . "," . $_SESSION['u'] . ")";
 				
 				if ($conn->query($sql) === TRUE){/*echo "New record created successfully2<br>";*/}
 				else {echo "Error: " . $sql . "<br>" . $conn->error;}	
@@ -129,27 +137,24 @@
 		// create publications record
 		$sql="
 			INSERT into publications (session_id, nominee_user_id, publication_name_and_citations)
-			VALUES((select max(session_id) from sessions)," . $nominee_user_id . ",'" . $_POST["publications"] . "')";
+			VALUES((select max(session_id) from sessions)," . $_SESSION['u'] . ",'" . $_POST["publications"] . "')";
 		
 		if ($conn->query($sql) === TRUE){/*echo "New record created successfully2<br>";*/}
 		else {echo "Error: " . $sql . "<br>" . $conn->error;}
 
-		for($i = 0; $i<$numberOfNominators;$i++)
-		{
-			$to = "newmark.robert@gmail.com";
-			$subject = "You have been chosen as a member of the Graduate Committee";
-			$nominee = $_POST["nomineeName"];
-			$nominator = $nominators[$i]->name;
-			$uid = $_POST["u"];
-			$message = getNomineeEmailBody($nominator, $nominee, $uid); 
+		$to = getUserEmail($_SESSION["nator"]);
+		$subject = "Please verify the information of the nominee";
+		$nominee = $_POST["nomineeName"];
+		$nominator = getUserName($_SESSION["nator"]);
+		$uid = $_POST["u"];
+		$message = getNominatorEmailBody($nominator, $nominee, $uid); 
 
-			$headers = "MIME-Version: 1.0" . "\r\n";
-			$headers .= "Content-type:text/html;charset=UTF-8" . "\r\n";
-			$headers .= 'From: <automatedcop4710@gmail.com>' . "\r\n";
+		$headers = "MIME-Version: 1.0" . "\r\n";
+		$headers .= "Content-type:text/html;charset=UTF-8" . "\r\n";
+		$headers .= 'From: <automatedcop4710@gmail.com>' . "\r\n";
 
-			mail($to, $subject, $message, $headers);
-		}	
-		
+		mail($to, $subject, $message, $headers);
+
 		echo "Thank you for your submission";	
 		
 		die();
@@ -226,7 +231,9 @@
 				<tr>
 					<td colspan="4"><h2>Fill out your GTA application</h2></td>
 					<td>
-						<input type="button" href='logout.php' class="logout" value="Log Out">
+						<a href="logout.php">
+							<input type="button" class="logout" value="Log Out">
+						</a>
 					</td>
 				</tr>
 
@@ -317,6 +324,14 @@
 				</tr>
 
 				<tr>
+					<td>How many semesters have you worked as a GTA?</td>
+					<td></td>
+					<td><input type="text" name="numGtaSemesters" id="numGtaSemesters" /></td>
+				</tr>
+
+				<tr><td>&emsp;</td></tr>
+
+				<tr>
 					<td>Have you passed the SPEAK test?</td>
 					<td></td>
 					<td>
@@ -330,8 +345,11 @@
 						<?php if(intval($nomineeUserRow["speak_test_id"])==3){echo " checked ";}?>> Graduated from a U.S. institution
 					</td>
 				</tr>
+				
+				<tr><td>&emsp;</td></tr>
 
 				<tr>
+
 					<td COLSPAN="3">List all graduate-level courses you have completed, as well as the grade you received for each:</td>
 				</tr>
 
@@ -381,7 +399,7 @@
 			<script>
 				var index_current_ad=5;
 				var num_Ad=1; var num_course=1;
-				var index_current_course=16;
+				var index_current_course=17;
 			
 			</script>
 			

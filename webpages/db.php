@@ -1,4 +1,7 @@
 <?php
+	//error_reporting(E_ALL);
+	//ini_set('display_errors', 1);
+
 	//Initialize Session
 	session_start();
 
@@ -15,7 +18,7 @@
 	if ($conn->connect_error) {
 		//Kill and exit script and print error message
     	die("Connection failed: " . $conn->connect_error);
-	} 
+	} 	
 
 	//Select default database to query
 	mysqli_select_db($conn, $dbName);
@@ -49,16 +52,34 @@
 	}
 	
 	function getUserEmail($user_id)
-	{
+	{		
+		global $conn;
 		$returnValue = "error@raspbiripi.ddns.net";
 		$sql = "SELECT email FROM users WHERE user_id = " . $user_id;
+
 		$result=mysqli_query($conn,$sql);
 		if ($result)
 		{
 			$row=mysqli_fetch_array($result);
 			$returnValue=$row["email"];
 		}
+
+		return $returnValue;
+	}
+
+	function getUserName($user_id) {
+		global $conn;
+		$returnValue = "Name Not Found";
+		$sql = "SELECT name FROM users WHERE user_id = " . $user_id;
 		
+		$result=mysqli_query($conn,$sql);
+		
+		if ($result)
+		{
+			$row=mysqli_fetch_array($result);
+			$returnValue=$row["name"];
+		}
+
 		return $returnValue;
 	}
 ?>

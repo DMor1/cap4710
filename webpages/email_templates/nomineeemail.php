@@ -11,7 +11,7 @@
 					<body>
 						<p>Dear ' . $name . ',</p>
 
-						<p>Nominator ' . $nomName . ' has nominated to you be a GTA.</p>
+						<p>' . $nomName . ' has nominated to you be a GTA.</p>
 
 						<p>If you wish to accept this nomination, follow the link provided and fill out the form.</p>
 

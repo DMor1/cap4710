@@ -4,8 +4,6 @@
 	include_once("db.php"); //Connect to database and initialize session
 	include_once("email_templates/nomineeemail.php");
 
-	//TODO: Email users on submit
-
 	//role_id = 3 for Nominators
 	//Verify valid role - kick off if not nominator
 	check_role(3); 
@@ -93,7 +91,7 @@
 		$headers .= "Content-type:text/html;charset=UTF-8" . "\r\n";
 		$headers .= 'From: <automatedcop4710@gmail.com>' . "\r\n";
 
-		//mail($to, $subject, $message, $headers);
+		mail($to, $subject, $message, $headers);
 	
 		//Close connection to database
 		$conn->close();

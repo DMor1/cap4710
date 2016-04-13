@@ -24,7 +24,7 @@
 		$headers .= "Content-type:text/html;charset=UTF-8" . "\r\n";
 		$headers .= 'From: <automatedcop4710@gmail.com>' . "\r\n";
 
-		mail($to, $subject, $message, $headers);
+		//mail($to, $subject, $message, $headers);
 
 		//SQL Query - Insert GC User
 		$sql="
@@ -80,7 +80,7 @@
 			$headers .= "Content-type:text/html;charset=UTF-8" . "\r\n";
 			$headers .= 'From: <automatedcop4710@gmail.com>' . "\r\n";
 
-			mail($to, $subject, $message, $headers);
+			//mail($to, $subject, $message, $headers);
 		}
 	
 		//Since names of the columns and the max number is known, iterate through the users one at a time
@@ -92,6 +92,71 @@
 			$sql="
 				INSERT into users (name, email, username, password)
 				VALUES('" . $_POST["GCName".$i] . "','" .  $_POST["GCEmail".$i] . "','" . $_POST["GCUserName".$i] . "','" . md5($_POST["GCUserPassword".$i]) . "')";
+			
+			//Execute query
+			if($conn->query($sql)===TRUE)
+			{
+				//SQL Query - add user roles
+				$sql="
+					INSERT INTO user_roles (user_id,role_id)
+					VALUES (" . $conn->insert_id . ",2)";
+				
+				//Execute query
+				if ($conn->query($sql) === TRUE)
+				{
+					//Query successful
+					/*echo "New record created successfully2<br>";*/
+				}
+				else 
+				{
+					//Query failed
+					echo "Error: " . $sql . "<br>" . $conn->error;
+				}	
+			}
+		
+		}
+	
+	
+		//add nominator
+		$maxkeyint = intval("0");
+		foreach($_POST as $key=>$value)
+		{
+	  		if(preg_match('/GCName/',$key))
+	  		{
+		  		$temp_key = intval(filter_var($key, FILTER_SANITIZE_NUMBER_INT));
+		  		
+		  		
+				if($temp_key > $maxkeyint)
+					$maxkeyint = $temp_key;
+	  		}
+		}	
+
+		for($x = 1; $x<=$maxkeyint; $x++)
+		{
+			$to = $_POST["nomEmail".$x];
+			$subject = "You have been chosen as a Nominator";
+			$user = $_POST["nomUserName".$x];
+			$pass = $_POST["nomUserPassword".$x];
+			$name = $_POST["nomName".$x];
+			$role = "Nominator";
+			$message = getJobEmailBody($name, $user , $pass); 
+					
+			$headers = "MIME-Version: 1.0" . "\r\n";
+			$headers .= "Content-type:text/html;charset=UTF-8" . "\r\n";
+			$headers .= 'From: <automatedcop4710@gmail.com>' . "\r\n";
+
+			//mail($to, $subject, $message, $headers);
+		}
+	
+		//Since names of the columns and the max number is known, iterate through the users one at a time
+		for($i = 1; $i<=$maxkeyint; $i++)
+		{
+			//insert user $i
+			//insert user_role for user
+			//GCName1=GCEmail1=GCUserName1=GCUserPassword1=
+			$sql="
+				INSERT into users (name, email, username, password)
+				VALUES('" . $_POST["nomName".$i] . "','" .  $_POST["nomEmail".$i] . "','" . $_POST["nomUserName".$i] . "','" . md5($_POST["nomUserPassword".$i]) . "')";
 			
 			//Execute query
 			if($conn->query($sql)===TRUE)
@@ -115,7 +180,6 @@
 			}
 		
 		}
-	
 		//SQL Query - Create/Insert new session
 		$sql="
 			INSERT INTO sessions (start_date, end_date, initiation_date, verify_deadline_date)

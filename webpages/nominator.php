@@ -55,7 +55,8 @@
 					nominated_by_user_id,
 					ranking,
 					is_curr_phd,
-					is_new_phd)
+					is_new_phd,
+					receiveNomination)
 				VALUES 
 				(
 					(select max(session_id) from sessions),
@@ -63,7 +64,8 @@
 					'" . $_SESSION["user_id"]."',
 					'" . $_POST["nomineeRanking"] . "',
 					'" . $_POST["currentPhd"] . "',
-					'" . $_POST["newPhd"] . "'
+					'" . $_POST["newPhd"] . "',
+					CURDATE()
 				)";		
 			
 			//Execute query
@@ -91,7 +93,7 @@
 		$headers .= "Content-type:text/html;charset=UTF-8" . "\r\n";
 		$headers .= 'From: <automatedcop4710@gmail.com>' . "\r\n";
 
-		mail($to, $subject, $message, $headers);
+		//mail($to, $subject, $message, $headers);
 	
 		//Close connection to database
 		$conn->close();
@@ -161,7 +163,7 @@
 				<tr>
 					<td>Nominee Ranking</td>
 					<td></td>
-					<td><input type = "text" name = "nomineeRanking" id="nomineeRanking" required></td>
+					<td><input type = "number" name = "nomineeRanking" id="nomineeRanking" required></td>
 				</tr>
 				
 				<tr>
@@ -180,8 +182,8 @@
 					<td>Is the nominee currently a Ph.D. </br> student in the Department of </br> Computer Science?</td>
 					<td>&emsp;&emsp;</td>
 					<td>
-						<input type="radio" name="currentPhd" class="radios" value="yes"> Yes<br>
-						<input type="radio" name="currentPhd" class="radios" value="no"> No
+						<input type="radio" name="currentPhd" class="radios" value='1'> Yes<br>
+						<input type="radio" name="currentPhd" class="radios" value='0'> No
 					</td>
 				</tr>
 				
@@ -189,8 +191,8 @@
 					<td>Is the nominee a newly admitted </br> Ph.D. student?</td>
 					<td></td>
 					<td>
-						<input type="radio" name="newPhd" class="radios" value="yes"> Yes<br>
-						<input type="radio" name="newPhd" class="radios" value="no"> No
+						<input type="radio" name="newPhd" class="radios" value='1'> Yes<br>
+						<input type="radio" name="newPhd" class="radios" value='0'> No
 					</td>
 				</tr>
 				

@@ -157,8 +157,8 @@
 								
 								echo '</th>';
 								echo '<th>Name of nominee</th>';     
-								echo '<th>Rank</th>';
-								echo '<th>Student status</th>';
+								echo '<th>Rank by Nominator</th>';
+								echo '<th>Student Status</th>';
 								echo '<th>' . $gcqueryrow["score_list"] . '</th>';
 								echo '<th>Average</th>';        
 								echo '<th>';
@@ -178,7 +178,7 @@
 						echo '	<td>' . $gcqueryrow["score_list"] . '</td>';
 						echo '	<td>' . $gcqueryrow["score_avg"] . '</td>';
 						echo '	<td>
-									<input type="text" name="scoreValue' . $rowNumber . '" value="' . $gcqueryrow["this_gc_score"] . '">
+									<input type="number" min="1" max="100" name="scoreValue' . $rowNumber . '" value="' . $gcqueryrow["this_gc_score"] . ' ">
 									<input type="hidden" name="nomineeUserID' . $rowNumber . '"
 														 id="nomineeUserID' . $rowNumber .'"						value="' . $gcqueryrow["nominee_user_id"] . '">
 								</td>';

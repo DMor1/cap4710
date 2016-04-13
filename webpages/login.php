@@ -2,18 +2,12 @@
 	//Import database connection and user session
 	include_once("db.php");
 
-	//Verify session and cookie match
-	if(isset($_COOKIE["user_id"]) && 
-	   isset($_SESSION["user_id"]) && 
-	   $_COOKIE["user_id"] == $_SESSION["user_id"])
-	{
-		//User already logged in - Trash the session?
-		//setcookie("user_id", $row["user_id"], -1, "/");
-		unset($_SESSION["user_id"]);
-		unset($_SESSION["role_id"]);
-		unset($_SESSION["name"]);
-		unset($_SESSION["email"]);
-	}
+	
+	//User already logged in - Trash the session?
+	unset($_SESSION["user_id"]);
+	unset($_SESSION["role_id"]);
+	unset($_SESSION["name"]);
+	unset($_SESSION["email"]);
 	
 	//Execute if POST is NOT empty (Form Submitted)
 	if(!empty($_POST))
@@ -22,7 +16,7 @@
 		$sql="
 		SELECT
 			users.user_id as user_id,
-			users.name as name,
+			users.lname || ', ' || users.fname as name,
 			users.email as email,
 			user_roles.role_id as role_id
 		FROM
@@ -62,11 +56,17 @@
 			//Free memory from query result
 			mysqli_free_result($result);
 		}
+		else 
+		{
+			//Query failed
+			echo "Error: " . $sql . "<br>" . $conn->error;
+		}	
 
 		//Close connection to database
 		mysqli_close($conn);
 	
 		// Redirect the user to their proper page.
+		debug_print($_SESSION["role_id"]);
 		if($_SESSION["role_id"]==1)
 		{
 			// System admin

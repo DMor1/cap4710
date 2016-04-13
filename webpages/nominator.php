@@ -27,7 +27,7 @@
 		{
 			// create user_role record
 			$user_id = $conn->insert_id;
-			$_SESSION['nee'] = $user_id;
+			$_SESSION['u'] = $user_id;
 
 			//SQL Query - Insert user role 
 			//user role = 4 for nominee
@@ -83,9 +83,9 @@
 		$to = $_POST["nomineeEmail"];
 		$subject = "You have been chosen as a member of the Graduate Committee";
 		$name = $_POST["nomineeName"];
-		$nomName = $_SESSION["name"];
-		$nator = $_SESSION["user_id"]; 
-		$message = getNomineeEmailBody($name, $nomName, $_SESSION["nee"], $nator); 
+		$natorName = $_SESSION["name"];
+		$natorId = $_SESSION["user_id"]; //Nominator id 
+		$message = getNomineeEmailBody($name, $natorName, $_SESSION["u"], $natorId); 
 
 		$headers = "MIME-Version: 1.0" . "\r\n";
 		$headers .= "Content-type:text/html;charset=UTF-8" . "\r\n";

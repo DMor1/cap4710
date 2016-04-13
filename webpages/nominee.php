@@ -11,8 +11,11 @@
 		$_SESSION['u'] = $nominee_user_id;
 	}
 
-	if(isset($_GET['nator']))
+	if(isset($_GET['nator'])){
 		$nominator_user_id = $_GET["nator"]; //Nominator user id
+		$_SESSION['nator']=$nominator_user_id;
+	}
+		
 	
 	$numberOfNominators = 0;
 	$nomineeUserRow = ""; // will be overwritten with mysql row data
@@ -139,11 +142,10 @@
 		if ($conn->query($sql) === TRUE){/*echo "New record created successfully2<br>";*/}
 		else {echo "Error: " . $sql . "<br>" . $conn->error;}
 
-		$to = getUserEmail($_SESSION["u"]);
-		echo $to;
+		$to = getUserEmail($_SESSION["nator"]);
 		$subject = "Please verify the information of the nominee";
 		$nominee = $_POST["nomineeName"];
-		$nominator = getUserName($_SESSION["u"]);
+		$nominator = getUserName($_SESSION["nator"]);
 		$uid = $_POST["u"];
 		$message = getNominatorEmailBody($nominator, $nominee, $uid); 
 

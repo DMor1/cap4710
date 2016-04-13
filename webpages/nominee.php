@@ -7,6 +7,7 @@
 
 	//Declare variables
 	$nominee_user_id = $_GET["u"]; // user_id
+	$nominator_user_id = $_GET["nator"]; //Nominator user id
 	$numberOfNominators = 0;
 	$nomineeUserRow = ""; // will be overwritten with mysql row data
 
@@ -134,21 +135,18 @@
 		if ($conn->query($sql) === TRUE){/*echo "New record created successfully2<br>";*/}
 		else {echo "Error: " . $sql . "<br>" . $conn->error;}
 
-		for($i = 0; $i<$numberOfNominators;$i++)
-		{
-			$to = "newmark.robert@gmail.com";
-			$subject = "You have been chosen as a member of the Graduate Committee";
-			$nominee = $_POST["nomineeName"];
-			$nominator = $nominators[$i]->name;
-			$uid = $_POST["u"];
-			$message = getNomineeEmailBody($nominator, $nominee, $uid); 
+		$to = "";
+		$subject = "Please verify the information of the nominee";
+		$nominee = $_POST["nomineeName"];
+		$nominator = $nominators[$i]->name;
+		$uid = $_POST["u"];
+		$message = getNomineeEmailBody($nominator, $nominee, $uid); 
 
-			$headers = "MIME-Version: 1.0" . "\r\n";
-			$headers .= "Content-type:text/html;charset=UTF-8" . "\r\n";
-			$headers .= 'From: <automatedcop4710@gmail.com>' . "\r\n";
+		$headers = "MIME-Version: 1.0" . "\r\n";
+		$headers .= "Content-type:text/html;charset=UTF-8" . "\r\n";
+		$headers .= 'From: <automatedcop4710@gmail.com>' . "\r\n";
 
-			mail($to, $subject, $message, $headers);
-		}	
+		mail($to, $subject, $message, $headers);
 		
 		echo "Thank you for your submission";	
 		

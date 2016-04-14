@@ -1,7 +1,7 @@
 <?php
 	include_once(dirname(__FILE__).'/../config/config.php');
 
-	function getNomineeReminderEmail($fname, $lname, $nomName, $uid, $nator)
+	function getNomineeReminderEmail($neefname, $neelname, $nomfname, $nomlname, $uid, $nator)
 	{
 		$msg = '<html>
 					<head>
@@ -9,9 +9,9 @@
 					</head
 
 					<body>
-						<p>Dear ' . $fname . ' ' . $lname . ',</p>
+						<p>Dear ' . $neefname . ' ' . $neelname . ',</p>
 
-						<p>' . $nomName . ' has nominated to you be a GTA and this is your final reminder to complete the form in order to be considered as a GTA.</p>
+						<p>' . $nomfname . ' ' . $nomlname . ' has nominated to you be a GTA and this is your final reminder to complete the form in order to be considered as a GTA.</p>
 
 						<p>If you wish to accept this nomination, follow the link provided and fill out the form.</p>
 

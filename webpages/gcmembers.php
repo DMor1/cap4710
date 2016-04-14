@@ -261,6 +261,42 @@
 		 ?>
           
 		</form>
+		<br>
+		<br>
+		Sessions:
+		<?php
+		$sql = "select session_id from sessions order by session_id desc";
+		$session_id_results=mysqli_query($conn,$sql);
+		if(!$session_id_results){echo "Error: " . $sql . "<br>" . $conn->error; die();}
+		if($session_id_results)
+		{
+			$firstRow = true;
+			echo "<ul>";
+			while ($sess_id_row=mysqli_fetch_array($session_id_results))
+			{
+				echo '<li>';
+				
+				if($firstRow)
+				{
+					echo '<a href="' . $_SERVER['PHP_SELF'] . '">Session ' . $sess_id_row["session_id"] . ' (most recent)</a>';
+					$firstRow=false;
+				}
+				else
+				{
+					echo '<a href="' . $_SERVER['PHP_SELF'] . '?session_id=' . $sess_id_row["session_id"] . '">Session ' . $sess_id_row["session_id"] . '</a>';
+				}	
+				
+				echo '</li>';
+				
+			}
+			echo "</ul>";
+		}
+		else
+		{
+			echo "No past sessions"; // this really shouldn't be possible
+		}
+		?>
+		
 		<a href='logout.php'>Log out</a><br>
 		<a href='changepassword.php'>Change password</a>
 	</body>

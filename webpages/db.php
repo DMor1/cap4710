@@ -42,11 +42,11 @@
 		
 		//Set Semester
 		if($month < 5)
-			$semester = "Spring ";
+			$semester = "Spring";
 		else if($month >= 5 && $month < 8)
-			$semester = "Summer ";
+			$semester = "Summer";
 		else
-			$semester = "Fall ";
+			$semester = "Fall";
 		
 		//Return semester and year
 		return $semester . $year;	

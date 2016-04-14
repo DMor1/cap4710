@@ -182,11 +182,14 @@
 			}
 		
 		}
+
+		$semester = get_semesterString($_POST["verificationDeadline"]);
 		//SQL Query - Create/Insert new session
 		$sql="
-			INSERT INTO sessions (start_date, end_date, initiation_date, verify_deadline_date)
+			INSERT INTO sessions (start_date, session_name, end_date, initiation_date, verify_deadline_date)
 			VALUES 
-			(CURDATE(), 
+			(CURDATE(),'"
+			. $semester ."',
 			STR_TO_DATE('" . $_POST["nomineeResponseDeadline"] . "','%Y-%m-%d'),
 			STR_TO_DATE('" . $_POST["facultyNominationDeadline"] . "','%Y-%m-%d'),
 			STR_TO_DATE('" . $_POST["verificationDeadline"] . "','%Y-%m-%d'))";
@@ -195,17 +198,17 @@
 		if ($conn->query($sql) === TRUE)
 		{
 			/*echo "New record created successfully3<br>";*/
+			echo "Thank you for your submission";
 		}
 		else 
 		{
-			echo "Error: " . $sql . "<br>" . $conn->error;
+			echo "A session with that name already exists. Create a session with a different end date.";
 		}	
 		
 		//Close database connection
 		$conn->close();
 	
 		//Prompt user
-		echo "Thank you for your submission";
 		
 		//Kill script - dont render the rest
 		die();

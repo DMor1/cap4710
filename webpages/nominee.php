@@ -328,7 +328,7 @@
 				</tr>
 
 				<tr>
-					<td>How many semesters have you worked as a GTA?</td>
+					<td>How many semesters (including summers) have you worked as a GTA?</td>
 					<td></td>
 					<td><input type="text" name="numGtaSemesters" id="numGtaSemesters" required/></td>
 				</tr>

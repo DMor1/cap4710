@@ -190,6 +190,21 @@
 	<form method="post" action="<?php echo $_SERVER['PHP_SELF']; ?>">
 	  	<table class="gctable">        
 			<?php
+				$gcqueryresults=mysqli_query($conn,$sql);
+				$max_nominator_name = "";
+				while ($gcqueryrow=mysqli_fetch_array($gcqueryresults))
+					{
+						if(isset($gcqueryrow["gc_name_list"]))
+						{
+							if(strlen($gcqueryrow["gc_name_list"]) > strlen($max_nominator_name))
+							{
+								debug_print("in2");
+								$max_nominator_name=$gcqueryrow["gc_name_list"];	
+							}
+							
+						}
+					}
+				$gcqueryresults=mysqli_query($conn,$sql);
 				if ($gcqueryresults)
 				{
 					$rowNumber = 1;
@@ -208,7 +223,7 @@
 							echo '<th>Name of Nominee</th>';     
 							echo '<th>Rank</th>';
 							echo '<th>New Student?</th>';
-							echo $gcqueryrow["gc_name_list"];// don't provide a th for this one
+							echo $max_nominator_name;// don't provide a th for this one
 							echo '<th>';
 							if($_SESSION["gcmember_column"]=="score_avg")
 								{echo '<a href="' . $_SERVER['PHP_SELF'] . '?column=score_avg&order='.getReverseOrderString($_SESSION["gcmember_order"]).'">Average Score (' . $_SESSION["gcmember_order"] .')</a>';}

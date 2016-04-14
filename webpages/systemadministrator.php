@@ -359,7 +359,7 @@
 				cell2.innerHTML='<input type="text" id="GCLName'+z+'" name="GCLName'+z+'" required  pattern="^[-a-zA-Z ]*"  />';
 				cell3.innerHTML='<input type="email" id="GCEmail'+z+'" name="GCEmail'+z+'" required />';
 				cell4.innerHTML='<input type="text" id="GCUserName'+z+'" name="GCUserName'+z+'" required   pattern="^[-a-zA-Z ]*" />'; 
-				cell5.innerHTML='<input type="password" id="GCUserPassword'+z+'" name=""GCUserPassword'+z+'" required />';
+				cell5.innerHTML='<input type="password" id="GCUserPassword'+z+'" name="GCUserPassword'+z+'" required />';
 				cell6.innerHTML='<input type="button" class="buttons" value="Remove" onclick="removeGC(iii)" required />';
  
 				table.appendChild('row');
@@ -387,10 +387,10 @@
 				
 				nomNum++;
 				cella.innerHTML='<input type="text" id="nomFName'+nomNum+'" name="nomFName'+nomNum+'" required   pattern="^[-a-zA-X ]*"  />';
-				cellb.innerHTML='<input type = "text" id = "nomLName'+nomNum+'" name = "nomLName'+nomNum+'" required pattern="^[-a-z-A-Z ]*" />';
+				cellb.innerHTML='<input type="text" id="nomLName'+nomNum+'" name="nomLName'+nomNum+'" required pattern="^[-a-z-A-Z ]*" />';
 				cellc.innerHTML='<input type="email" id="nomEmail'+nomNum+'" name="nomEmail'+nomNum+'" required />';
 				celld.innerHTML='<input type="text" id="nomUserName'+nomNum+'" name="nomUserName'+nomNum+'" required   pattern="^[-a-zA-Z ]*" />'; 
-				celle.innerHTML='<input type="password" id="nomUserPassword'+nomNum+'" name=""nomUserPassword'+nomNum+'" required />';
+				celle.innerHTML='<input type="password" id="nomUserPassword'+nomNum+'" name="nomUserPassword'+nomNum+'" required />';
 				cellf.innerHTML='<input type="button" class="buttons" value="Remove" onclick="removeNom(nomRows)" required />';
  
 				table.appendChild('row');

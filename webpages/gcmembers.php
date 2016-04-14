@@ -275,6 +275,7 @@
 		 ?>
           
 		</form>
+		<hr>
 		<br>
 		<br>
 		Sessions:

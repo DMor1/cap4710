@@ -97,7 +97,7 @@
 	//$orderString = 
 
 	// default sort is nominator_name
-	$orderby = $_SESSION["gcmember_column"] . ' ' . $_SESSION["gcmember_order"]; 
+	$orderby = $_SESSION["gcmember_column"] . " " . $_SESSION["gcmember_order"]; 
 	
 	//debug_print($orderby);
 	// The MAX ... etc refers to the most recent session_id
@@ -147,9 +147,8 @@
 			nominees.*,
 			users.*,
 		(select avg(scores.score) from scores where scores.nominee_user_id = nominees.nominee_user_id
-		and scores.session_id = sessions.session_id
-		and scores.gc_user_id = " . $_SESSION["user_id"] . ") as score_avg,
-		(SELECT GROUP_CONCAT(score) FROM scores
+		and scores.session_id = sessions.session_id) as score_avg,
+		(SELECT GROUP_CONCAT(concat('<td>',score,'</td>') SEPARATOR '') FROM scores
 		where scores.nominee_user_id = nominees.nominee_user_id
 		AND scores.session_id = sessions.session_id
 		AND scores.gc_user_id != " . $_SESSION["user_id"] . "
@@ -158,7 +157,7 @@
 		where scores.nominee_user_id = nominees.nominee_user_id
 		AND scores.session_id = sessions.session_id
 		AND scores.gc_user_id = " . $_SESSION["user_id"] . ") as this_gc_score,
-		(SELECT GROUP_CONCAT(users.lname) FROM scores
+		(SELECT GROUP_CONCAT(concat('<th>',users.lname,',',users.fname,'</th>') SEPARATOR '') FROM scores
 		INNER JOIN users
 		ON users.user_id = gc_user_id
 		where scores.nominee_user_id = nominees.nominee_user_id
@@ -174,7 +173,7 @@
 	) q1
 	INNER JOIN users
 	ON users.user_id = q1.nominated_by_user_id
-	ORDER BY '" . $orderby . "'";
+	ORDER BY " . $orderby;
 	//debug_print($sql);
 	$gcqueryresults=mysqli_query($conn,$sql);
 	if(!$gcqueryresults){echo "Error: " . $sql . "<br>" . $conn->error; die();}
@@ -209,7 +208,7 @@
 								echo '<th>Name of Nominee</th>';     
 								echo '<th>Rank of Nominee</th>';
 								echo '<th>Existing Student?</th>';
-								echo '<th>Other Nominator\'s Scores</th>';
+								echo $gcqueryrow["gc_name_list"];// don't provide a th for this one
 								echo '<th>';
 								if($_SESSION["gcmember_column"]=="score_avg")
 								{echo '<a href="' . $_SERVER['PHP_SELF'] . '?column=score_avg&order='.getReverseOrderString($_SESSION["gcmember_order"]).'">Average Score (' . $_SESSION["gcmember_order"] .')</a>';}
@@ -229,7 +228,7 @@
 						echo '	<td>' . $gcqueryrow["nominee_name"] . '</td>';
 						echo '	<td>' . $gcqueryrow["ranking"] . '</td>';
 						echo '	<td>' . $existing . '</td>';
-						echo '	<td>' . $gcqueryrow["score_list"] . '</td>';
+						echo $gcqueryrow["score_list"]; // don't provide a td for this one
 						echo '	<td>' . $gcqueryrow["score_avg"] . '</td>';
 						if($readonly)
 						{

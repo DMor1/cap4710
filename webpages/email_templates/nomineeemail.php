@@ -1,7 +1,7 @@
 <?php
 	include_once(dirname(__FILE__).'/../config/config.php');
 
-	function getNomineeEmailBody($name, $nomName, $uid, $nator)
+	function getNomineeEmailBody($fname, $lname, $nomFName, $nomLName, $uid, $nator)
 	{
 		$msg = '<html>
 					<head>
@@ -9,9 +9,9 @@
 					</head
 
 					<body>
-						<p>Dear ' . $name . ',</p>
+						<p>Dear ' . $fname . ' ' . $lname . ',</p>
 
-						<p>' . $nomName . ' has nominated to you be a GTA.</p>
+						<p>' . $nomFName . ' ' . $nomLName . ' has nominated to you be a GTA.</p>
 
 						<p>If you wish to accept this nomination, follow the link provided and fill out the form.</p>
 

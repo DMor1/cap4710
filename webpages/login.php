@@ -6,6 +6,8 @@
 	//User already logged in - Trash the session?
 	unset($_SESSION["user_id"]);
 	unset($_SESSION["role_id"]);
+	unset($_SESSION["fname"]);
+	unset($_SESSION["lname"]);
 	unset($_SESSION["name"]);
 	unset($_SESSION["email"]);
 	
@@ -17,6 +19,8 @@
 		SELECT
 			users.user_id as user_id,
 			CONCAT(users.lname, ', ', users.fname) as name,
+			users.fname as fname,
+			users.lname as lname,
 			users.email as email,
 			user_roles.role_id as role_id
 		FROM
@@ -40,6 +44,8 @@
 				//Store session values
 				$_SESSION["user_id"] = $row["user_id"];
 				$_SESSION["role_id"] = $row["role_id"];
+				$_SESSION["fname"] = $row["fname"];
+				$_SESSION["lname"] = $row["lname"];
 				$_SESSION["name"] = $row["name"];
 				$_SESSION["email"] = $row["email"];
 

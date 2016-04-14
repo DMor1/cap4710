@@ -103,7 +103,7 @@
 	//$orderString = 
 
 	// default sort is nominator_name
-	$orderby = $_SESSION["gcmember_column"] . " " . $_SESSION["gcmember_order"]; 
+	$orderby = $_SESSION["gcmember_column"] . " " . $_SESSION["gcmember_order"] . ", ranking asc"; 
 	
 	//debug_print($orderby);
 	// The MAX ... etc refers to the most recent session_id
@@ -125,7 +125,7 @@
 		q1.nominated_by_user_id,
 		q1.speak_test_id,
 		q1.isverified,
-		q1.ranking,
+		q1.ranking as ranking,
 		q1.num_sem_as_grad,
 		q1.num_sem_as_gta,
 		q1.is_curr_phd,

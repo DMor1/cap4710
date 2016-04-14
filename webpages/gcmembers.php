@@ -1,7 +1,7 @@
 <?php
 	include_once("login_check.php"); //This must come first, import checkrole function
 	include_once("db.php"); //Connect to database and initialize session
-
+	include_once("config/config.php");
 	check_role(2); //Verify valid role - kick off if not gcchair type
 		
 	$updated_values=false; // for output to screen that scores have been updated or not on page load
@@ -196,7 +196,7 @@
 					$session_id = 999;
 					while ($gcqueryrow=mysqli_fetch_array($gcqueryresults))
 					{
-						if($rowNumber=="1")
+						if($rowNumber==1)
 						{								
 							echo '<tr class="gctable">';
 							echo '<th>';
@@ -211,8 +211,7 @@
 							echo $gcqueryrow["gc_name_list"];// don't provide a th for this one
 							echo '<th>';
 							if($_SESSION["gcmember_column"]=="score_avg")
-							{
-								echo '<a href="'.$_SERVER['PHP_SELF'].'?column=score_avg&order='.getReverseOrderString($_SESSION["gcmember_order"]).'">Average Score (' . $_SESSION["gcmember_order"] .')</a>';}
+								{echo '<a href="' . $_SERVER['PHP_SELF'] . '?column=score_avg&order='.getReverseOrderString($_SESSION["gcmember_order"]).'">Average Score (' . $_SESSION["gcmember_order"] .')</a>';}
 							else
 								{echo '<a href="' . $_SERVER['PHP_SELF'] . '?column=score_avg&order=asc">Average Score</a>';}
 							echo '</th>';
@@ -230,7 +229,7 @@
 						{
 							echo '<tr style="text-align:center;">';
 							echo '	<td>' . $gcqueryrow["nominator_name"] . '</td>';
-							echo '	<td>' . $gcqueryrow["nominee_name"] . '</td>';
+							echo '	<td> <a href="javascript:info('. $gcqueryrow["nominee_user_id"] . ')">' . $gcqueryrow["nominee_name"] . '</a></td>';
 							echo '	<td>' . $gcqueryrow["ranking"] . '</td>';
 							echo '	<td>' . $existing . '</td>';
 							echo $gcqueryrow["score_list"]; // don't provide a td for this one
@@ -242,13 +241,13 @@
 							else
 							{
 								echo '	<td>
-										<input type="number" min="1" max="100" name="scoreValue' . $rowNumber . '" placeholder="0" value="' . $gcqueryrow["this_gc_score"] . '">
+										<input type="number" min="1" max="100" name="scoreValue' . $rowNumber . '" value="' . $gcqueryrow["this_gc_score"] . '">
 										<input type="hidden" name="nomineeUserID' . $rowNumber . '"
 															 id="nomineeUserID' . $rowNumber .'"						value="' . $gcqueryrow["nominee_user_id"] . '">
 									</td>';
 							}
 							echo '</tr>';
-							//$rowNumber++;
+							$rowNumber++;
 						}
 						else
 						{	echo '<li>';
@@ -258,12 +257,10 @@
 								echo ' is not included in the list because "nominee has not responded" to their nomination.';
 							}
 							else
-								echo ' is not included in the list because "nominator has not verified the nominee information".';
+								echo ' is not included in the list because "nominator has not verified nominee’s information".';
 							echo '</li>';
 							echo "<hr>";
 						}
-
-						$rowNumber++;
 					}
 					// Free result set
 					mysqli_free_result($gcqueryresults);
@@ -323,7 +320,16 @@
 			<input type="button" class="logout" style="width:100px;" value="Log Out">
 		</a>
 	</body>
-
+	<script type="text/javascript">
+		function info(nid){
+			//alert(nid);	
+			var str="popupNominee.php";
+			var str1="<?php getHostURL()?>";
+			var url = str.concat(str1,"?nid=", nid);
+			window.open(url, 'win32', 'status=no,toolbar=no,scrollbar=yes,titlebar=no, menubar=no, resizable=yes, width=1076,height=768, directories=no, location=no');		
+			}
+	
+	</script>
 </html>
 <?php
 	//Close Database connection

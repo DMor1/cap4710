@@ -129,6 +129,7 @@
 		q1.lname AS lnominee_name,
 		CONCAT(q1.lname, ', ', q1.fname) as nominee_name,
 		q1.phonenumber AS nominee_phonenumber,
+		q1.respondNomination AS respondDate,
 		q1.pid AS nominee_pid,
 		q1.email AS nominee_email,		
 		users.fname AS fnominator_name,
@@ -189,63 +190,77 @@
 	<form method="post" action="<?php echo $_SERVER['PHP_SELF']; ?>">
 	  	<table class="gctable">        
 			<?php
-		
 				if ($gcqueryresults)
 				{
 					$rowNumber = 1;
 					$session_id = 999;
 					while ($gcqueryrow=mysqli_fetch_array($gcqueryresults))
 					{
-							if($rowNumber==1)
-							{								
-								echo '<tr class="gctable">';
-								echo '<th>';
-								if($_SESSION["gcmember_column"]=="nominator_name")
-								{echo '<a href="' . $_SERVER['PHP_SELF'] . '?column=nominator_name&order='.getReverseOrderString($_SESSION["gcmember_order"]).'">Name of Nominator (' . $_SESSION["gcmember_order"] .')</a>';}
-								else{echo '<a href="' . $_SERVER['PHP_SELF'] . '?column=nominator_name&order=asc">Name of Nominator</a>';}
-								
-								echo '</th>';
-								echo '<th>Name of Nominee</th>';     
-								echo '<th>Rank of Nominee</th>';
-								echo '<th>Existing Student?</th>';
-								echo $gcqueryrow["gc_name_list"];// don't provide a th for this one
-								echo '<th>';
-								if($_SESSION["gcmember_column"]=="score_avg")
-								{echo '<a href="' . $_SERVER['PHP_SELF'] . '?column=score_avg&order='.getReverseOrderString($_SESSION["gcmember_order"]).'">Average Score (' . $_SESSION["gcmember_order"] .')</a>';}
-								else{echo '<a href="' . $_SERVER['PHP_SELF'] . '?column=score_avg&order=asc">Average Score</a>';}
-								echo '</th>';
-								echo '<th>Your Score</th>';
-								echo '</tr>';
-								$session_id = $gcqueryrow["session_id"]; // only need to store this once for later
-							}
-							if($gcqueryrow["is_new_phd"] == 0)
-								$existing="Yes";							
-							else
-								$existing="No";
+						if($rowNumber==1)
+						{								
+							echo '<tr class="gctable">';
+							echo '<th>';
+							if($_SESSION["gcmember_column"]=="nominator_name")
+							{echo '<a href="' . $_SERVER['PHP_SELF'] . '?column=nominator_name&order='.getReverseOrderString($_SESSION["gcmember_order"]).'">Name of Nominator (' . $_SESSION["gcmember_order"] .')</a>';}
+							else{echo '<a href="' . $_SERVER['PHP_SELF'] . '?column=nominator_name&order=asc">Name of Nominator</a>';}
 							
-						echo '<tr style="text-align:center;">';
-						echo '	<td>' . $gcqueryrow["nominator_name"] . '</td>';
-						echo '	<td>' . $gcqueryrow["nominee_name"] . '</td>';
-						echo '	<td>' . $gcqueryrow["ranking"] . '</td>';
-						echo '	<td>' . $existing . '</td>';
-						echo $gcqueryrow["score_list"]; // don't provide a td for this one
-						echo '	<td>' . $gcqueryrow["score_avg"] . '</td>';
-						if($readonly)
+							echo '</th>';
+							echo '<th>Name of Nominee</th>';     
+							echo '<th>Rank of Nominee</th>';
+							echo '<th>New Student?</th>';
+							echo $gcqueryrow["gc_name_list"];// don't provide a th for this one
+							echo '<th>';
+							if($_SESSION["gcmember_column"]=="score_avg")
+							{echo '<a href="' . $_SERVER['PHP_SELF'] . '?column=score_avg&order='.getReverseOrderString($_SESSION["gcmember_order"]).'">Average Score (' . $_SESSION["gcmember_order"] .')</a>';}
+							else{echo '<a href="' . $_SERVER['PHP_SELF'] . '?column=score_avg&order=asc">Average Score</a>';}
+							echo '</th>';
+							echo '<th>Your Score</th>';
+							echo '</tr>';
+							$session_id = $gcqueryrow["session_id"]; // only need to store this once for later
+						}
+
+						if($gcqueryrow["is_new_phd"] == 0)
+							$existing="No";							
+						else
+							$existing="Yes";
+
+						if($gcqueryrow["isverified"] == 1)
 						{
-							echo '<td>' . $gcqueryrow["this_gc_score"] . '</td>';
+							echo '<tr style="text-align:center;">';
+							echo '	<td>' . $gcqueryrow["nominator_name"] . '</td>';
+							echo '	<td>' . $gcqueryrow["nominee_name"] . '</td>';
+							echo '	<td>' . $gcqueryrow["ranking"] . '</td>';
+							echo '	<td>' . $existing . '</td>';
+							echo $gcqueryrow["score_list"]; // don't provide a td for this one
+							echo '	<td>' . $gcqueryrow["score_avg"] . '</td>';
+							if($readonly)
+							{
+								echo '<td>' . $gcqueryrow["this_gc_score"] . '</td>';
+							}
+							else
+							{
+								echo '	<td>
+										<input type="number" min="1" max="100" name="scoreValue' . $rowNumber . '" value="' . $gcqueryrow["this_gc_score"] . '">
+										<input type="hidden" name="nomineeUserID' . $rowNumber . '"
+															 id="nomineeUserID' . $rowNumber .'"						value="' . $gcqueryrow["nominee_user_id"] . '">
+									</td>';
+							}
+							echo '</tr>';
+							$rowNumber++;
 						}
 						else
-						{
-							echo '	<td>
-									<input type="number" min="1" max="100" name="scoreValue' . $rowNumber . '" value="' . $gcqueryrow["this_gc_score"] . '">
-									<input type="hidden" name="nomineeUserID' . $rowNumber . '"
-														 id="nomineeUserID' . $rowNumber .'"						value="' . $gcqueryrow["nominee_user_id"] . '">
-								</td>';
+						{	echo '<li>';
+							echo $gcqueryrow["nominee_name"] . ' ';
+							if($gcqueryrow["respondDate"] == NULL)
+							{
+								echo ' is not included in the list because "nominee has not responded" to their nomination.';
+							}
+							else
+								echo ' is not included in the list because "nominator has not verified nominee’s information".';
+							echo '</li>';
+							echo "<hr>";
 						}
-						echo '</tr>';
-						$rowNumber++;
 					}
-					
 					// Free result set
 					mysqli_free_result($gcqueryresults);
 				}

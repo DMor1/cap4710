@@ -313,8 +313,12 @@
 		}
 		?>
 		
-		<a href='logout.php'>Log out</a><br>
-		<a href='changepassword.php'>Change password</a>
+		<a href="changepassword.php">
+			<input type="button" class="logout" style="width:175px;" value="Change Password">
+		</a>
+		<a href="logout.php">
+			<input type="button" class="logout" style="width:100px;" value="Log Out">
+		</a>
 	</body>
 
 </html>

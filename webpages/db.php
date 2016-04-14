@@ -12,6 +12,7 @@
 	$password = "pipipi";
 
 	//Create connection using specified credentials 
+	global $conn;
 	$conn = new mysqli($servername, $username, $password);
 
 	// Check connection for errors

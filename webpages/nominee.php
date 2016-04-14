@@ -157,7 +157,6 @@
 		$headers .= 'From: <automatedcop4710@gmail.com>' . "\r\n";
 
 		mail($to, $subject, $message, $headers);
-		echo $message;
 
 		echo "Thank you for your submission";	
 		

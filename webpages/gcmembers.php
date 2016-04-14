@@ -196,7 +196,7 @@
 					$session_id = 999;
 					while ($gcqueryrow=mysqli_fetch_array($gcqueryresults))
 					{
-						if($rowNumber==1)
+						if($rowNumber=="1")
 						{								
 							echo '<tr class="gctable">';
 							echo '<th>';
@@ -241,7 +241,7 @@
 							else
 							{
 								echo '	<td>
-										<input type="number" min="1" max="100" name="scoreValue' . $rowNumber . '" value="' . $gcqueryrow["this_gc_score"] . '">
+										<input type="number" min="1" max="100" name="scoreValue' . $rowNumber . '" placeholder="0" value="' . $gcqueryrow["this_gc_score"] . '">
 										<input type="hidden" name="nomineeUserID' . $rowNumber . '"
 															 id="nomineeUserID' . $rowNumber .'"						value="' . $gcqueryrow["nominee_user_id"] . '">
 									</td>';

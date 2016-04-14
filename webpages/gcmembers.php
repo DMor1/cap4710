@@ -341,7 +341,7 @@
 			//alert(nid);	
 			var str="popupNominee.php";
 			var str1="<?php getHostURL()?>";
-			var url = str.concat(str1,"?nid=", nid);
+			var url = str1.concat(str,"?nid=", nid);
 			window.open(url, 'win32', 'status=no,toolbar=no,scrollbar=yes,titlebar=no, menubar=no, resizable=yes, width=1076,height=768, directories=no, location=no');		
 			}
 	

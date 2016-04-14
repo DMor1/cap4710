@@ -249,7 +249,7 @@
 							}
 							echo '<td><input type="text" rows="1" cols="50" name="commentValue' . $rowNumber . '" id="commentValue' . $rowNumber . '"></td>';
 							echo '</tr>';
-							$rowNumber++;
+							
 						}
 						else
 						{	echo '<li>';
@@ -262,6 +262,7 @@
 								echo ' is not included in the list because "nominator has not verified nominee’s information".';
 							echo '</li>';
 						}
+						$rowNumber++;
 					}
 					// Free result set
 					mysqli_free_result($gcqueryresults);

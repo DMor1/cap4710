@@ -10,7 +10,7 @@
 	//Store user id
 	$nominee_user_id = $_GET["nid"]; 
 
-	echo $nominee_user_id;
+
 	//Continue if form was submitted (POST is not empty)
 	
 	
@@ -96,7 +96,7 @@
 	</head>
 
 	<body>
-		<h2> Information of <?php echo $nomineeUserRow["nominees_first_name"] ." " .$nomineeUserRow["nominator_last_name"]; ?></h2>
+		<h2> Information of <?php echo $nomineeUserRow["nominees_first_name"] ." " .$nomineeUserRow["nominees_last_name"]; ?></h2>
 		<table>
 				<tr>
 					<td>Name of the nominator:</td>

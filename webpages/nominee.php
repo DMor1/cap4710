@@ -4,6 +4,7 @@
 	//Import External Files 
 	include_once("db.php"); //Connect to database and initialize session
 	include_once("email_templates/nominatoremail.php");
+	include_once("util.php");
 
 	//Declare variables
 	if(isset($_GET['u'])) {
@@ -22,9 +23,18 @@
 
 	// get list of nominators
 	$nominatorobj = (object) array('name' => '', 'user_id' => '');
+
+	$sql="
+		SELECT end_date 
+		FROM sessions
+		WHERE session_id = (SELECT MAX(sessions.session_id) from sessions)
+		";
+
+	$result=mysqli_query($conn,$sql);
+	$date = mysqli_fetch_array($result);
 	
 	//Continue if form was submitted (POST is not empty)
-	if(!empty($_POST))
+	if(!empty($_POST) && compareDates(getCurrentDate(),$date['end_date']) != 1)
 	{
 		// TODO: Check Daniel's notes to see what else is remaining that isn't here
 	
@@ -160,6 +170,11 @@
 
 		echo "Thank you for your submission";	
 		
+		die();
+	}
+	elseif(compareDates(getCurrentDate(),$date['end_date']) == 1)
+	{
+		echo "You have missed the deadline to respond to your nomination, sorry";
 		die();
 	}
 	else

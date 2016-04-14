@@ -16,11 +16,11 @@
 		";
 
 	$result=mysqli_query($conn,$sql);
-	$date2 = mysqli_fetch_array($result);
+	$date = mysqli_fetch_array($result);
 
 
 	//Continue if form was submitted (POST is not empty)
-	if(!empty($_POST) && compareDates(getCurrentDate(),$date2['initiation_date']) != 1)
+	if(!empty($_POST) && compareDates(getCurrentDate(),$date['initiation_date']) != 1)
 	{
 		//SQL Query - Create nominee user
 		$sql="
@@ -122,7 +122,7 @@
 		//Exit script - dont render the rest of the page
 		die();
 	}
-	else if(compareDates(getCurrentDate(),$date2['initiation_date']) == 1)
+	else if(compareDates(getCurrentDate(),$date['initiation_date']) == 1)
 	{
 		echo "You have missed the deadline for nominations, sorry.";
 		die();

@@ -2,6 +2,7 @@
 	//Import External files
 	//include_once("login_check.php"); //This must come first, import checkrole function
 	include_once("db.php"); //Connect to database and initialize session
+	include_once("util.php");
 
 	//role_id = 3 for Nominators
 	//Verify valid role
@@ -10,8 +11,17 @@
 	//Store user id
 	$nominee_user_id = $_GET["u"]; 
 
+	$sql="
+		SELECT verify_deadline_date 
+		FROM sessions
+		WHERE session_id = (SELECT MAX(sessions.session_id) from sessions)
+		";
+
+	$result=mysqli_query($conn,$sql);
+	$date = mysqli_fetch_array($result);
+
 	//Continue if form was submitted (POST is not empty)
-	if(!empty($_POST))
+	if(!empty($_POST) && compareDates(getCurrentDate(),$date['verify_deadline_date']) != 1)
 	{
 		//Store user id		
 		$nominee_user_id = $_POST["u"];
@@ -61,6 +71,11 @@
 		}	
 	
 		//Exit script, don't render the rest of the page
+		die();
+	}
+	elseif(compareDates(getCurrentDate(),$date['verify_deadline_date']) == 1)
+	{
+		echo "You have missed the deadline to verify this information, sorry.";
 		die();
 	}
 	else

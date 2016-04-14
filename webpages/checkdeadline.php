@@ -25,7 +25,7 @@
 			$diff = dayDifference($currDate, $deadlineDate);
 
 			//If deadline is in two days
-			//if($diff === 2) {
+			if($diff === 2) {
 				//Query nominees
 				$sql = "SELECT nominee_user_id
 						FROM nominees
@@ -61,7 +61,7 @@
 						}						
 					}
 				}
-			//}
+			}
 		}
 	}
 

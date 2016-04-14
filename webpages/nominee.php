@@ -180,6 +180,7 @@
 			$nominators = array();
 			while ($row=mysqli_fetch_array($result))
 			{
+				$nominatorobj->fname = $row["fname"];
 				$nominatorobj->lname = $row["lname"];
 				$nominatorobj->user_id = $row["user_id"];
 				$nominators[$numberOfNominators] = $nominatorobj;
@@ -249,7 +250,7 @@
 							for($i = 0; $i<$numberOfNominators;$i++)
 							{
 								echo '<option value="' . $nominators[$i]->user_id
-								. '">' . $nominators[$i]->lname . '+ ' . $nominators[$i]->fname . '</option>';
+								. '">' . $nominators[$i]->fname . ' ' . $nominators[$i]->lname . '</option>';
 							}
 						?>
 						</select>

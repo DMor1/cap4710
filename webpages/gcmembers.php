@@ -216,6 +216,7 @@
 								{echo '<a href="' . $_SERVER['PHP_SELF'] . '?column=score_avg&order=asc">Average Score</a>';}
 							echo '</th>';
 							echo '<th>Your Score</th>';
+							echo '<th>Your Comment</th>';
 							echo '</tr>';
 							$session_id = $gcqueryrow["session_id"]; // only need to store this once for later
 						}
@@ -241,11 +242,12 @@
 							else
 							{
 								echo '	<td>
-										<input type="number" min="1" max="100" name="scoreValue' . $rowNumber . '" value="' . $gcqueryrow["this_gc_score"] . '">
+										<input type="number" min="1" max="100" name="scoreValue' . $rowNumber . '" placeholder = "0" value="' . $gcqueryrow["this_gc_score"] . '">
 										<input type="hidden" name="nomineeUserID' . $rowNumber . '"
 															 id="nomineeUserID' . $rowNumber .'"						value="' . $gcqueryrow["nominee_user_id"] . '">
 									</td>';
 							}
+							echo '<td><input type="text" rows="1" cols="50" name="commentValue' . $rowNumber . '" id="commentValue' . $rowNumber . '"></td>';
 							echo '</tr>';
 							$rowNumber++;
 						}
@@ -259,7 +261,6 @@
 							else
 								echo ' is not included in the list because "nominator has not verified nominee’s information".';
 							echo '</li>';
-							echo "<hr>";
 						}
 					}
 					// Free result set

@@ -258,7 +258,7 @@
 								echo ' is not included in the list because "nominee has not responded" to their nomination.';
 							}
 							else
-								echo ' is not included in the list because "nominator has not verified nominee’s information".';
+								echo ' is not included in the list because "nominator has not verified the nominee information".';
 							echo '</li>';
 							echo "<hr>";
 						}

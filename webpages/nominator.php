@@ -3,13 +3,24 @@
 	include_once("login_check.php"); //This must come first, import checkrole function
 	include_once("db.php"); //Connect to database and initialize session
 	include_once("email_templates/nomineeemail.php");
+	include_once("util.php");
 
 	//role_id = 3 for Nominators
 	//Verify valid role - kick off if not nominator
 	check_role(3); 
 
+	$sql="
+		SELECT initiation_date 
+		FROM sessions
+		WHERE session_id = (SELECT MAX(sessions.session_id) from sessions)
+		";
+
+	$result=mysqli_query($conn,$sql);
+	$date2 = mysqli_fetch_array($result);
+
+
 	//Continue if form was submitted (POST is not empty)
-	if(!empty($_POST))
+	if(!empty($_POST) && compareDates(getCurrentDate(),$date2['initiation_date']) != 1)
 	{
 		//SQL Query - Create nominee user
 		$sql="
@@ -109,6 +120,11 @@
 		echo "Thank you for your submission";
 
 		//Exit script - dont render the rest of the page
+		die();
+	}
+	else if(compareDates(getCurrentDate(),$date2['initiation_date']) == 1)
+	{
+		echo "You have missed the deadline for nominations, sorry.";
 		die();
 	}
 	else

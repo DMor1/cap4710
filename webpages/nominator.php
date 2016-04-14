@@ -19,7 +19,7 @@
 				'" . $_POST["nomineeLName"] . "',
 				'" . $_POST["nomineePID"] . "',
 				'" . $_POST["nomineeEmail"] . "',
-				'" . $_POST["nomineeFName"] . "')";	
+				'" . $_POST["nomineeEmail"] . "')";	
 	
 		//Execute sql query and continue if successful
 		if($conn->query($sql)===TRUE)

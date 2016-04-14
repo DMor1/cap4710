@@ -211,8 +211,9 @@
 							echo $gcqueryrow["gc_name_list"];// don't provide a th for this one
 							echo '<th>';
 							if($_SESSION["gcmember_column"]=="score_avg")
-							{echo '<a href="' . $_SERVER['PHP_SELF'] . '?column=score_avg&order='.getReverseOrderString($_SESSION["gcmember_order"]).'">Average Score (' . $_SESSION["gcmember_order"] .')</a>';}
-							else{echo '<a href="' . $_SERVER['PHP_SELF'] . '?column=score_avg&order=asc">Average Score</a>';}
+								{echo '<a href="' . $_SERVER['PHP_SELF'] . '?column=score_avg&order='.getReverseOrderString($_SESSION["gcmember_order"]).'">Average Score (' . $_SESSION["gcmember_order"] .')</a>';}
+							else
+								{echo '<a href="' . $_SERVER['PHP_SELF'] . '?column=score_avg&order=asc">Average Score</a>';}
 							echo '</th>';
 							echo '<th>Your Score</th>';
 							echo '</tr>';

@@ -401,9 +401,9 @@
 			</table>
 			
 			<script>
-				var index_current_ad=5;
+				var index_current_ad=6;
 				var num_Ad=1; var num_course=1;
-				var index_current_course=17;
+				var index_current_course=20;
 			
 			</script>
 			

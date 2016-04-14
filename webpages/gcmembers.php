@@ -100,6 +100,18 @@
 	$orderby = $_SESSION["gcmember_column"] . ' ' . $_SESSION["gcmember_order"]; 
 	
 	//debug_print($orderby);
+	// The MAX ... etc refers to the most recent session_id
+	$session_id_text = "(SELECT MAX(sessions.session_id) from sessions)";
+	// If $_GET["session_id"] is defined, then the user is only interested in seeing past history
+	// So change the session_id used for our query to that session_id
+	// And flag the page as read only
+	$readonly=false; //default
+	if(isset($_GET["session_id"]))
+	{
+		$readonly=true;
+		$session_id_text=$_GET["session_id"];
+	}
+	
 	$sql = "
 	SELECT 
 		q1.session_id,
@@ -158,7 +170,7 @@
 		USING(session_id)
 		INNER JOIN users 
 		ON users.user_id = nominees.nominee_user_id
-		WHERE sessions.session_id = (SELECT MAX(sessions.session_id) from sessions)
+		WHERE sessions.session_id = " . $session_id_text . "
 	) q1
 	INNER JOIN users
 	ON users.user_id = q1.nominated_by_user_id
@@ -219,11 +231,18 @@
 						echo '	<td>' . $existing . '</td>';
 						echo '	<td>' . $gcqueryrow["score_list"] . '</td>';
 						echo '	<td>' . $gcqueryrow["score_avg"] . '</td>';
-						echo '	<td>
+						if($readonly)
+						{
+							echo '<td>' . $gcqueryrow["this_gc_score"] . '</td>';
+						}
+						else
+						{
+							echo '	<td>
 									<input type="number" min="1" max="100" name="scoreValue' . $rowNumber . '" value="' . $gcqueryrow["this_gc_score"] . '">
 									<input type="hidden" name="nomineeUserID' . $rowNumber . '"
 														 id="nomineeUserID' . $rowNumber .'"						value="' . $gcqueryrow["nominee_user_id"] . '">
 								</td>';
+						}
 						echo '</tr>';
 						$rowNumber++;
 					}
@@ -233,8 +252,14 @@
 				}
 			?>
 		 </table> 
-          <input type="hidden" name="session_id" id="session_id" value="<?php echo $session_id; ?>">
-	 	<input type="submit" class="buttons" value="Submit" />
+		 <?php
+		 if(!$readonly)
+		{
+			echo '<input type="hidden" name="session_id" id="session_id" value="' . $session_id . '">
+					<input type="submit" class="buttons" value="Submit" />';
+		}
+		 ?>
+          
 		</form>
 		<a href='logout.php'>Log out</a><br>
 		<a href='changepassword.php'>Change password</a>

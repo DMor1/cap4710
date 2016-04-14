@@ -249,7 +249,7 @@
 							for($i = 0; $i<$numberOfNominators;$i++)
 							{
 								echo '<option value="' . $nominators[$i]->user_id
-								. '">' . $nominators[$i]->lname . '</option>';
+								. '">' . $nominators[$i]->lname . '+ ' . $nominators[$i]->fname . '</option>';
 							}
 						?>
 						</select>

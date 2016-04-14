@@ -206,7 +206,7 @@
 							
 							echo '</th>';
 							echo '<th>Name of Nominee</th>';     
-							echo '<th>Rank of Nominee</th>';
+							echo '<th>Rank</th>';
 							echo '<th>New Student?</th>';
 							echo $gcqueryrow["gc_name_list"];// don't provide a th for this one
 							echo '<th>';

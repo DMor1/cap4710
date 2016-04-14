@@ -16,7 +16,7 @@
 		$sql="
 		SELECT
 			users.user_id as user_id,
-			users.lname || ', ' || users.fname as name,
+			CONCAT(users.lname, ', ', users.fname) as name,
 			users.email as email,
 			user_roles.role_id as role_id
 		FROM

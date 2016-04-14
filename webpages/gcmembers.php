@@ -2,7 +2,6 @@
 	include_once("login_check.php"); //This must come first, import checkrole function
 	include_once("db.php"); //Connect to database and initialize session
 
-	
 	check_role(2); //Verify valid role - kick off if not gcchair type
 		
 	$updated_values=false; // for output to screen that scores have been updated or not on page load
@@ -50,21 +49,55 @@
 		}	
 		
 	}
-	/*
-	$order="asc";
-	if($_GET["order"]!=null || $_GET["order"]!="" )
+	
+	
+	function getReverseOrderString($input)
 	{
-		// TODO: this is a lil complicated, but basically the order of what something is per column has to be properly tracked in order to swap between asc and desc and there isn't enough time to really invest into it.
-		// It should pretty much swap between desc and asc if the SAME column is clicked
-		// and if a different column is clicked, it should use ASC as the default
-		// EST time: 2 hours? or 6 hours if no php experience, it's a pain/tedious/kinda difficult
-		$order = 
+		// This function will return either asc or desc (the opposite of) based on whatever is given as input.
+		if($input=="asc")
+			return "desc";
+		else if($input=="desc")
+			return "asc";
+		else
+			return "asc"; //default
+	}
+	// Get overrides whatever is in Session for ordering
+	// Get Order (asc/desc)
+	if($_GET["order"]=="asc")
+	{
+		$_SESSION["gcmember_order"] = "asc";
+	}
+	else if($_GET["order"]=="desc")
+	{
+		$_SESSION["gcmember_order"] = "desc";
 	}
 	
-	*/
+	// Get Column to order by
+	if($_GET["column"]=="nominator_name")
+	{
+		$_SESSION["gcmember_column"] = "nominator_name";
+	}
+	else if($_GET["column"]=="score_avg")
+	{
+		$_SESSION["gcmember_column"] = "score_avg";
+	}
+	
+	// If session is still null on the order and column to order by, init with defaults
+	// Init Order
+	if(!isset($_SESSION["gcmember_order"]))
+	{
+		$_SESSION["gcmember_order"] = "asc";
+	}
+	// Init field
+	if(!isset($_SESSION["gcmember_column"]))
+	{
+		$_SESSION["gcmember_column"] = "nominator_name";
+	}
+	
+	//$orderString = 
 
 	// default sort is nominator_name
-	$orderby = ($_GET["sort"]!=null || $_GET["sort"]!="" ) ? $orderby = $_GET["sort"] : "nominator_name"; 
+	$orderby = $_SESSION["gcmember_column"] . ' ' . $_SESSION["gcmember_order"]; 
 	
 	//debug_print($orderby);
 	$sql = "
@@ -82,11 +115,13 @@
 		q1.cummulative_gpa,
 		q1.fname AS fnominee_name,
 		q1.lname AS lnominee_name,
-		q1.name AS q1.lname || ', ' || AS q1.fname as nominee_name,
+		CONCAT(q1.lname, ', ', q1.fname) as nominee_name,
 		q1.phonenumber AS nominee_phonenumber,
 		q1.pid AS nominee_pid,
-		q1.email AS nominee_email,
-		users.name AS nominator_name,
+		q1.email AS nominee_email,		
+		users.fname AS fnominator_name,
+		users.lname AS lnominator_name,
+		CONCAT(users.lname, ', ', users.fname) as nominator_name,
 		users.phonenumber AS nominator_phonenumber,
 		users.pid AS nominator_pid,
 		users.email AS nominator_email,
@@ -107,11 +142,11 @@
 		AND scores.session_id = sessions.session_id
 		AND scores.gc_user_id != " . $_SESSION["user_id"] . "
 		ORDER BY gc_user_id asc) as score_list,
-		(SELECT GROUP_CONCAT(score) FROM scores
+		(SELECT score FROM scores
 		where scores.nominee_user_id = nominees.nominee_user_id
 		AND scores.session_id = sessions.session_id
 		AND scores.gc_user_id = " . $_SESSION["user_id"] . ") as this_gc_score,
-		(SELECT GROUP_CONCAT(users.name) FROM scores
+		(SELECT GROUP_CONCAT(users.lname) FROM scores
 		INNER JOIN users
 		ON users.user_id = gc_user_id
 		where scores.nominee_user_id = nominees.nominee_user_id
@@ -128,10 +163,9 @@
 	INNER JOIN users
 	ON users.user_id = q1.nominated_by_user_id
 	ORDER BY '" . $orderby . "'";
-	
 	//debug_print($sql);
 	$gcqueryresults=mysqli_query($conn,$sql);
-
+	if(!$gcqueryresults){echo "Error: " . $sql . "<br>" . $conn->error; die();}
 ?>
 <html> 
 	 <head>  
@@ -144,6 +178,7 @@
 	<form method="post" action="<?php echo $_SERVER['PHP_SELF']; ?>">
 	  	<table class="gctable">        
 			<?php
+		
 				if ($gcqueryresults)
 				{
 					$rowNumber = 1;
@@ -154,21 +189,21 @@
 							{								
 								echo '<tr class="gctable">';
 								echo '<th>';
-								if($orderby!="nominator_name")
-								{echo '<a href="' . $_SERVER['PHP_SELF'] . '?sort=nominator_name&order='.$order.'">Name of Nominator</a>';}
-								else{echo '<span class="currentColumn">Name of Nominator</span>';}
+								if($_SESSION["gcmember_column"]=="nominator_name")
+								{echo '<a href="' . $_SERVER['PHP_SELF'] . '?column=nominator_name&order='.getReverseOrderString($_SESSION["gcmember_order"]).'">Name of Nominator (' . $_SESSION["gcmember_order"] .')</a>';}
+								else{echo '<a href="' . $_SERVER['PHP_SELF'] . '?column=nominator_name&order=asc">Name of Nominator</a>';}
 								
 								echo '</th>';
 								echo '<th>Name of Nominee</th>';     
 								echo '<th>Rank of Nominee</th>';
 								echo '<th>Existing Student?</th>';
-								echo '<th>' . $gcqueryrow["score_list"] . '</th>';
-								echo '<th>Average Score</th>';        
+								echo '<th>Other Nominator\'s Scores</th>';
 								echo '<th>';
-								if($orderby!="this_gc_score")
-								{echo '<a href="' . $_SERVER['PHP_SELF'] . '?sort=this_gc_score&order='.$order.'">Score</a>';}
-								else{echo '<span class="currentColumn">Score</span>';}      
+								if($_SESSION["gcmember_column"]=="score_avg")
+								{echo '<a href="' . $_SERVER['PHP_SELF'] . '?column=score_avg&order='.getReverseOrderString($_SESSION["gcmember_order"]).'">Average Score (' . $_SESSION["gcmember_order"] .')</a>';}
+								else{echo '<a href="' . $_SERVER['PHP_SELF'] . '?column=score_avg&order=asc">Average Score</a>';}
 								echo '</th>';
+								echo '<th>Your Score</th>';
 								echo '</tr>';
 								$session_id = $gcqueryrow["session_id"]; // only need to store this once for later
 							}
@@ -185,7 +220,7 @@
 						echo '	<td>' . $gcqueryrow["score_list"] . '</td>';
 						echo '	<td>' . $gcqueryrow["score_avg"] . '</td>';
 						echo '	<td>
-									<input type="number" min="1" max="100" name="scoreValue' . $rowNumber . '" value="' . $gcqueryrow["this_gc_score"] . ' ">
+									<input type="number" min="1" max="100" name="scoreValue' . $rowNumber . '" value="' . $gcqueryrow["this_gc_score"] . '">
 									<input type="hidden" name="nomineeUserID' . $rowNumber . '"
 														 id="nomineeUserID' . $rowNumber .'"						value="' . $gcqueryrow["nominee_user_id"] . '">
 								</td>';

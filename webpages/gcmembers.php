@@ -40,11 +40,17 @@
 			
 			if($_POST["nomineeUserID".$i] != null || $_POST["nomineeUserID".$i] != "")
 			{ //scoreValue
-				$sql="INSERT INTO scores (session_id, nominee_user_id, gc_user_id, score)
-					VALUES(" . $_POST["session_id"] . ", " . $_POST["nomineeUserID".$i] . ", " . $_SESSION["user_id"] . ", " . $_POST["scoreValue".$i] . ") ON DUPLICATE KEY UPDATE score=" . $_POST["scoreValue".$i];
-					
-				if ($conn->query($sql) === TRUE){$updated_values = true;}
-				else {echo "Error: " . $sql . "<br>" . $conn->error;}	
+				if(isset($_POST["scoreValue".$i]) || isset($_POST["scoreValue".$i]))
+				{
+
+					$sql="INSERT INTO scores (session_id, nominee_user_id, gc_user_id, score, comment)
+						VALUES(" . $_POST["session_id"] . ", " . $_POST["nomineeUserID".$i] . ", " . $_SESSION["user_id"] . ", " . $_POST["scoreValue".$i] . ", '" . $_POST["commentValue".$i] . "') ON DUPLICATE KEY UPDATE 
+						score= " . (isset($_POST["scoreValue".$i])?$_POST["scoreValue".$i]:'') . ",
+						comment= '" . (isset($_POST["commentValue".$i])?$_POST["commentValue".$i]:'') . "'";
+						
+					if ($conn->query($sql) === TRUE){$updated_values = true;}
+					else {echo "Error: " . $sql . "<br>" . $conn->error;}	
+				}
 			}
 		}	
 		
@@ -141,7 +147,8 @@
 		q1.score_avg,
 		q1.score_list,
 		q1.this_gc_score,
-		q1.gc_name_list
+		q1.gc_name_list,
+		q1.this_gc_comment
 	FROM 
 	(
 		SELECT 
@@ -158,6 +165,10 @@
 		where scores.nominee_user_id = nominees.nominee_user_id
 		AND scores.session_id = sessions.session_id
 		AND scores.gc_user_id = " . $_SESSION["user_id"] . ") as this_gc_score,
+		(SELECT comment FROM scores
+		where scores.nominee_user_id = nominees.nominee_user_id
+		AND scores.session_id = sessions.session_id
+		AND scores.gc_user_id = " . $_SESSION["user_id"] . ") as this_gc_comment,
 		(SELECT GROUP_CONCAT(concat(users.lname,',',users.fname) SEPARATOR ';') FROM scores
 		INNER JOIN users
 		ON users.user_id = gc_user_id
@@ -239,6 +250,7 @@
 							if($readonly)
 							{
 								echo '<td>' . $gcqueryrow["this_gc_score"] . '</td>';
+								echo '<td>' . $gcqueryrow["this_gc_comment"] . '</td>';
 							}
 							else
 							{
@@ -247,8 +259,9 @@
 										<input type="hidden" name="nomineeUserID' . $rowNumber . '"
 															 id="nomineeUserID' . $rowNumber .'"						value="' . $gcqueryrow["nominee_user_id"] . '">
 									</td>';
+									echo '<td><input type="text" rows="1" cols="50" name="commentValue' . $rowNumber . '" id="commentValue' . $rowNumber . '" value="' . $gcqueryrow["this_gc_comment"] . '"></td>';
 							}
-							echo '<td><input type="text" rows="1" cols="50" name="commentValue' . $rowNumber . '" id="commentValue' . $rowNumber . '"></td>';
+							
 							echo '</tr>';
 							
 						}

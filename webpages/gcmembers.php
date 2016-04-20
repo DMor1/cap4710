@@ -17,10 +17,6 @@
 			if(preg_match('/nomineeUserID/',$key))
 	  		{
 		  		$temp_key = intval(filter_var($key, FILTER_SANITIZE_NUMBER_INT));
-		  		//debug_print($temp_key);
-		  		//debug_print($maxkeyint);
-		  		//max($maxkeyint, $temp_key); // this was for some reason, super buggy
-		  	
 				if($temp_key > $maxkeyint)
 		  		{
 					$maxkeyint = $temp_key;
@@ -32,12 +28,8 @@
 		//Since names of columns and the max number to iterate just iterate through the users one at a time
 		for($i = 1; $i<=$maxkeyint; $i++)
 		{
-			// insert user $i
-			// insert user_role for user
-		
 			//["past1"], ["startAdvisor1"],["endAdvisor1"]
 			// since past is a primary key value it cannot be null
-			
 			if($_POST["nomineeUserID".$i] != null || $_POST["nomineeUserID".$i] != "")
 			{ //scoreValue
 				if(isset($_POST["scoreValue".$i]) || isset($_POST["scoreValue".$i]))

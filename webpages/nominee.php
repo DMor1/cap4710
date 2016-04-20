@@ -113,9 +113,6 @@
 	  		if(preg_match('/course/',$key))
 	  		{
 		 		$temp_key = intval(filter_var($key, FILTER_SANITIZE_NUMBER_INT));
-		  		//debug_print($temp_key);
-		  		//debug_print($maxkeyint);
-		  		//max($maxkeyint, $temp_key); // this was for some reason, super buggy
 		  		
 				if($temp_key > $maxkeyint)
 		  		{
@@ -124,8 +121,6 @@
 	  		}
 		}
 
-		//debug_print($maxkeyint);
-	
 		// since we know the names of the columns and the max number to iterate just iterate through the users one at a time
 		for($i = 1; $i<=$maxkeyint; $i++)
 		{
@@ -206,7 +201,6 @@
 			// Free result set
 			mysqli_free_result($result);		
 		}
-		//else{echo "nope";}
 	
 		// Display currently known info about nominee
 		$sql = "
@@ -218,9 +212,7 @@
     		ON sessions.session_id = nominees.session_id
 			WHERE users.user_id = " . $nominee_user_id;
 		
-		//debug_print($sql);
 		$result=mysqli_query($conn,$sql);
-		//debug_print($result);
 
 		if ($result)
 		{
@@ -230,10 +222,6 @@
 			mysqli_free_result($result);
 		}
 		
-		// Name	
-		//testing
-		//echo get_semesterString($nomineeUserRow["verify_deadline_date"]);
-
 		mysqli_close($conn);
 	}
 ?>

@@ -3,6 +3,8 @@
 	include_once("db.php");
 	include_once("email_templates/nomineeReminderEmail.php");
 	
+	echo "Reminding Nominees";
+
 	//Get Current date
 	$currDate = getCurrentDate();
 
